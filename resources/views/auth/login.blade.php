@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>BMS NEPAL</title>
+  <title>School Management System</title>
 
   <link rel="stylesheet" href="{{asset('assets/css/vertical-layout-light/style.css') }}">
   <link rel="shortcut icon" href="{{asset('assets/images/fav.png') }}" />

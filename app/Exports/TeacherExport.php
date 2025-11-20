@@ -22,7 +22,7 @@ class TeacherExport implements FromView
     {
         
         return view('exports.list', [
-            'data' => TeachersPersonalDetail::with('school')->get(),
+            'data' => TeachersPersonalDetail::all(),
         ]);
     }
 }

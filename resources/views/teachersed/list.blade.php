@@ -4,8 +4,8 @@
   <div class="col-lg-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>शैक्षिक विवरण सुची</span></span></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>Education Details</span></span></li>
       </ol>
     </nav>
     <div class="card">
@@ -24,7 +24,7 @@
         <table class="rtable">
           <thead>
             <tr>
-              <th rowspan="2">क्र.सं</th>
+              <th rowspan="2">S.N.</th>
               <th colspan="5" class="text-center">SLC </th>
               <th colspan="6" class="text-center">10+2</th>
               <th colspan="8" class="text-center">Bachelor</th>
@@ -33,36 +33,36 @@
             </tr>
             <tr>
               <!-- slc -->
-              <th>उतिर्ण वर्ष</th>
-              <th>विद्यालयको नाम</th>
-              <th>प्रतिशत</th>
-              <th>प्राप्तांक</th>
-              <th>मेजर बिषय </th>
+              <th>Passed Year</th>
+              <th>School Name</th>
+              <th>Percent %</th>
+              <th>Gained Score</th>
+              <th>Major Subject </th>
 
               <!-- +2 -->
-              <th>उतिर्ण बर्ष</th>
-              <th>विद्यालयको नाम</th>
-              <th>विद्यालयको ठेगाना</th>
-              <th>संकाय(Faculty) </th>
-              <th>प्रतिशत(%) </th>
-              <th>प्राप्तांक </th>
+              <th>Passed Year</th>
+              <th>School Name</th>
+              <th>Addres</th>
+              <th>Faculty </th>
+              <th>Percent(%) </th>
+              <th>Gained Score </th>
               <!-- bachelor -->
-              <th>उतिर्ण बर्ष</th>
-              <th>विद्यालयको नाम</th>
-              <th>विद्यालयको ठेगाना</th>
-              <th>युनिभर्सिटी</th>
-              <th>संकाय(Faculty) </th>
-              <th>प्रतिशत(%) </th>
-              <th>प्राप्तांक </th>
-              <th>मेजर बिषय</th>
+              <th>Passed Year</th>
+              <th>School Name</th>
+              <th>Address</th>
+              <th>University</th>
+              <th>Faculty </th>
+              <th>Percent(%) </th>
+              <th>Gained Score </th>
+              <th>Major Subject</th>
               <!-- master's -->
-              <th>उतिर्ण बर्ष</th>
-              <th>विद्यालयको नाम</th>
-              <th>विद्यालयको ठेगाना</th>
-              <th>युनिभर्सिटी</th>
-              <th>प्रतिशत(%) </th>
-              <th>प्राप्तांक </th>
-              <th>मेजर बिषय</th>
+              <th>Passed Year</th>
+              <th>School Name</th>
+              <th>Address</th>
+              <th>University</th>
+              <th>Percent(%) </th>
+              <th>Score </th>
+              <th>Major Subject</th>
             </tr>
           </thead>
           <tbody>
@@ -114,7 +114,7 @@
             @else
             <tr>
               <td colspan = "27">
-              <div class="alert alert-danger text-center">शैक्षिक विवरण दाखिला गरिएको छैन !!!
+              <div class="alert alert-danger text-center">No educational details found!!!
                 <a class="btn btn-sm btn-dark" href="{{ route('teachers-personal-detail')}}" ><i class="fa fa-plus-circle"></i> शैक्षिक विवरण थप्नुहोस</a>
               </div>
               </td>

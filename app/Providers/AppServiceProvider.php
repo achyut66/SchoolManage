@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\PalikaProfile;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Share palika profile data with all views
+        View::composer('*', function ($view) {
+            $palikaProfile = PalikaProfile::first();
+            $view->with('palikaProfile', $palikaProfile);
+        });
     }
 }

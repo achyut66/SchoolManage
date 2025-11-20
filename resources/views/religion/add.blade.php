@@ -7,11 +7,11 @@
   @csrf
   <div class="modal-body">
     <div class="form-group">
-      <label for="recipient-name" class="col-form-label">धर्म<i class="fa fa-asterisk text-danger"></i></label>
+      <label for="recipient-name" class="col-form-label">Religion<i class="fa fa-asterisk text-danger"></i></label>
       <input type="text" class="form-control" id="name" name="name">
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-sm btn-block btn-success"> सेभ गर्नुहोस </button>
+    <button type="submit" class="btn btn-sm btn-block btn-success"> Submit </button>
   </div>
 </form>

@@ -4,10 +4,10 @@
   <div class="col-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page"><span><a
-              href="{{ URL :: to('/teachers-personal-detail') }}">शिक्षक व्यक्तिगत विवरण</span></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>नया थप्नुहोस</span></li>
+              href="{{ URL :: to('/teachers-personal-detail') }}">Work Details</span></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>Add New</span></li>
       </ol>
     </nav>
   </div>
@@ -21,17 +21,17 @@
     @endif
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" id="personal-details"><i class="fa fa-info-circle"></i> शिक्षकको व्यक्तिगत विवरण</a>
+        <a class="nav-link" id="personal-details"><i class="fa fa-info-circle"></i> Teacher's Personal Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " id="education-details"><i class="fa fa-info-circle"></i> शिक्षकको शैक्षिक विवरण</a>
+        <a class="nav-link " id="education-details"><i class="fa fa-info-circle"></i> Teacher's Education Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="work-details"><i class="fa fa-info-circle"></i> शिक्षकको पेशा विवरण</a>
+        <a class="nav-link active" id="work-details"><i class="fa fa-info-circle"></i> Teacher's Work Details</a>
       </li>
     </ul>
     <div class="card">
-      <div class="card-header" style="background-color:#041750;color:#fff">शैक्षिक विवरण</div>
+      <div class="card-header" style="background-color:#041750;color:#fff">Education Details</div>
       <div class="card-body">
         @if (count($errors) > 0)
             <div class="row">
@@ -55,92 +55,56 @@
               <table class="table rtable">
                 <thead>
                 <tr>
-                  <th colspan="5" style="padding:10px;"><b>स्थायी शिक्षकको रुपमा कार्यरत विवरण</b></th>
+                  <th colspan="5" style="padding:10px;"><b>Working Details</b></th>
                 </tr>
                 </thead>
                 <tbody>
-                  
                   <tr>
-                    <td>
-                        <label>स्थाई शिक्षक नियुक्ति मिति<i class="fa fa-asterisk" style="color: red;"></i></label>
-                        <input type="text" name="perma_enroll_date" class="form-control nepali_date">
-                    </td>
-                    
-                    <td>
-                        <label>नियुक्ति पत्र अपलोड<i class="fa fa-asterisk" style="color: red;"></i></label>
-                        <input type="file" name="perma_file_upload" class="form-control">
-                    </td>
-                    <td>
-                        <label>नियुक्ति पत्रको बिषय<i class="fa fa-asterisk" style="color: red;"></i> </label>
-                        <input type="text" name="perma_paper_sub" class="form-control" placeholder="">
-                    </td>
-                    
-                    <td>
-                      <label>सेवा सुरु गरेको मिति<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_work_start_date" class="form-control nepali_date">
-                    </td>
+                    <td colspan="4"><b>School Details</b></td>
                   </tr>
-                  <tr>  
-                    <td>
-                      <label>हाल सम्मको सेवा अवधि<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_work_till_date" class="form-control"placeholder="">
-                    </td>
-                    <td>
-                      <label>सेवा निवृत हुने मिति<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_work_last_date" class="form-control nepali_date"
-                            placeholder="">
-                    </td>
-
-                    <td>
-                        <label>सेवा निवृत हुन बाँकि अवधि <i class="fa fa-asterisk" style="color: red;"></i></label>
-                        <input type="text" name="perma_work_last_date_remain" class="form-control" placeholder="">
-                    </td>
-                    <td>
-                      <label>हाल सम्मको सेवा अवधि<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_work_till_date" class="form-control" placeholder="">
-                    </td>
-                  </tr>
-                  <tr><td colspan="4"><b>विद्यालय सम्बन्धि विवरण</b></td></tr>
-                  <tr>  
-                    <td colspan="4">
-                      <label>विद्यालयको नाम<i class="fa fa-asterisk" style="color: red;"></i></label>
+                  <tr>
+                    <td colspan="2">
+                      <label>School Name<i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="text" name="perma_taught_school_name" class="form-control" placeholder="">
                     </td>
-                  </tr>
-                  <tr>
                     <td>
-                      <label>प्रदेश<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <label>Province<i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="text" name="perma_taught_school_province" class="form-control" placeholder="">
                     </td>
                     <td>
-                      <label>जिल्ला<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <label>District<i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="text" name="perma_taught_school_district" class="form-control" placeholder="">
-                    </td>
-
-                    <td>
-                      <label>स्थानीय तह<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_taught_school_local" class="form-control" placeholder="">
-                    </td>
-                    <td>
-                      <label>वडा नं<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_taught_school_ward" class="form-control" placeholder="">
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label>नियुक्ति हुदाको पद<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_enroll_post" class="form-control" placeholder="">
+                      <label>Municipality<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_taught_school_local" class="form-control" placeholder="">
                     </td>
                     <td>
-                      <label>अवधि<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="text" name="perma_enroll_time_period" class="form-control" placeholder="">
+                      <label>Ward No.<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_taught_school_ward" class="form-control" placeholder="">
                     </td>
                     <td>
-                      <label>नियुक्ति पत्र<i class="fa fa-asterisk" style="color: red;"></i></label>
-                      <input type="file" name="perma_enroll_paper_upload" class="form-control" placeholder="">
+                      <label>Start Date<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_work_start_date" class="form-control nepali_date">
+                    </td>
+                    <!-- <td>
+                      <label>Total Years Of Teaching<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_work_till_date" class="form-control" placeholder="">
+                    </td> -->
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Terminate Date<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_work_last_date" class="form-control nepali_date" placeholder="">
                     </td>
                     <td>
-                      <label>अनुभवको प्रमाण पत्र<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <label>Total Years Of Teaching Experience<i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <input type="text" name="perma_work_till_date" class="form-control" placeholder="">
+                    </td>
+                    <td colspan="2">
+                      <label>Experience Letter<i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="file" name="perma_experience_letter_upload" class="form-control" placeholder="">
                     </td>
                   </tr>
@@ -148,7 +112,7 @@
               </table>
             </div>
 
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
               <table class="table rtable">
                 <thead>
                 <tr>
@@ -173,32 +137,32 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> -->
 
             <div class="col-md-12">
               <table class="table rtable">
                 <thead>
                 <tr>
-                  <th colspan="5" style="padding:10px;"><b>तालिम सम्बन्धि विवरण</b></th>
+                  <th colspan="5" style="padding:10px;"><b>Training Details</b></th>
                 </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                        <label>तालिम लिएको मिति</label>
+                        <label>Training Took Date</label>
                         <input type="text" name="training_took_date" class="form-control nepali_date">
                     </td>
                     
                     <td>
-                      <label>अवधि</label>
+                      <label>Period of Training Took</label>
                       <input type="text" name="training_period" class="form-control">
                     </td>
                     <td>
-                      <label>तालिम दिने निकाय</label>
+                      <label>Organization Who Gives Training</label>
                       <input type="text" name="training_given_org" class="form-control">
                     </td>
                     <td>
-                      <label>तालिम सम्बन्धि कागजात</label>
+                      <label>Certificate</label>
                       <input type="file" name="training_related_paper_upload" class="form-control">
                     </td>
                   </tr>
@@ -208,7 +172,7 @@
 
             <div class="col-md-12">
               <hr>
-              <button type="submit" class="btn btn-block btn-secondary">सेभ गर्नुहोस</button>
+              <button type="submit" class="btn btn-block btn-secondary">Submit</button>
             </div>
           </div>
       </div>

@@ -4,14 +4,14 @@
   <div class="col-lg-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>प्रगति विवरण शिर्षक</span></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>School Profile Details</span></li>
       </ol>
     </nav>
     <div class="card">
       <div class="card-header">
         <h3 class="pull-right"></h3>
-        प्रयोगकर्ताको अनुमित<br>
+        User Update<br>
         <div class="form-check form-check-success">
           <label class="form-check-label">
           <input name="all-permission" type="checkbox" class="form-check-input precheck" value="1" id="selectall">
@@ -30,7 +30,7 @@
             <table class="table table-hover rtable">
               <thead>
                 <tr>
-                  <th colspan ="3" class="text-center"><b>प्रयोगकर्ताको नाम: {{$user->name}}</b></th>
+                  <th colspan ="3" class="text-center"><b>User Name: {{$user->name}}</b></th>
                 </tr>
               </thead>
               <tbody>
@@ -54,7 +54,7 @@
             </table>
           </div>
           <hr>
-          <button type="submit" class="btn btn-dark btn-block">सेभ गर्नुहोस</button>
+          <button type="submit" class="btn btn-dark btn-block">Submit</button>
         </form>
       </div>
     </div>

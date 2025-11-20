@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>शिक्षक अभिलेख विवरण</title>
+  <title>School Management System</title>
   <style type="text/css">
     :root {
       --bleeding: 0.5cm;
@@ -62,37 +62,40 @@
 </head>
 <body style="--bleeding: 0.5cm;--margin: 1cm;">
   <div class="page">
-    <img src="{{ asset('assets/images/new_logo.png') }}" style="height: 100px; width: 140px; margin-top:0px;">
-    <div style="font-size: 32px;margin-left:400px;margin-top:-100px">{{ getProfile()->palika }}</div>
-    <div style="margin-left: 420px;margin-top:10px;font-size: 20px;">{{ getProfile()->type == 1 ? 'गाउँकार्यपालिकाको कार्यालय' : 'नगरकार्यपालिकाको कार्यालय'}}</div>
-    <div style="margin-left: 430px;margin-top:10px;font-size: 14px;">{{getProfile()->address }}, {{ getProfile()->district .','. getProfile()->pradesh }}</div>
+    <!-- <img src="{{ asset('assets/images/new_logo.png') }}" style="height: 100px; width: 140px; margin-top:0px;"> -->
+    <div style="font-size: 32px;margin-left:400px;margin-top:-46px">{{ $row->schoolname }}</div>
+    <div style="font-size: 20px;margin-left:452px;margin-top:-5px">{{ $row->slogan }}</div>
+    <!-- <div style="margin-left: 420px;margin-top:10px;font-size: 20px;">{{ getProfile()->type == 1 ? 'गाउँकार्यपालिकाको कार्यालय' : 'नगरकार्यपालिकाको कार्यालय'}}</div> -->
+    <div style="margin-left: 430px;margin-top:-1px;font-size: 14px;">{{getProfile()->address }}, {{ getProfile()->district .','. getProfile()->pradesh }}</div>
     @if(!empty(getProfile()->logo))
      <img src="{{ asset('storage/'.getProfile()->logo) }}" style="margin-left:890px;height:100px;margin-top:-70px;width:119px; height:100px;">
     @endif
     <div style="margin-top:20px; border-bottom:2px solid #000"></div>
-    <div style="text-align:center; margin-top:30px;text-decoration:underline"><b>शिक्षक अभिलेख विवरण हेर्नुहोस</b></div>
+    <div style="text-align:center; margin-top:30px;text-decoration:underline"><b>Teacher's Details</b></div>
     <div style="margin-top:5px;">
       <table class="rtable">
         <thead>
           <tr>
-              <th>क्र.सं.</th>
-              <th>नाम थर</th>
-              <th>सम्पर्क नं</th>
-              <th>कार्यरत विधालय</th>
-              <th>लाइसेन्स नं</th>
-              <th>स्थाई लेखा नं</th>
+                <th>S.n.</th>
+                <th>Full Name</th>
+                <th>Teacher's Cit No.</th>
+                <th>License No.</th>
+                <th>PAN No. </th>
+                <th>Contact No. </th>
+                <th>Status </th>
             </tr>
         </thead>
         <tbody>
           @php $i = 1; @endphp
           @foreach($newdata as $key => $val)
           <tr>
-            <td>{{ convertedNum($i++ )}}</td>
-            <td>{{ $val->teachers_name_nep }}</td>
-            <td>{{ convertedNum($val->teachers_mobno) }}</td>
-            <td>{{ $val->school->school_name }}</td>
-            <td>{{ convertedNum($val->teachers_teacher_licenseno) }}</td>
-            <td>{{ convertedNum($val->teachers_panno) }}</td>
+            <td>{{ $i++ }}</td>
+            <td>{{ $val->teachers_name_eng }}</td>
+            <td>{{ $val->teachers_citno }}</td>
+            <td>{{ $val->teachers_teacher_licenseno }}</td>
+            <td>{{ $val->teachers_panno }}</td>
+            <td>{{ $val->teachers_mobno }}</td>
+            <td><p class="btn btn-{{  $val->teacher_enroll_status == 1 ? 'success' : 'danger' }} btn-rounded btn-fw btn-sm">{{  $val->teacher_enroll_status == 1 ? 'Permanent' : 'Temporary' }}</p></td>
           </tr>
           @endforeach
         </tbody>

@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Concerns\FromView;
 class ExportTeachersDetailsBySearch implements FromView
 {
    
-    private $school;
     private $status;
     private $sname;
     private $lno;
@@ -20,8 +19,7 @@ class ExportTeachersDetailsBySearch implements FromView
         * ExportUsers constructor.
         * @param Collection $plannings
     */
-    public function __construct($school,$status,$sname,$lno ) {
-        $this->school = $school;
+    public function __construct($status,$sname,$lno ) {
         $this->status = $status;
         $this->sname = $sname;
         $this->lno = $lno;
@@ -29,15 +27,12 @@ class ExportTeachersDetailsBySearch implements FromView
 
     public function view(): View
     {
-        $s = $this->school;
         $st = $this->status;
         $sn = $this->sname;
         $ln = $this->lno;
         return view('exports.listbysearch', [
-            'data' => TeachersPersonalDetail::with('school')->
-                    when(!empty($s) , function ($query) use($s){
-                        return $query->where('school_id',$s);
-                    })->when(!empty($st) , function ($query) use($st){
+            'data' => TeachersPersonalDetail::
+                    when(!empty($st) , function ($query) use($st){
                         return $query->where('teacher_enroll_status',$st);
                     })->when(!empty($sn) , function ($query) use($sn){
                         return $query->where('teachers_name_nep',$sn);

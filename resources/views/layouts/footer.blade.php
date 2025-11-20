@@ -1,7 +1,7 @@
 <!-- partial:partials/_footer.html -->
 <footer class="footer">
   <div class="d-sm-flex justify-content-center justify-content-sm-between">
-    <span class="text-muted text-right text-sm-right d-block d-sm-inline-block"> Powered By <a href="https://www.bmsnepal.net/" target="_blank">BMS NEPAL</a>. All rights reserved.</span>
+    <span class="text-muted text-right text-sm-right d-block d-sm-inline-block"> Powered By <a href="https://www.schoolmanagement.com/" target="_blank">School Management System</a>. All rights reserved.</span>
   </div>
 </footer>
 </div>

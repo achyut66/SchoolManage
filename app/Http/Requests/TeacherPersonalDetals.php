@@ -24,8 +24,8 @@ class TeacherPersonalDetals extends FormRequest
     public function rules()
     {
         $rules =  [
-            'school_id'                             => 'required|numeric',
-            'teachers_name_nep'                     => 'required',
+            'school_id'                             => 'nullable|numeric',
+            'teachers_name_nep'                     => 'nullable',
             'teachers_name_eng'                     => 'required',
             'teachers_caste'                        => 'required',
             'teachers_religion'                     => 'required',

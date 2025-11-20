@@ -95,7 +95,7 @@
                 <td>{{ convertedNum($title->teachers_teacher_licenseno_jari_date)}}</td>
                 <td>{{ convertedNum($title->teachers_panno)}}</td>
                 <td>{{ convertedNum($title->teachers_hw_name)}}</td>
-                <td>{{ convertedNum($title->school->school_name)}}</td>
+                <td>{{ $title->teachers_localadd ?? '-' }}</td>
                 <td><p class="btn btn-{{  $title->teacher_enroll_status == 1 ? 'success' : 'danger' }} btn-rounded btn-fw btn-sm">{{  $title->teacher_enroll_status == 1 ? 'स्थाई' : 'अस्थाई' }}</p></td>
                 @foreach($title->educationDetails as $ed)
 

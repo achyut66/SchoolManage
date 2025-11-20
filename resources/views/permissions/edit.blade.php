@@ -1,5 +1,5 @@
 <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">प्रगति विवरण शिर्षक थप्नुहोस</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add New</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -8,7 +8,7 @@
   @csrf
   <div class="modal-body">
     <div class="form-group">
-      <label for="recipient-name" class="col-form-label">शिर्षक<i class="fa fa-asterisk text-danger"></i></label>
+      <label for="recipient-name" class="col-form-label">Subject<i class="fa fa-asterisk text-danger"></i></label>
       <input type="text" class="form-control" id="name" name="name" value="{{ $row->name }}">
     </div>
 
@@ -18,7 +18,7 @@
     
 
  <div class="modal-footer">
-    <button type="submit" class="btn btn-sm btn-block btn-success"> सेभ गर्नुहोस </button>
+    <button type="submit" class="btn btn-sm btn-block btn-success"> Submit </button>
     <!-- <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">पछाडी जानुहोस</button> -->
   </div>
 </form>

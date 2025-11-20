@@ -4,10 +4,10 @@
   <div class="col-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page"><span><a
-              href="{{ URL :: to('/teachers-personal-detail') }}">शिक्षक व्यक्तिगत विवरण</span></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>शैक्षिक विवरण सम्पादन गर्नुहोस</span></li>
+              href="{{ URL :: to('/teachers-personal-detail') }}">Educational Details</span></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>Edit Educational Details</span></li>
       </ol>
     </nav>
   </div>
@@ -21,17 +21,17 @@
     @endif
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" id="personal-details"><i class="fa fa-info-circle"></i> शिक्षकको व्यक्तिगत विवरण</a>
+        <a class="nav-link" id="personal-details"><i class="fa fa-info-circle"></i> Teachers Personal Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="education-details"><i class="fa fa-info-circle"></i> शिक्षकको शैक्षिक विवरण</a>
+        <a class="nav-link active" id="education-details"><i class="fa fa-info-circle"></i> Teachers Educational Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="work-details"><i class="fa fa-info-circle"></i> शिक्षकको कार्य विवरण</a>
+        <a class="nav-link" id="work-details"><i class="fa fa-info-circle"></i> Teachers Work Details</a>
       </li>
     </ul>
     <div class="card">
-      <div class="card-header" style="background-color:#041750;color:#fff">शैक्षिक विवरण</div>
+      <div class="card-header" style="background-color:#041750;color:#fff">Educational Details</div>
       <div class="card-body">
         @if (count($errors) > 0)
         <div class="row">
@@ -53,46 +53,46 @@
               <table class="table rtable">
                 <thead>
                 <tr>
-                  <th colspan="5" style="padding:10px;"><b>१. एस एल सि विवरण</b></th>
+                  <th colspan="5" style="padding:10px;"><b>१. SEE Details</b></th>
                 </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td colspan="5" style="padding:10px;">
-                          <label>बिद्यालयको नाम <i class="fa fa-asterisk" style="color: red;"></i></label>
+                          <label>School Name <i class="fa fa-asterisk" style="color: red;"></i></label>
                           <input type="text" name="slc_school_name" class="form-control" value="{{ $row_data->slc_school_name }}" required>
                       
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label>उतिर्ण बर्ष <i class="fa fa-asterisk" style="color: red;"></i></label>  
+                      <label>Passed Year <i class="fa fa-asterisk" style="color: red;"></i></label>  
                       <input type="text" name="slc_passed_year" class="form-control nepali_date" value="{{ $row_data->slc_passed_year }}" required>
                     </td>
                     
                     <td>
-                      <label>प्रतिशत(%)<i class="fa fa-asterisk" style="color: red;"></i> </label>
+                      <label>Percent(%)<i class="fa fa-asterisk" style="color: red;"></i> </label>
                       <input type="text" name="slc_percent" class="form-control" value="{{ $row_data->slc_percent }}" required>
                     </td>
                     <td>
-                      <label>प्राप्तांक <i class="fa fa-asterisk" style="color: red;"></i></label>
+                      <label>Score <i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="text" name="slc_pass_marks" class="form-control" value="{{ $row_data->slc_pass_marks }}" required>
                     </td>
                     
                     <td>
                       <label>Certificate <i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="file" name="slc_certificate_upload" class="form-control"><br>
-                      <a href=""><i class="fa fa-eye"></i> हेर्नुहोस</a>
+                      <a href=""><i class="fa fa-eye"></i> Select</a>
                     </td>
                     <td>
                       <label> Marksheet <i class="fa fa-asterisk" style="color: red;"></i></label>
                       <input type="file" name="slc_marksheet_upload" class="form-control" placeholder=""><br>
-                      <a href=""><i class="fa fa-eye"></i> हेर्नुहोस</a>
+                      <a href=""><i class="fa fa-eye"></i> View</a>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="5">
-                       <label>मेजर बिषय <i class="fa fa-asterisk" style="color: red;"></i></label>
+                       <label>Major Subject <i class="fa fa-asterisk" style="color: red;"></i></label>
                         <!-- <input type="text" name="slc_major_subject" class="form-control" placeholder="Subject" required> -->
                         <textarea name="slc_major_subject" class="form-control" placeholder="Please enter comma seperated subject name" rows="1" required>{{ $row_data->slc_major_subject }}</textarea>
                     </td>

@@ -36,6 +36,7 @@ class PalikaProfileController extends Controller
             'district'      => 'required',
             'palika'        => 'required',
             'address'       => 'required',
+            'schoolname'    => 'required',
         ]);
 
         if ($request->file('logo')) {
@@ -51,5 +52,26 @@ class PalikaProfileController extends Controller
             PalikaProfile::where('id', $request->id)->update($validatedData);
         }
         return redirect('/system-config')->with('success', 'User is successfully created');
+    }
+    // public function getSchoolProfile()
+    // {
+    //     $row = PalikaProfile::first();
+    //     return response()->json($row);
+    // }
+
+    /**
+     * Get palika profile details by ID
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPalikaProfile($id = null)
+    {
+        if ($id) {
+            $profile = PalikaProfile::find($id);
+        } else {
+            $profile = PalikaProfile::first();
+        }
+        return response()->json($profile);
     }
 }

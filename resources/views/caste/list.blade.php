@@ -4,8 +4,8 @@
   <div class="col-lg-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>विद्यालय किसिम</span></span></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>Caste</span></span></li>
       </ol>
     </nav>
     <div class="card">
@@ -18,13 +18,13 @@
       <div class="table-responsive">
         <div class="card-title">
           <a class="btn btn-sm btn-dark" href="#frmadd" data-toggle="modal" data-url="{{route('add-caste')}}"
-            data-id=""><i class="fa fa-plus-circle"></i> नयाँ थप्नुहोस</a>
+            data-id=""><i class="fa fa-plus-circle"></i> Add New</a>
         </div><br>
         <table class="rtable">
           <thead>
             <tr>
-              <th>क्र. सं.</th>
-              <th>जात</th>
+              <th>S.N.</th>
+              <th>Caste</th>
               <th>#</th>
             </tr>
           </thead>

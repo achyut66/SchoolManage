@@ -41,6 +41,7 @@ class TeachersEducationDetailController extends Controller
     public function store(TeacherEducationDetails $request)
     {
         $validated = $request->validated();
+        // dd($validated);
         if($request->file('slc_certificate_upload')) {
             $type = "slc-certificate";
             $slccertificate = fileUploads($request->file('slc_certificate_upload'), $type);
@@ -117,7 +118,7 @@ class TeachersEducationDetailController extends Controller
             $validated['others_certificate_upload'] = $othersm;
         }
         $id = TeachersEducationDetail::create($validated)->teachers_id;
-        return redirect()->route('teachers-work-detail', ['id' => $id]);
+        return redirect()->route('teachers-work-detail-create', ['id' => $id]);
     }
 
     /**
@@ -244,6 +245,6 @@ class TeachersEducationDetailController extends Controller
     public function destroy(TeachersEducationDetail $teachersEducationDetail,$id)
     {
         TeachersEducationDetail::where('id', $id)->delete();
-        return redirect('/teachers-education-detail-list')->with('success', 'हटाउन सफल 🤞🤞🤞 !!!');
+        return redirect('/teachers-education-detail-list')->with('success', 'Removed Successfully 🤞🤞🤞 !!!');
     }
 }

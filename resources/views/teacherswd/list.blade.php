@@ -2,8 +2,8 @@
 @section('content')
 <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>शिक्षक पेशागत विवरण</span></span></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>Teacher's Work Details</span></span></li>
       </ol>
     </nav>
     <div class="card">
@@ -18,10 +18,10 @@
           <thead>
            
             <tr>
-              <th rowspan="2">क्र.सं</th>
-              <th colspan="7" class="text-center">स्थाई शिक्षकको पेशागत विवरण </th>
-              <th colspan="3" class="text-center">अस्थाई शिक्षकको पेशागत विवरण</th>
-              <th colspan="3" class="text-center">तालिम सम्बन्धि विवरण</th>
+              <th rowspan="2">S.N.</th>
+              <th colspan="7" class="text-center">Permanent Teachers Details </th>
+              <th colspan="3" class="text-center">Temporary Teacher's Details</th>
+              <th colspan="3" class="text-center">Training Details</th>
               <th rowspan="2">#</th>
             </tr>
             <tr>

@@ -123,6 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('system-config',[PalikaProfileController::class, 'index'])->name('system-config');
   Route::post('update-config',[PalikaProfileController::class, 'update'])->name('update-config');
+  // Route::post('school-update',[PalikaProfileController::class, 'getSchoolProfile'])->name('getprofile-school');
+  Route::get('palika-profile/{id?}',[PalikaProfileController::class, 'getPalikaProfile'])->name('palika-profile');
 
   /*--------------------------------------------------------------
     Caste Controller
@@ -161,9 +163,9 @@ Print Pages
   Route::post('save-import-details', [TeachersPersonalDetailController::class,'saveImportDetails'])->name('save-import-details');
   Route::get('teacherpd-prints', [TeachersPersonalDetailController::class,'printDetails'])->name('teacherpd-prints');
 
-  Route::get('teacherpd-ajax-prints/{schoolID}/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'printajaxDetails'])->name('teacherpd-ajax-prints');
+  Route::get('teacherpd-ajax-prints/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'printajaxDetails'])->name('teacherpd-ajax-prints');
 
-  Route::get('teacherpd-export/{schoolID}/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'exportBySearch'])->name('teacherpd-export');
+  Route::get('teacherpd-export/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'exportBySearch'])->name('teacherpd-export');
 
 
 });

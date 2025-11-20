@@ -14,9 +14,9 @@ class TeachersPersonalDetail extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'school_id',
+        // 'school_id',
         'teacher_enroll_status',
-        'teachers_name_nep',
+        // 'teachers_name_nep',
         'teachers_name_eng',
         'teachers_caste',
         'teachers_religion',
@@ -50,10 +50,10 @@ class TeachersPersonalDetail extends Model
         'teachers_teacher_license_upload'
     ];
 
-    public function school()
-    {
-        return $this->belongsTo(SchoolDetails::class);
-    }
+    // public function school()
+    // {
+    //     return $this->belongsTo(SchoolDetails::class);
+    // }
 
     public function casteName()
     {

@@ -8,13 +8,13 @@
   @csrf
   <div class="modal-body">
     <div class="form-group">
-      <label for="permission-name" class="col-form-label">नाम<i class="fa fa-asterisk text-danger"></i></label>
+      <label for="permission-name" class="col-form-label">Name<i class="fa fa-asterisk text-danger"></i></label>
       <input type="text" class="form-control" id="permission-name" name="name">
     </div>
 
   </div>
 
  <div class="modal-footer">
-    <button type="submit" class="btn btn-sm btn-block btn-success"> सेभ गर्नुहोस </button>
+    <button type="submit" class="btn btn-sm btn-block btn-success"> Submit </button>
   </div>
 </form>

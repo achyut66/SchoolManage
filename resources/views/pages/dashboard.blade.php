@@ -12,7 +12,7 @@
 @endif
 <div class="row">
   <div class="col-md-6 col-lg-6 col-xl-12 grid-margin stretch-card">
-    <button class="button school-btn" style="width: 1200px; margin-left:-20px;">विद्यालय  शिक्षक अभिलेख व्यवस्थापन प्रणाली मा हजुर लाई स्वागत छ </button>
+    <button class="button school-btn" style="width: 1200px; margin-left:-20px;">Welcome To School Management System ({{ $palikaProfile->schoolname }})</button>
   </div>
 </div>
 <hr>
@@ -26,7 +26,7 @@
           </div>
           <div class="flex-right-height">
             <h2 class="countnum ml-4">{{ convertedNum( $count ) }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">जम्मा बिद्यालय दर्ता</a></p>
+            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Students</a></p>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
           </div>
           <div class="flex-right-height">
             <h2 class="countnum">{{ convertedNum($tot_steachers) }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}" style="margin-left:-15px">जम्मा स्थाई शिक्षक संख्या</a></p>
+            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}" style="margin-left:-15px">Permanent Teachers</a></p>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="flex-right-height">
             <h2 class="countnum">{{ convertedNum( $tot_ateachers ) }}</h2>
-            <p class="font-weight-bold mb-1 ml-2"><a href="{{ route('school-details') }}" class="ml-1">जम्मा अस्थाई शिक्षक संख्या</a></p>
+            <p class="font-weight-bold mb-1 ml-2"><a href="{{ route('school-details') }}" class="ml-1">Temporary Teachers</a></p>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
           
           <div class="flex-right-height">
             <h2 class="countnum">{{ convertedNum( $tot_teachers ) }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">जम्मा शिक्षक संख्या</a></p>
+            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Teachers</a></p>
           </div>
         </div>
       </div>
@@ -83,18 +83,18 @@
 <div class="row">
   <div class="col-md-6 col-lg-6 col-xl-6 grid-margin stretch-card">
     <div class="card">
-      <div class="card-header cardhead">स्थाई शिक्षकको प्रोफाइल</div>
+      <div class="card-header cardhead">Permanent Teachers Profile</div>
       <div class="card-body">
         <div class="table-responsive permanent-table">
           @if($sthai_teacher->isNotEmpty())
           <table class="table table-hover table-wrapper">
             <thead style="background-color: #607dc4; width:fit-content; color:azure;">
               <tr>
-                <th class="pt-1 p-2 text-center">सी.नं</th>
-                <th class="pt-1 p-2 text-center">प्रोफाइल</th>
-                <th class="pt-1 p-2 text-center">पुरा नाम</th>
-                <th class="pt-1 p-2 text-center">सम्पर्क नं</th>
-                <th>पुरा विवरण हेर्नुहोस</th>
+                <th class="pt-1 p-2 text-center">S.N</th>
+                <th class="pt-1 p-2 text-center">Profile</th>
+                <th class="pt-1 p-2 text-center">Full Name</th>
+                <th class="pt-1 p-2 text-center">Contact Number</th>
+                <th>View Profile</th>
               </tr>
             </thead>
             @php $i=1;@endphp
@@ -123,7 +123,7 @@
             @endforeach
           </table>
           @else
-          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>स्थाई शिक्षकको प्रोफाइल दाखिला गरिएको छैन</div>
+          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>No permanent teacher details available.</div>
           @endif
         </div>
       </div>
@@ -131,18 +131,18 @@
   </div>
   <div class="col-md-6 col-lg-6 col-xl-6 grid-margin stretch-card">
     <div class="card">
-      <div class="card-header cardhead">अस्थाई शिक्षकको प्रोफाइल</div>
+      <div class="card-header cardhead">Temporary Teacher's Profile</div>
       <div class="card-body">
         <div class="table-responsive permanent-table">
           @if($asthai_teacher->isNotEmpty())
           <table class="table table-hover table-wrapper">
             <thead style="background-color: #607dc4; width:fit-content; color:azure;">
               <tr>
-                <th class="pt-1 p-2 text-center">सी.नं</th>
-                <th class="pt-1 p-2 text-center">प्रोफाइल</th>
-                <th class="pt-1 p-2 text-center">पुरा नाम</th>
-                <th class="pt-1 p-2 text-center">सम्पर्क नं</th>
-                <th>पुरा विवरण हेर्नुहोस</th>
+                <th class="pt-1 p-2 text-center">S.N</th>
+                <th class="pt-1 p-2 text-center">Profile</th>
+                <th class="pt-1 p-2 text-center">Full Name</th>
+                <th class="pt-1 p-2 text-center">Contact Number</th>
+                <th>View Profile</th>
               </tr>
             </thead>
             @php $i=1;@endphp
@@ -171,7 +171,7 @@
             @endforeach
           </table>
           @else 
-          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>अस्थाई शिक्षकको प्रोफाइल दाखिला गरिएको छैन</div>
+          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>No temporary teacher details available</div>
           @endif
         </div>
       </div>

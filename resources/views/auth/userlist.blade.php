@@ -4,8 +4,8 @@
   <div class="col-lg-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb breadcrumb-custom">
-        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">ड्यासबोर्ड</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><span>प्रोयोगकर्ता सुची</span></li>
+        <li class="breadcrumb-item"><a href="{{ URL :: to('/dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><span>User List</span></li>
       </ol>
     </nav>
     <div class="card">
@@ -20,20 +20,20 @@
       @if(auth()->user()->role != 1)
         @can('add-user')
       @endif
-        <div class="card-title"><a href="{{ URL :: to('/create') }}" class="btn btn-sm btn-dark"><i class="fa fa-plus-circle"></i> नया थप्नुहोस</a></div><br>
+        <div class="card-title"><a href="{{ URL :: to('/create') }}" class="btn btn-sm btn-dark"><i class="fa fa-plus-circle"></i> Add New</a></div><br>
         @if(auth()->user()->role != 1)
         @endcan
         @endif
         <table class="rtable">
           <thead>
             <tr>
-              <th>क्र. सं.</th>
-              <th>नाम</th>
-              <th>इमेल</th>
-              <th>फोन नं</th>
-              <th>पद </th>
-              <th>भूमिका </th>
-              <th>शाखा</th>
+              <th>S.N.</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact No.</th>
+              <th>Post </th>
+              <th>Role </th>
+              <th>Section</th>
             </tr>
           </thead>
           <tbody>

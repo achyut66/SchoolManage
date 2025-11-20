@@ -23895,6 +23895,7 @@ html {
 
 .container-scroller {
     overflow: hidden;
+    /* background-color: red; */
 }
 
 pre {
@@ -37910,6 +37911,7 @@ div.tagsinput span.tag a {
     display: flex;
     -webkit-flex-direction: column;
     flex-direction: column;
+    /* background-color: red; */
 }
 
 @media (max-width: 991px) {
@@ -37927,6 +37929,11 @@ div.tagsinput span.tag a {
     -webkit-flex-grow: 1;
     flex-grow: 1;
 }
+/* .main-head{
+    background-color: #041750;
+    border-radius: 10px;
+    color: var(--white);
+} */
 
 /* Sidebar */
 .sidebar {
@@ -44232,7 +44239,7 @@ select::-ms-expand {
     width: 500px;
 }
 .school-btn {
-    background-color: #bf121b;
+    background-color: #041750;
     color:#fff;
     border:none;
     height:50px;

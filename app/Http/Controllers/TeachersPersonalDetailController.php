@@ -10,6 +10,7 @@ use App\Models\LicenseLevel;
 use App\Models\Caste;
 use Illuminate\Http\Request;
 use App\Http\Requests\TeacherPersonalDetals;
+use App\Models\PalikaProfile;
 use Response;
 
 use App\Exports\TeacherExport;
@@ -29,9 +30,7 @@ class TeachersPersonalDetailController extends Controller
     public function index()
     {
         $schools = SchoolDetails::all();
-        $data = TeachersPersonalDetail::with('school','educationDetails')->get();
-       // dd($data);
-        $data = TeachersPersonalDetail::with('school')->paginate(5);
+        $data = TeachersPersonalDetail::paginate(5);
         return view('teacherspd.list', compact('data','schools'));
     }
 
@@ -135,7 +134,7 @@ class TeachersPersonalDetailController extends Controller
             $validated['teachers_pan_upload'] = $panupload;
         }
         TeachersPersonalDetail::where('id', $id)->update($validated);
-        return redirect('/teachers-personal-list')->with('success', 'अपडेट सफल!!!'); 
+        return redirect('/teachers-personal-list')->with('success', 'Successfully Updated!!!'); 
     }
 
     /**
@@ -147,7 +146,7 @@ class TeachersPersonalDetailController extends Controller
     public function destroy(TeachersPersonalDetail $teachersPersonalDetail,$id)
     {
         TeachersPersonalDetail::where('id', $id)->delete();
-        return redirect('/teachers-personal-list')->with('success', 'हटाउन सफल !!!');
+        return redirect('/teachers-personal-list')->with('success', 'Remove Success !!!');
     }
 
     /**
@@ -165,22 +164,19 @@ class TeachersPersonalDetailController extends Controller
             // } else {
             //     $shakha     = $request->get('shakha');
             // }
-            $schoolID   = $request->schoolID;
             $name       = $request->name;
             $statusID   = $request->statusID;
             $licenceNo  = $request->licenceNo;
             
             $data       = TeachersPersonalDetail::
-                            when(!empty($schoolID) , function ($query) use($schoolID){
-                            return $query->where('school_id',$schoolID);
-                            })->when(!empty($statusID) , function ($query) use($statusID){
+                            when(!empty($statusID) , function ($query) use($statusID){
                             return $query->where('teacher_enroll_status', $statusID);
                             })->when(!empty($name) , function ($query) use($name){
                                 return $query->where('teachers_name_nep', 'LIKE', '%' .$name. '%');
                             })->when(!empty($licenceNo) , function ($query) use($licenceNo){
                             return $query->where('teachers_teacher_licenseno', $licenceNo);
                             })->get();
-            $view = view('teacherspd.ajaxlist',compact('data','schoolID','statusID','name','licenceNo'))->render();
+            $view = view('teacherspd.ajaxlist',compact('data','statusID','name','licenceNo'))->render();
             return Response::json(['status' => 200, 'view' => $view]);
         // } else {
         //     echo 'invalid request';
@@ -200,24 +196,21 @@ class TeachersPersonalDetailController extends Controller
     // print page for teachers personal details
     public function printDetails(){
     
+        $row = PalikaProfile::first();
         $newdata = TeachersPersonalDetail::all();
-        return view('printPage.teacherspdprint', compact('newdata'));    
+        return view('printPage.teacherspdprint', compact('newdata','row'));    
     }
-    public function printajaxDetails($schoolID, $statusID, $name, $licenceNo) {
-        $schoolID = explode('-', $schoolID);
+    public function printajaxDetails($statusID, $name, $licenceNo) {
         $statusID = explode('-', $statusID);
         $name = explode('-', $name);
         $licenceNo = explode('-', $licenceNo);
 
-        $school = $schoolID[1];
         $status =  $statusID[1];
         $sname = $name[1];
         $lno = $licenceNo[1];
         
         $newdata = TeachersPersonalDetail::
-                    when(!empty($school) , function ($query) use($school){
-                        return $query->where('school_id',$school);
-                    })->when(!empty($status) , function ($query) use($status){
+                    when(!empty($status) , function ($query) use($status){
                         return $query->where('teacher_enroll_status',$status);
                     })->when(!empty($sname) , function ($query) use($sname){
                         return $query->where('teachers_name_nep',$sname);
@@ -229,20 +222,17 @@ class TeachersPersonalDetailController extends Controller
 
     public function export() 
     {
-        return Excel::download(new TeacherExport, 'शिक्षकको सुची.xlsx');
+        return Excel::download(new TeacherExport, 'Teachers List.xlsx');
     }
-    public function exportBySearch($schoolID, $statusID, $name, $licenceNo) {
-
-        $schoolID = explode('-', $schoolID);
+    public function exportBySearch($statusID, $name, $licenceNo) {
         $statusID = explode('-', $statusID);
         $name = explode('-', $name);
         $licenceNo = explode('-', $licenceNo);
 
-        $school = $schoolID[1];
         $status =  $statusID[1];
         $sname = $name[1];
         $lno = $licenceNo[1];
-        return Excel::download(new ExportTeachersDetailsBySearch($school, $status,$sname,$lno), 'शिक्षकको सुची.xlsx');
+        return Excel::download(new ExportTeachersDetailsBySearch($status,$sname,$lno), 'Teachers Details.xlsx');
     }
 
     public function importDetails() {

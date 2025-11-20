@@ -39,26 +39,26 @@ class TeachersWorkDetailsController extends Controller
     public function store(TeacherValidateWorkDetails $request)
     {
         $validated = $request->validated();
-        if($request->file('perma_file_upload')) {
-            $type = 'sthai-niyukti-patra';
-            $perma = fileUploads($request->file('perma_file_upload'),$type);
-            $validated['perma_file_upload'] = $perma;
-        }
-        if($request->file('perma_enroll_paper_upload')) {
-            $type = 'school-enroll-niyukti';
-            $enroll = fileUploads($request->file('perma_enroll_paper_upload'), $type);
-            $validated['perma_enroll_paper_upload'] = $enroll;
-        }
+        // if($request->file('perma_file_upload')) {
+        //     $type = 'sthai-niyukti-patra';
+        //     $perma = fileUploads($request->file('perma_file_upload'),$type);
+        //     $validated['perma_file_upload'] = $perma;
+        // }
+        // if($request->file('perma_enroll_paper_upload')) {
+        //     $type = 'school-enroll-niyukti';
+        //     $enroll = fileUploads($request->file('perma_enroll_paper_upload'), $type);
+        //     $validated['perma_enroll_paper_upload'] = $enroll;
+        // }
         if($request->file('perma_experience_letter_upload')) {
             $type = 'experience-letter';
             $experience = fileUploads($request->file('perma_experience_letter_upload'), $type);
             $validated['perma_experience_letter_upload'] = $experience;
         }
-        if($request->file('tempo_file_upload')) {
-            $type = 'temp-niyukti';
-            $experience = fileUploads($request->file('tempo_file_upload'), $type);
-            $validated['tempo_file_upload'] = $experience;
-        }
+        // if($request->file('tempo_file_upload')) {
+        //     $type = 'temp-niyukti';
+        //     $experience = fileUploads($request->file('tempo_file_upload'), $type);
+        //     $validated['tempo_file_upload'] = $experience;
+        // }
         if($request->file('training_related_paper_upload')) {
             $type = 'training';
             $traning = fileUploads($request->file('training_related_paper_upload'), $type);
@@ -105,32 +105,32 @@ class TeachersWorkDetailsController extends Controller
     public function update(TeacherValidateWorkDetails $request, $id)
     {
         $validated = $request->validated();
-        if($request->hasFile('perma_file_upload')) {
-            $type = 'sthai-niyukti-patra';
-            $perma = fileUploads($request->file('perma_file_upload'),$type);
-            $validated['perma_file_upload'] = $perma;
-        }
-        if($request->hasFile('perma_enroll_paper_upload')) {
-            $type = 'school-enroll-niyukti';
-            $enroll = fileUploads($request->file('perma_enroll_paper_upload'), $type);
-            $validated['perma_enroll_paper_upload'] = $enroll;
-        }
+        // if($request->hasFile('perma_file_upload')) {
+        //     $type = 'sthai-niyukti-patra';
+        //     $perma = fileUploads($request->file('perma_file_upload'),$type);
+        //     $validated['perma_file_upload'] = $perma;
+        // }
+        // if($request->hasFile('perma_enroll_paper_upload')) {
+        //     $type = 'school-enroll-niyukti';
+        //     $enroll = fileUploads($request->file('perma_enroll_paper_upload'), $type);
+        //     $validated['perma_enroll_paper_upload'] = $enroll;
+        // }
         if($request->hasFile('perma_experience_letter_upload')) {
             $type = 'experience-letter';
             $experience = fileUploads($request->file('perma_experience_letter_upload'), $type);
             $validated['perma_experience_letter_upload'] = $experience;
         }
-        if($request->hasFile('tempo_file_upload')) {
-            $type = 'temp-niyukti';
-            $experience = fileUploads($request->file('tempo_file_upload'), $type);
-            $validated['tempo_file_upload'] = $experience;
-        }
+        // if($request->hasFile('tempo_file_upload')) {
+        //     $type = 'temp-niyukti';
+        //     $experience = fileUploads($request->file('tempo_file_upload'), $type);
+        //     $validated['tempo_file_upload'] = $experience;
+        // }
         if($request->hasFile('training_related_paper_upload')) {
             $type = 'training';
             $traning = fileUploads($request->file('training_related_paper_upload'), $type);
             $validated['training_related_paper_upload'] = $traning;
         }
-        pp($validated);
+        // pp($validated);
         TeachersWorkDetails::where('id', $id)->update($validated);
         return redirect('/teachers-work-detail/'.$validated['teachers_id'])->with('success', 'अपडेट सफल!!!'); 
     }

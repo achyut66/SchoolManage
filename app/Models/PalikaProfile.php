@@ -19,5 +19,6 @@ class PalikaProfile extends Model
         'client_id',
         'slogan',
         'phone_no',
+        'schoolname',
     ];
 }
