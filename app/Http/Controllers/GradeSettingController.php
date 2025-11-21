@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Response;
-use App\Models\Religion;
+use App\Models\GradeSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
-class ReligionController extends Controller
+class GradeSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,10 @@ class ReligionController extends Controller
      */
     public function index()
     {
-        $data = Religion::all();
-        return view('religion.list', compact('data'));
+        {
+            $data = GradeSetting::all();
+            return view('grade.list', compact('data'));
+        }
     }
 
     /**
@@ -26,7 +28,7 @@ class ReligionController extends Controller
      */
     public function create()
     {
-        $view = view('religion.add')->render();
+        $view = view('grade.add')->render();
         return Response::json(['status' => 200, 'view' => $view]);
     }
 
@@ -41,17 +43,17 @@ class ReligionController extends Controller
         $validatedData = $request->validate([
             'name'         => 'required',
         ]);
-        Religion::create($validatedData);
-        return redirect('/religion')->with('success', 'सेव गर्न सफल !!!');
+        GradeSetting::create($validatedData);
+        return redirect('/grade')->with('success', 'Saved Successfully !!!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Caste  $caste
+     * @param  \App\Models\GradeSetting  $gradeSetting
      * @return \Illuminate\Http\Response
      */
-    public function show(Caste $caste)
+    public function show(GradeSetting $gradeSetting)
     {
         //
     }
@@ -59,14 +61,14 @@ class ReligionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Caste  $caste
+     * @param  \App\Models\GradeSetting  $gradeSetting
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request)
     {
         $st = $request->get('id');
-        $row = Religion::find($st);
-        $view = view('religion.edit',compact('row'))->render();
+        $row = GradeSetting::find($st);
+        $view = view('grade.edit',compact('row'))->render();
         return Response::json(['status' => 200, 'view' => $view]);
     }
 
@@ -74,25 +76,25 @@ class ReligionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Caste  $caste
+     * @param  \App\Models\GradeSetting  $gradeSetting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Religion $caste,$id)
+    public function update(Request $request, GradeSetting $caste,$id)
     {
         $validatedData = $request->validate([
             'name'         => 'required',
         ]);
-        Religion::where('id', $id)->update($validatedData);
-        return redirect('/religion')->with('success', 'Update Successfull !!!');
+        GradeSetting::where('id', $id)->update($validatedData);
+        return redirect('/grade')->with('success', 'Update Successfull !!!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Caste  $caste
+     * @param  \App\Models\GradeSetting  $gradeSetting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Caste $caste)
+    public function destroy(GradeSetting $gradeSetting)
     {
         //
     }

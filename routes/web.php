@@ -15,7 +15,9 @@ use App\Http\Controllers\TeachersWorkDetailsController;
 use App\Http\Controllers\PalikaProfileController;
 use App\Http\Controllers\CasteController;
 use App\Http\Controllers\ReligionController;
+use App\Http\Controllers\GradeSettingController;
 use App\Http\Controllers\LicenseLevelController;
+use App\Http\Controllers\StudentParentDetailsController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -147,6 +149,16 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('delete-religion/{id}', [ReligionController::class,'destroy'])->name('delete-religion');
 
   /*--------------------------------------------------------------
+   Grade settings
+  ----------------------------------------------------------------*/
+  Route::get('grade', [GradeSettingController::class,'index'])->name('grade');
+  Route::get('add-grade', [GradeSettingController::class,'create'])->name('add-grade');
+  Route::post('save-grade', [GradeSettingController::class,'store'])->name('save-grade');
+  Route::get('edit-grade', [GradeSettingController::class,'edit'])->name('edit-grade');
+  Route::post('update-grade/{id}', [GradeSettingController::class,'update'])->name('update-grade');
+  Route::get('delete-grade/{id}', [GradeSettingController::class,'destroy'])->name('delete-grade');
+
+  /*--------------------------------------------------------------
    License
   ----------------------------------------------------------------*/
   Route::get('licenselevel', [LicenseLevelController::class,'index'])->name('licenselevel');
@@ -167,5 +179,20 @@ Print Pages
 
   Route::get('teacherpd-export/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'exportBySearch'])->name('teacherpd-export');
 
+   // students details
+   /*----------------------------------------------------------------*/
+  //  Route::get('student-parent-detail', [StudentParentDetailsController::class,'create'])->name('student-parent-detail');
+   Route::get('student-parent-list', [StudentParentDetailsController::class,'index'])->name('student-parent-list');
+   Route::get('student-parent-data-add', [StudentParentDetailsController::class,'create'])->name('student-parent-data-add');
+   Route::post('student-parent-data-save', [StudentParentDetailsController::class,'store'])->name('student-parent-data-save');
+   Route::get('student-parent-detail-edit/{id}', [StudentParentDetailsController::class,'edit'])->name('student-parent-detail-edit');
+  //  Route::post('student-parent-detail-update/{id}', [StudentParentDetailsController::class,'update'])->name('student-parent-detail-update');
+  //  Route::get('student-parent-detail-delete/{id}', [StudentParentDetailsController::class,'destroy'])->name('student-parent-detail-delete');
+   Route::get('student-parent-detail/{id}', [StudentParentDetailsController::class,'show'])->name('student-parent-detail');
+  //  Route::get('student-parent-details-export/', [StudentParentDetailsController::class,'export'])->name('student-parent-details-export');//export
+  //  Route::post('student-parent-search', [StudentParentDetailsController::class,'search'])->name('student-parent-search');
+  //  Route::get('convert-date', [StudentParentDetailsController::class,'convertBSTOAD'])->name('convert-date');
+ 
+    /*--------------------------------------------------------------*/
 
 });

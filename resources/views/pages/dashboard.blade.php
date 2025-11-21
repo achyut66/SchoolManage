@@ -25,7 +25,7 @@
             <i class="fa fa-university"></i>
           </div>
           <div class="flex-right-height">
-            <h2 class="countnum ml-4">{{ convertedNum( $count ) }}</h2>
+            <h2 class="countnum ml-4">{{  $count  }}</h2>
             <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Students</a></p>
           </div>
         </div>
@@ -40,7 +40,7 @@
             <i class="fa fa-user"></i>
           </div>
           <div class="flex-right-height">
-            <h2 class="countnum">{{ convertedNum($tot_steachers) }}</h2>
+            <h2 class="countnum">{{ $tot_steachers }}</h2>
             <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}" style="margin-left:-15px">Permanent Teachers</a></p>
           </div>
         </div>
@@ -55,7 +55,7 @@
             <i class="fa fa-user"></i>
           </div>
           <div class="flex-right-height">
-            <h2 class="countnum">{{ convertedNum( $tot_ateachers ) }}</h2>
+            <h2 class="countnum">{{  $tot_ateachers  }}</h2>
             <p class="font-weight-bold mb-1 ml-2"><a href="{{ route('school-details') }}" class="ml-1">Temporary Teachers</a></p>
           </div>
         </div>
@@ -71,7 +71,7 @@
           </div>
           
           <div class="flex-right-height">
-            <h2 class="countnum">{{ convertedNum( $tot_teachers ) }}</h2>
+            <h2 class="countnum">{{  $tot_teachers  }}</h2>
             <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Teachers</a></p>
           </div>
         </div>
@@ -102,7 +102,7 @@
              
               @foreach($sthai_teacher as $key => $st)
               <tr>
-                <td>{{ convertedNum($i++); }}</td>
+                <td>{{ $i++; }}</td>
                 <td><i class="fa fa-users" aria-hidden="true"></i></td>
                 <td class="py-1 pl-0">
                   <div class="d-flex align-items-center">
@@ -113,10 +113,10 @@
                   </div>
                 </td>
                 <td>
-                  {{ convertedNum($st->teachers_mobno) }}
+                  {{ $st->teachers_mobno }}
                 </td>
                 <td>
-                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">प्रोफाइल हेर्नुहोस</label>
+                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">View Profile</label>
                 </td>
               </tr>
             </tbody>
@@ -150,7 +150,7 @@
              
               @foreach($asthai_teacher as $key => $st)
               <tr>
-                <td>{{ convertedNum($i++); }}</td>
+                <td>{{ $i++; }}</td>
                 <td><i class="fa fa-users" aria-hidden="true"></i></td>
                 <td class="py-1 pl-0">
                   <div class="d-flex align-items-center">
@@ -161,10 +161,10 @@
                   </div>
                 </td>
                 <td>
-                  {{ convertedNum($st->teachers_mobno) }}
+                  {{ $st->teachers_mobno }}
                 </td>
                 <td>
-                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">प्रोफाइल हेर्नुहोस</label>
+                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">View Profile</label>
                 </td>
               </tr>
             </tbody>

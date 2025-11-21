@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-6 col-lg-6 col-xl-9 text-center">
               <h3 class="text-center" style="margin-left:-381px;">
-                {{ !empty($palikaProfile) && !empty($palikaProfile->palika) ? $palikaProfile->palika : '' }}
+                {{ !empty($palikaProfile) && !empty($palikaProfile->schoolname) ? $palikaProfile->schoolname : '' }}
               </h3>
               
               @if(!empty($palikaProfile) && !empty($palikaProfile->slogan))

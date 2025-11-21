@@ -20,7 +20,7 @@
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#settings" aria-expanded="false"
            aria-controls="pages">
-           <i class="fa fa-cogs"></i> &nbsp; Settings
+           <i class="fa fa-cogs"></i> &nbsp; General Settings
            &nbsp;<i class="fa fa-angle-down"></i>
          </a>
          <div class="collapse" id="settings">
@@ -31,6 +31,25 @@
                    class="fa fa-hand-o-right"></i>&nbsp; Religion</a></li>
              <li class="nav-item"> <a class="nav-link" href="{{ route('licenselevel') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; License Grade </a></li>
+             <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('school-type') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; विद्यालयको किसिम</a></li>-->
+           </ul>
+         </div>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#school_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-cogs"></i> &nbsp; School Settings
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="school_settings">
+           <ul class="nav flex-column sub-menu">
+             <li class="nav-item"> <a class="nav-link" href="{{ route('grade') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Grades</a></li>
+             <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('religion') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Religion</a></li>
+             <li class="nav-item"> <a class="nav-link" href="{{ route('licenselevel') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; License Grade </a></li> -->
              <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('school-type') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; विद्यालयको किसिम</a></li>-->
            </ul>
@@ -49,7 +68,7 @@
          </a>
        </li>
        <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('teachers-personal-list') }}">
+         <a class="nav-link font-weight-bold" href="{{ route('student-parent-list') }}">
            <i class="fa fa-users"></i> &nbsp; Student's Record
          </a>
        </li>
