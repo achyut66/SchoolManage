@@ -3,88 +3,237 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudentParentDetails;
+use App\Models\StudentsEducationDetail;
+use App\Models\StudentsGuardianDetail;
 use Illuminate\Http\Request;
+use App\Models\Caste;
+use App\Models\Religion;
+use App\Models\GradeSetting;
+use Illuminate\Support\Facades\Storage;
+use App\Models\PalikaProfile;
+
+use App\Exports\TeacherExport;
+use App\Exports\ExportTeachersDetailsBySearch;
+use Maatwebsite\Excel\Facades\Excel;
+
+use Maatwebsite\Excel\Concerns\ToModel;
+
+use App\Exports\StudentsExport;
+
 
 class StudentParentDetailsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // public function index()
+    // {
+    //     $students = StudentParentDetails::all();
+    //     return view('studentdetails.list', compact('students'));
+    // }
+    public function index(Request $request)
     {
-        $students = StudentParentDetails::all();
+        $students = StudentParentDetails::when(
+            $request->search,
+            function ($query) use ($request) {
+                $query->where(
+                    'student_full_name',
+                    'LIKE',
+                    '%' . $request->search . '%'
+                );
+            }
+        )
+        ->orderBy('id', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
         return view('studentdetails.list', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        // $nameschool = SchoolDetails::all();
-        // $caste      = Caste::all();
-        // $religion   = Religion::all();
-        // $level      = LicenseLevel::all();
-        // return view('teacherspd.add', compact('nameschool','religion','caste','level'));
+        $caste      = Caste::all();
+        $religion   = Religion::all();
+        $grade      = GradeSetting::all();
+
+        return view('studentdetails.add', compact('religion','caste','grade'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'student_full_name'          => 'required|string|max:255',
+            'student_enrollment_class'   => 'required|string',
+            's_caste'                    => 'required',
+            's_gender'                   => 'required',
+            's_birthplace'               => 'nullable|string',
+            's_province'                 => 'nullable|string',
+            's_district'                 => 'nullable|string',
+            's_municipality'             => 'nullable|string',
+            's_ward'                     => 'nullable|string',
+            's_tol'                      => 'nullable|string',
+            'student_email'              => 'nullable|email',
+            'student_address'            => 'nullable|string',
+            's_religion'                 => 'nullable|string',
+            'student_fathers_name'       => 'nullable|string',
+            'student_mothers_name'       => 'nullable|string',
+            's_gf_name'                  => 'nullable|string',
+            'student_dob'                => 'nullable|date',
+            'student_contact'            => 'nullable|string',
+            's_bccopy'                   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        // -------- File Upload --------
+        if ($request->hasFile('s_bccopy')) {
+            $validated['s_bccopy'] = $request->file('s_bccopy')->store('bccopies', 'public');
+        }
+
+        $student = StudentParentDetails::create($validated);
+        // dd('kajshk');
+        return redirect()
+            ->route('students.education', $student->id)
+            ->with('success', 'Personal details saved. Continue with education.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\StudentParentDetails  $studentParentDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function show(StudentParentDetails $studentParentDetails)
-    {
-        //
+    public function personalForm($id){
+        $student = StudentParentDetails::findOrFail($id);
+        return view('studentdetails.add', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\StudentParentDetails  $studentParentDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(StudentParentDetails $studentParentDetails)
+    public function educationForm($id)
     {
-        //
+        $student = StudentParentDetails::findOrFail($id);
+        return view('studentdetails.education', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\StudentParentDetails  $studentParentDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, StudentParentDetails $studentParentDetails)
+    public function parentForm($id)
     {
-        //
+        $student = StudentParentDetails::findOrFail($id);
+        return view('studentdetails.guardian', compact('student'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\StudentParentDetails  $studentParentDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(StudentParentDetails $studentParentDetails)
+    public function show($id)
     {
-        //
+        $student = StudentParentDetails::findOrFail($id);
+        $education = StudentsEducationDetail::where('student_id', $student->id)->first();
+        $guardian  = StudentsGuardianDetail::where('student_id', $student->id)->first();
+        return view('studentdetails.profile', compact(
+            'student',
+            'education',
+            'guardian'
+        ));
     }
+
+
+    public function edit($id)
+    {
+        // dd('here');
+        $student   = StudentParentDetails::findOrFail($id);
+        // dd($student);
+        $caste     = Caste::all();
+        $religion  = Religion::all();
+        $grade     = GradeSetting::all();
+        return view('studentdetails.edit', compact('student','caste','religion','grade'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $student = StudentParentDetails::findOrFail($id);
+        $validated = $request->validate([
+            'student_full_name'          => 'required|string|max:255',
+            'student_enrollment_class'   => 'required|string',
+            's_caste'                    => 'required',
+            's_gender'                   => 'required',
+            's_birthplace'               => 'nullable|string',
+            's_province'                 => 'nullable|string',
+            's_district'                 => 'nullable|string',
+            's_municipality'             => 'nullable|string',
+            's_ward'                     => 'nullable|string',
+            's_tol'                      => 'nullable|string',
+            'student_email'              => 'nullable|email',
+            'student_address'            => 'nullable|string',
+            's_religion'                 => 'nullable|string',
+            'student_fathers_name'       => 'nullable|string',
+            'student_mothers_name'       => 'nullable|string',
+            's_gf_name'                  => 'nullable|string',
+            'student_dob'                => 'nullable|date',
+            'student_contact'            => 'nullable|string',
+            's_bccopy'                   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        // -------- Update File --------
+        if ($request->hasFile('s_bccopy')) {
+
+            // delete old file if exists
+            if ($student->s_bccopy && Storage::disk('public')->exists($student->s_bccopy)) {
+                Storage::disk('public')->delete($student->s_bccopy);
+            }
+
+            // upload new file
+            $validated['s_bccopy'] = $request->file('s_bccopy')->store('bccopies', 'public');
+        }
+
+        $student->update($validated);
+
+        return redirect()
+            ->route('student-parent-list')
+            ->with('success', 'Student details updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $student = StudentParentDetails::findOrFail($id);
+
+        // delete file
+        if ($student->s_bccopy && Storage::disk('public')->exists($student->s_bccopy)) {
+            Storage::disk('public')->delete($student->s_bccopy);
+        }
+
+        $student->delete();
+
+        return redirect()
+            ->route('student-parent-list')
+            ->with('success', 'Student details deleted successfully!');
+    }
+// print
+        public function print(Request $request)
+    {
+        $query = StudentParentDetails::query();
+        $palikaProfile = PalikaProfile::first();
+        // dd($palikaProfile);
+
+        if ($request->filled('search')) {
+            $query->where('student_full_name', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $students = $query->orderBy('id', 'desc')->get();
+
+        return view('studentdetails.print', compact('students','palikaProfile'));
+    }
+// excel
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new StudentsExport($request->search),
+            'students.xlsx'
+        );
+    }
+
+//     public function search(Request $request)
+// {
+//     $students = StudentParentDetails::query()
+//         ->when($request->search, function ($q) use ($request) {
+//             $q->where('student_full_name', 'LIKE', '%' . $request->search . '%');
+//         })
+//         ->orderBy('id', 'desc')
+//         ->get();
+
+//     $view = view('studentdetails.partials.list-table', compact('students'))->render();
+
+//     return response()->json([
+//         'view' => $view
+//     ]);
+// }
+
+
+   
 }
+

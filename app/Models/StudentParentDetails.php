@@ -11,19 +11,23 @@ class StudentParentDetails extends Model
     protected $table = 'students_parents_details';
     protected $fillable = [
         'student_full_name',
+        'student_enrollment_class',
+        's_caste',
+        's_gender',
+        's_birthplace',
+        's_province',
+        's_district',
+        's_municipality',
+        's_ward',
+        's_tol',
+        'student_email',
         'student_address',
+        's_religion',
         'student_fathers_name',
         'student_mothers_name',
+        's_gf_name',
         'student_dob',
         'student_contact',
-        'student_email',
-        'student_enrollment_class',
-        'student_prev_school_name',
-        'student_prev_school_certificate',
-        'student_prev_school_cont_person',
-        'student_parents_full_name',
-        'student_parents_cont_no',
-        'student_parents_email',
-        'student_parents_address'
+        's_bccopy',
     ];
 }

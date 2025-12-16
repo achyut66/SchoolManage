@@ -153,6 +153,19 @@
     }
 }
 
+/* font for header main menu */
+
+.main-menu-name{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    color:yellow;
+    margin-top: 10px;
+    margin-left: 27px;
+    /* text-decoration: underline; */
+}
+
 @-o-keyframes flash {
     0% {
         opacity: 1;
@@ -37283,7 +37296,7 @@ div.tagsinput span.tag a {
 /* === Landing screens === */
 /* Auth */
 .auth .login-half-bg {
-    background: url("../../images/auth/bg7.jpg");
+    background: url("../../images/auth/school.jpg");
     background-size: cover;
 }
 

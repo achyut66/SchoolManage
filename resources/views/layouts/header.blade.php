@@ -10,13 +10,35 @@
                 <img src="{{ asset('assets/images/new_logo.png') }}" style="width:119px; height:100px;" alt="Logo">
               @endif
          </div>
-
        </li>
        <li class="nav-item">
          <a class="nav-link font-weight-bold active" href="{{route('dashboard')}}">
            <i class="fa fa-dashboard"></i>&nbsp; Dashboard
          </a>
        </li>
+       <div class="main-menu-name">
+          All Records
+       </div>
+       <hr style="height: 2px; border-color: white;width:200px;">
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" href="{{ route('teachers-personal-list') }}">
+           <i class="fa fa-address-book"></i> &nbsp; Teacher's Record
+         </a>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" href="{{ route('student-parent-list') }}">
+           <i class="fa fa-users"></i> &nbsp; Student's Record
+         </a>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" href="{{ route('parents-information') }}">
+           <i class="fa fa-users"></i> &nbsp; Parent's Record
+         </a>
+       </li>
+       <div class="main-menu-name">
+          All Settings
+       </div>
+       <hr style="height: 2px; border-color: white;width:200px;">
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#settings" aria-expanded="false"
            aria-controls="pages">
@@ -31,8 +53,6 @@
                    class="fa fa-hand-o-right"></i>&nbsp; Religion</a></li>
              <li class="nav-item"> <a class="nav-link" href="{{ route('licenselevel') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; License Grade </a></li>
-             <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('school-type') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; विद्यालयको किसिम</a></li>-->
            </ul>
          </div>
        </li>
@@ -46,32 +66,13 @@
            <ul class="nav flex-column sub-menu">
              <li class="nav-item"> <a class="nav-link" href="{{ route('grade') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Grades</a></li>
-             <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('religion') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Religion</a></li>
-             <li class="nav-item"> <a class="nav-link" href="{{ route('licenselevel') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; License Grade </a></li> -->
-             <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('school-type') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; विद्यालयको किसिम</a></li>-->
            </ul>
          </div>
        </li>
-
-       <!-- <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('school-details') }}">
-           <i class="fa fa-university"></i> &nbsp; विद्यालय दर्ता
-         </a>
-       </li> -->
-
-       <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('teachers-personal-list') }}">
-           <i class="fa fa-address-book"></i> &nbsp; Teacher's Record
-         </a>
-       </li>
-       <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('student-parent-list') }}">
-           <i class="fa fa-users"></i> &nbsp; Student's Record
-         </a>
-       </li>
+       <div class="main-menu-name">
+          User's Management
+       </div>
+       <hr style="height: 2px; border-color: white;width:200px;">
        @can('view-user')
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#pages" aria-expanded="false"
@@ -94,12 +95,13 @@
              <li class="nav-item"> <a class="nav-link" href="{{ URL :: to('/users') }}"> <i
                    class="fa fa-hand-o-right"></i>&nbsp; User </a></li>
              @endcan
-
-
            </ul>
          </div>
        </li>
-
+       <div class="main-menu-name">
+          Profile Setting
+       </div>
+       <hr style="height: 2px; border-color: white;width:200px;">
        @can('system-setup')
        <li class="nav-item">
          <a class="nav-link font-weight-bold" href="{{ route('system-config') }}">

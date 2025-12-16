@@ -30,7 +30,7 @@ class TeachersPersonalDetailController extends Controller
     public function index()
     {
         $schools = SchoolDetails::all();
-        $data = TeachersPersonalDetail::paginate(5);
+        $data = TeachersPersonalDetail::paginate(10)->withQueryString();;
         return view('teacherspd.list', compact('data','schools'));
     }
 

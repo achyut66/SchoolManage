@@ -23,11 +23,9 @@ class CreateStudentsParentsDetailsTable extends Migration
             $table->string('student_contact',255);
             $table->string('student_email',255);
             $table->string('student_enrollment_class',255);
-
             $table->string('student_prev_school_name',255);
             $table->string('student_prev_school_certificate',255);
             $table->string('student_prev_school_cont_person',255);
-
             $table->string('student_parents_full_name',255);
             $table->string('student_parents_cont_no',255);
             $table->string('student_parents_email',255);

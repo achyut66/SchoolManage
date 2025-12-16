@@ -32,11 +32,11 @@
 
             <div class="auth-form-transparent text-left p-3">
               <div class="text-center">
-                <img src="{{ asset('assets/images/new_logo.png') }}" alt="logo">
+                <img src="{{ asset('storage/'.$palikaProfile->logo) }}" alt="logo" style="width:119px; height:100px;">
               </div>
               <br>
-              <h4 class="text-center"> {{ !empty(getProfile()->palika) ? getProfile()->palika:''}}</h4>
-              <h6 class="font-weight-light text-center">{{ !empty(getProfile()->slogan) ? getProfile()->slogan:''}}, {{ !empty(getProfile()->district) ? getProfile()->district:''}},
+              <h4 class="text-center"> {{ !empty(getProfile()->schoolname) ? getProfile()->schoolname:''}}</h4>
+              <h6 class="font-weight-light text-center">{{ !empty(getProfile()->slogan) ? getProfile()->slogan:''}},<br><br> {{ !empty(getProfile()->district) ? getProfile()->district:''}},
                 {{!empty(getProfile()->pradesh) ? getProfile()->pradesh:''}}
               </h6>
               <hr>

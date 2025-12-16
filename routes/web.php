@@ -18,6 +18,8 @@ use App\Http\Controllers\ReligionController;
 use App\Http\Controllers\GradeSettingController;
 use App\Http\Controllers\LicenseLevelController;
 use App\Http\Controllers\StudentParentDetailsController;
+use App\Http\Controllers\StudentsEducationDetailController;
+use App\Http\Controllers\StudentsGuardianDetailsController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -179,20 +181,44 @@ Print Pages
 
   Route::get('teacherpd-export/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'exportBySearch'])->name('teacherpd-export');
 
-   // students details
+   // students details personal
    /*----------------------------------------------------------------*/
-  //  Route::get('student-parent-detail', [StudentParentDetailsController::class,'create'])->name('student-parent-detail');
+   Route::get('student-parent-detail', [StudentParentDetailsController::class,'create'])->name('student-parent-detail');
    Route::get('student-parent-list', [StudentParentDetailsController::class,'index'])->name('student-parent-list');
    Route::get('student-parent-data-add', [StudentParentDetailsController::class,'create'])->name('student-parent-data-add');
    Route::post('student-parent-data-save', [StudentParentDetailsController::class,'store'])->name('student-parent-data-save');
    Route::get('student-parent-detail-edit/{id}', [StudentParentDetailsController::class,'edit'])->name('student-parent-detail-edit');
-  //  Route::post('student-parent-detail-update/{id}', [StudentParentDetailsController::class,'update'])->name('student-parent-detail-update');
-  //  Route::get('student-parent-detail-delete/{id}', [StudentParentDetailsController::class,'destroy'])->name('student-parent-detail-delete');
-   Route::get('student-parent-detail/{id}', [StudentParentDetailsController::class,'show'])->name('student-parent-detail');
-  //  Route::get('student-parent-details-export/', [StudentParentDetailsController::class,'export'])->name('student-parent-details-export');//export
-  //  Route::post('student-parent-search', [StudentParentDetailsController::class,'search'])->name('student-parent-search');
-  //  Route::get('convert-date', [StudentParentDetailsController::class,'convertBSTOAD'])->name('convert-date');
- 
+   Route::get('student-parent-detail-show/{id}', [StudentParentDetailsController::class,'show'])->name('student-parent-detail-show');
+   Route::post('student-parent-detail-update/{id}', [StudentParentDetailsController::class,'update'])->name('student-parent-detail-update');
+   Route::post('/student-parent-search',[StudentParentDetailsController::class, 'search'])->name('student-parent-search');
+   Route::get('/students-print', [StudentParentDetailsController::class, 'print'])->name('students.print');
+   Route::get('/students-export', [StudentParentDetailsController::class, 'export'])->name('students.export');
+
+   Route::get('students/{id}/personal',[StudentParentDetailsController::class, 'personalForm'])->name('students.personal');
+   Route::get('students/{id}/education', [StudentParentDetailsController::class, 'educationForm'])->name('students.education');
+   Route::get('students/{id}/parents', [StudentParentDetailsController::class, 'parentForm'])->name('students.parents');
+
     /*--------------------------------------------------------------*/
+
+     // students details educational
+   /*----------------------------------------------------------------*/
+   Route::get('students/{id}/education',[StudentsEducationDetailController::class, 'create'])->name('students.education');
+   Route::post('students/{id}/education',[StudentsEducationDetailController::class, 'store'])->name('students.education.store');
+   Route::get('students/{id}/education/edit',[StudentsEducationDetailController::class, 'edit'])->name('students.education.edit');
+   Route::put('students/{id}/education',[StudentsEducationDetailController::class, 'update'])->name('students.education.update');
+
+  //  Route::get('students/{id}/education',[StudentsEducationDetailController::class, 'educationForm'])->name('students.education');
+    /*--------------------------------------------------------------*/
+     // students details parents
+   /*----------------------------------------------------------------*/
+   Route::get('students/{id}/parents',[StudentsGuardianDetailsController::class, 'create'])->name('students.parents');
+   Route::post('students/{id}/parents',[StudentsGuardianDetailsController::class, 'store'])->name('students.parents.store');
+   Route::get('students/{id}/parents/edit',[StudentsGuardianDetailsController::class, 'edit'])->name('students.parents.edit');
+   Route::put('students/{id}/parents',[StudentsGuardianDetailsController::class, 'update'])->name('students.parents.update');
+   Route::get('parents-info',[StudentsGuardianDetailsController::class,'index'])->name('parents-information'); 
+   Route::get('/parents/{id}/modal', [StudentsGuardianDetailsController::class, 'showModal'])->name('parents.modal');
+   Route::get('/parents/print', [StudentsGuardianDetailsController::class, 'print'])->name('parents.print');
+
+   /*--------------------------------------------------------------*/
 
 });

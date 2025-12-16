@@ -101,10 +101,8 @@
           </table>
           <hr style="background-color:brown">
           <!-- pagination -->
-          <div class="row">
-            <div class="col-md-4 mt-2"><p>Showing {{($data->currentpage()-1)*$data->perpage()+1}} to {{$data->currentpage()*$data->perpage()}} of  {{$data->total()}} entries</p>
-              </div>
-            <div class="col-md-8">{{ $data->withQueryString()->links()}}</div>
+          <div class="d-flex justify-content-center mt-3">
+            {{ $data->links('vendor.pagination.prev-next') }}
           </div>
         </div>
       </div>
