@@ -44,38 +44,58 @@
 
       {{-- Search Form --}}
       <form action="{{ route('student-parent-list') }}"
-            method="GET"
-            class="search-form">
+      method="GET"
+      class="search-form">
 
-        <div class="row">
+        <div class="row align-items-end">
+
+          <!-- Search by Name -->
           <div class="col-md-3">
+            <label class="small mb-1">Student Name</label>
             <input type="text"
-                   name="search"
-                   class="form-control"
-                   placeholder="Search by student name"
-                   value="{{ request('search') }}">
+                  name="search"
+                  class="form-control"
+                  placeholder="Search by student name"
+                  value="{{ request('search') }}">
           </div>
 
+          <!-- Search by Grade -->
+          <div class="col-md-3">
+            <label class="small mb-1">Grade</label>
+            <select name="student_enrollment_class"
+                    class="form-control">
+              <option value="">-- All Grades --</option>
+
+              @foreach($grades as $grade)
+                <option value="{{ $grade->name }}"
+                  {{ request('student_enrollment_class') == $grade->name ? 'selected' : '' }}>
+                  {{ $grade->name }}
+                </option>
+              @endforeach
+            </select>
+          </div>
+
+          <!-- Search Button -->
           <div class="col-md-2">
             <button type="submit"
-                    class="btn btn-danger btn-sm mt-1">
+                    class="btn btn-danger btn-sm">
               <i class="fa fa-search"></i> Search
             </button>
           </div>
 
-          <div class="col-md-4">
+          <!-- Print & Export -->
+          <div class="col-md-4 text-right">
+            <a href="{{ route('students.print', request()->query()) }}"
+              class="btn btn-primary btn-sm">
+              <i class="fa fa-print"></i> Print
+            </a>
 
-          <a href="{{ route('students.print', ['search' => request('search')]) }}"
-            class="btn btn-primary btn-sm mt-1">
-            <i class="fa fa-print"></i> Print
-          </a>
-
-          <a href="{{ route('students.export', ['search' => request('search')]) }}"
-            class="btn btn-warning btn-sm mt-1">
-            <i class="fa fa-file-excel-o"></i> Excel
-          </a>
-
+            <a href="{{ route('students.export', request()->query()) }}"
+              class="btn btn-warning btn-sm">
+              <i class="fa fa-file-excel-o"></i> Excel
+            </a>
           </div>
+
         </div>
       </form>
 
@@ -96,6 +116,8 @@
           <thead>
             <tr>
               <th>S.N.</th>
+              <th>Student Code</th>
+              <th>Academic Year</th>
               <th>Full Name</th>
               <th>Grade</th>
               <th>Address</th>
@@ -110,6 +132,8 @@
             @forelse($students as $student)
               <tr>
                 <td>{{ $loop->iteration }}</td>
+                <td>{{ $student->unique_id }}</td>
+                <td>{{ $student->academic_year }}</td>
                 <td>{{ $student->student_full_name }}</td>
                 <td>{{ $student->student_enrollment_class }}</td>
                 <td>

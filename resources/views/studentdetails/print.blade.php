@@ -81,6 +81,8 @@
     <thead>
         <tr>
             <th>S.N.</th>
+            <th>Student Code</th>
+            <th>Academic Year</th>
             <th>Full Name</th>
             <th>Grade</th>
             <th>Address</th>
@@ -93,6 +95,8 @@
         @forelse($students as $key => $student)
             <tr>
                 <td>{{ $key + 1 }}</td>
+                <td>{{ $student->unique_id }}</td>
+                <td>{{ $student->academic_year }}</td>
                 <td>{{ $student->student_full_name }}</td>
                 <td>{{ $student->student_enrollment_class }}</td>
                 <td>

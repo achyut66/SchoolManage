@@ -35,6 +35,10 @@
             <label for="exampleInputPassword1">School Name</label>
             <input type="text" class="form-control" id="exampleInputPassword1" name="schoolname" value="{{ !empty($row->schoolname)?$row->schoolname:''}}">
           </div>
+          <div class="form-group" style="font-size: 18px;font-weight: bold;">
+          <label for="exampleInputPassword1">School Code</label>
+          <input type="text" class="form-control" id="exampleInputPassword1" name="school_code" value="{{ !empty($row->school_code)?$row->school_code:''}}">
+          </div>
           @if ($errors->has('slogan'))
             <span class="text-danger">{{ $errors->first('slogan') }}</span>
             @endif

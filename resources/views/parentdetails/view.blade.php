@@ -99,7 +99,12 @@
                     data-id="{{ $student->id }}">
                     <i class="fa fa-eye"></i>
                 </button>
+                    <a class="btn btn-sm btn-primary btn-rounded"
+                        href="mailto:{{ $student->parent_email }}?subject=Student Information&body=Dear Parent,%0D%0A%0D%0AThis is regarding your child {{ $student->name }}.%0D%0A%0D%0AThank you.">
+                        <i class="fa fa-envelope"></i>
+                    </a>
                 </td>
+                
               </tr>
             @empty
               <tr>

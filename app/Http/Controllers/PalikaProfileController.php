@@ -37,7 +37,9 @@ class PalikaProfileController extends Controller
             'palika'        => 'required',
             'address'       => 'required',
             'schoolname'    => 'required',
+            'school_code'    => 'required',
         ]);
+        // dd($validatedData);
 
         if ($request->file('logo')) {
             $file = $request->file('logo');

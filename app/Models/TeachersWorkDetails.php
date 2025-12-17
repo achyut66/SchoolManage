@@ -33,5 +33,6 @@ class TeachersWorkDetails extends Model
         'training_period',
         'training_given_org',
         'training_related_paper_upload',
+        'unique_id',
     ];
 }

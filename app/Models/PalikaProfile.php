@@ -20,5 +20,6 @@ class PalikaProfile extends Model
         'slogan',
         'phone_no',
         'schoolname',
+        'school_code',
     ];
 }

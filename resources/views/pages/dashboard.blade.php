@@ -25,8 +25,8 @@
             <i class="fa fa-university"></i>
           </div>
           <div class="flex-right-height">
-            <h2 class="countnum ml-4">{{  $count  }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Students</a></p>
+            <h2 class="countnum ml-4">{{  $tot_students  }}</h2>
+            <p class="font-weight-bold mb-1"><a href="{{ route('student-parent-list') }}">Total Students</a></p>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
           </div>
           <div class="flex-right-height">
             <h2 class="countnum">{{ $tot_steachers }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}" style="margin-left:-15px">Permanent Teachers</a></p>
+            <p class="font-weight-bold mb-1"><a href="#" style="margin-left:-15px">Permanent Teachers</a></p>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="flex-right-height">
             <h2 class="countnum">{{  $tot_ateachers  }}</h2>
-            <p class="font-weight-bold mb-1 ml-2"><a href="{{ route('school-details') }}" class="ml-1">Temporary Teachers</a></p>
+            <p class="font-weight-bold mb-1 ml-2"><a href="#" class="ml-1">Temporary Teachers</a></p>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
           
           <div class="flex-right-height">
             <h2 class="countnum">{{  $tot_teachers  }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('school-details') }}">Total Teachers</a></p>
+            <p class="font-weight-bold mb-1"><a href="{{ route('teachers-personal-list') }}">Total Teachers</a></p>
           </div>
         </div>
       </div>

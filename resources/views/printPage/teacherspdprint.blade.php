@@ -77,6 +77,8 @@
         <thead>
           <tr>
                 <th>S.n.</th>
+                <th>Teacher Code</th>
+                <th>Academic Year</th>
                 <th>Full Name</th>
                 <th>Teacher's Cit No.</th>
                 <th>License No.</th>
@@ -90,6 +92,8 @@
           @foreach($newdata as $key => $val)
           <tr>
             <td>{{ $i++ }}</td>
+            <td>{{ $val->unique_id }}</td>
+            <td>{{ $val->academic_year }}</td>
             <td>{{ $val->teachers_name_eng }}</td>
             <td>{{ $val->teachers_citno }}</td>
             <td>{{ $val->teachers_teacher_licenseno }}</td>

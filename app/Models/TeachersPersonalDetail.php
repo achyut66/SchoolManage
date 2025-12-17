@@ -47,7 +47,13 @@ class TeachersPersonalDetail extends Model
         'teachers_teacher_licensestep',
         'teachers_teacher_license_sub',
         'teachers_teacher_licenseno_jari_date',
-        'teachers_teacher_license_upload'
+        'teachers_teacher_license_upload',
+        'is_class_teacher',
+        'teaching_grade',
+        'teaching_subject',
+        'unique_id',
+        'academic_year'
+
     ];
 
     // public function school()

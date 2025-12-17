@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SchoolDetails;
 use App\Models\SchoolType;
 use App\Models\TeachersPersonalDetail;
+use App\Models\StudentParentDetails;
 
 class DashboardController extends Controller
 {
@@ -28,7 +29,8 @@ class DashboardController extends Controller
         $sthai_teacher  = TeachersPersonalDetail::where('teacher_enroll_status','1')->get();
         $asthai_teacher = TeachersPersonalDetail::where('teacher_enroll_status','2')->get();
         $tot_ateachers    = TeachersPersonalDetail::where('teacher_enroll_status','2')->count();
-        return view('pages.dashboard', compact('count','tot_steachers','tot_ateachers','tot_teachers','sthai_teacher','asthai_teacher','tot_school','stypename'));
+        $tot_students    = StudentParentDetails::count();
+        return view('pages.dashboard', compact('count','tot_steachers','tot_students','tot_ateachers','tot_teachers','sthai_teacher','asthai_teacher','tot_school','stypename'));
     }
     /**
      * Display the specified resource.

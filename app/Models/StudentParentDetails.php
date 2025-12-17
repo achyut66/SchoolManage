@@ -29,5 +29,7 @@ class StudentParentDetails extends Model
         'student_dob',
         'student_contact',
         's_bccopy',
+        'unique_id',
+        'academic_year'
     ];
 }

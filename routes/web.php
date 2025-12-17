@@ -20,6 +20,7 @@ use App\Http\Controllers\LicenseLevelController;
 use App\Http\Controllers\StudentParentDetailsController;
 use App\Http\Controllers\StudentsEducationDetailController;
 use App\Http\Controllers\StudentsGuardianDetailsController;
+use App\Http\Controllers\CurriculmSettingController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -161,6 +162,18 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('delete-grade/{id}', [GradeSettingController::class,'destroy'])->name('delete-grade');
 
   /*--------------------------------------------------------------
+   Curriculum settings
+  ----------------------------------------------------------------*/
+  Route::get('curriculum', [CurriculmSettingController::class,'index'])->name('curriculum');
+  Route::get('add-curriculum', [CurriculmSettingController::class,'create'])->name('add-curriculum');
+  Route::post('save-curriculum', [CurriculmSettingController::class,'store'])->name('save-curriculum');
+  // Route::get('edit-curriculum/{grade}',[CurriculmSettingController::class, 'edit'])->name('edit-curriculum');
+  // Route::put('update-curriculum/{grade}',[CurriculmSettingController::class, 'update'])->name('update-curriculum');
+  // Route::get('delete-curriculum/{grade}', [CurriculmSettingController::class,'destroy'])->name('delete-curriculum');
+  Route::delete('delete-curriculum/{grade}',[CurriculmSettingController::class, 'destroy'])->name('delete-curriculum');
+
+
+  /*--------------------------------------------------------------
    License
   ----------------------------------------------------------------*/
   Route::get('licenselevel', [LicenseLevelController::class,'index'])->name('licenselevel');
@@ -220,5 +233,8 @@ Print Pages
    Route::get('/parents/print', [StudentsGuardianDetailsController::class, 'print'])->name('parents.print');
 
    /*--------------------------------------------------------------*/
-
+    // report
+   Route::get('teachers-as-type', [TeachersPersonalDetailController::class,'teacher_as_type'])->name('teachers-as-type');
+   Route::get('teachers/type/print',[TeachersPersonalDetailController::class, 'teachers_type_print'])->name('teachers.type.print');
+  
 });

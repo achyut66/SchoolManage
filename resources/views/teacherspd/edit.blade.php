@@ -25,41 +25,97 @@
           <input type="hidden" value="{{ route('convert-date')}}" id="url">
           <div class="col-12">
             <div class="row">
-              <!-- <div class="col-md-3">
-                <div class="text-center">
-                  <h3 style="margin-top:10px;">विद्यालय छान्नुहोस्</h3>
-                </div>
-              </div> -->
-              <!-- <div class="col-md-5">
-                <select name="school_id" class="form-control">
-                  <option value="0">--छान्नुहोस्--</option>
-                  @foreach($schools as $key => $sn)
-                  <option value="{{ $sn->id }}" {{$row_data->school_id == $sn->id  ? 'selected' : ''}}>
-                    {{ $sn->school_name }}</option>
-                  @endforeach
-                </select>
-              </div> -->
-                <div class="col-md-4">
-                  <div class="form-group row">
-                    <!-- <label class="col-form-label">शिक्षक अवस्था </label> -->
-                    <div class="col-sm-4">
-                      <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="teacher_enroll_status" id="teacher_enroll_status" value="1" {{$row_data->teacher_enroll_status == 1?'checked':''}}>
-                          Permanent
-                        <i class="input-helper"></i></label>
+
+            <div class="container-fluid">
+              <div class="row">
+
+                <!-- Enroll Status -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="d-block font-weight-bold">Enroll Status</label>
+
+                    <div class="d-flex align-items-center">
+                      <div class="form-check form-check-inline mb-0">
+                        <input class="form-check-input"
+                              type="radio"
+                              name="teacher_enroll_status"
+                              id="teacher_status_permanent"
+                              value="1"
+                              {{ $row_data->teacher_enroll_status == 1 ? 'checked' : '' }}>
+                        <label class="form-check-label" for="teacher_status_permanent">
+                          PR.
+                        </label>
                       </div>
-                    </div>
-                    <div class="col-sm-5">
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="radio" class="form-check-input" name="teacher_enroll_status" id="teacher_enroll_status1" value="2" {{$row_data->teacher_enroll_status == 2?'checked':''}}>
-                          Temporary
-                        <i class="input-helper"></i></label>
+
+                      <div class="form-check form-check-inline mb-0 ml-3">
+                        <input class="form-check-input"
+                              type="radio"
+                              name="teacher_enroll_status"
+                              id="teacher_status_temporary"
+                              value="2"
+                              {{ $row_data->teacher_enroll_status == 2 ? 'checked' : '' }}>
+                        <label class="form-check-label" for="teacher_status_temporary">
+                          TM.
+                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Teacher Type -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Teacher Type</label>
+                    <select class="form-control" name="is_class_teacher">
+                      <option value="">-- Select --</option>
+                      <option value="1"
+                        {{ $row_data->is_class_teacher == 1 ? 'selected' : '' }}>
+                        Class Teacher
+                      </option>
+                      <option value="2"
+                        {{ $row_data->is_class_teacher == 2 ? 'selected' : '' }}>
+                        Subject Teacher
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Teaching Grade -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="font-weight-bold">
+                      Teaching Grade <span class="text-danger">*</span>
+                    </label>
+                    <select name="teaching_grade"
+                            class="form-control"
+                            required>
+                      <option value="">-- Select Grade --</option>
+                      @foreach($curriculum as $grade)
+                        <option value="{{ $grade->name }}"
+                          {{ $row_data->teaching_grade == $grade->id ? 'selected' : '' }}>
+                          {{ $grade->name }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Teaching Subject -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Teaching Subject</label>
+                    <input type="text"
+                          name="teaching_subject"
+                          class="form-control"
+                          value="{{ $row_data->teaching_subject }}"
+                          placeholder="Enter subject">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
             </div>
           </div>
           <hr>

@@ -71,6 +71,7 @@
               @foreach($data as $key => $title)
               <tr>
                 <td>{{ convertedNum($i++) }}</td>
+                <td>{{ $title->unique_id }}</td>
                 <td>{{ $title->teachers_name_nep}}</td>
                 <td>{{ $title->teachers_name_eng }}</td>
                 <td>{{ convertedNum($title->teachers_caste) }}</td>

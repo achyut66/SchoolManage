@@ -47,48 +47,94 @@
                           </div>
                       </div>
                     @endif
-      <!-- Teacher personal details tabls -->
-      <div class="tab-pane fade active show" id="personal-details" role="tabpanel" aria-labelledby="personal-details">
-        <div class="card">
-          <div class="card-header" style="background-color:#041750;color:#fff">Personal Details</div>
-          <div class="card-body">
-            <form id="" action="{{ route('teachers-personal-data-save') }}" method="post" enctype="multipart/form-data">
-              @csrf
-              <div class="row">
-                <!-- <div class="col-md-2">
-                  <div class="">
-                    <h3>Grade</h3>
-                  </div>
-                </div> -->
-                <!-- <div class="col-md-5">
-                  <select name="school_id" class="form-control" required>
-                    <option value="">--Select--</option>
-                    @foreach($nameschool as $key => $sn)
-                    <option value="{{ $sn->id }}">{{ $sn->school_name }}</option>
-                    @endforeach
-                  </select>
-                </div> -->
-                <div class="col-md-4">
-                  <div class="form-group row">
-                    <!-- <label class="col-form-label">शिक्षक अवस्था </label> -->
-                    <div class="col-sm-4">
-                      <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="teacher_enroll_status" id="teacher_enroll_status" value="1" checked="">
-                          Permanent
-                        <i class="input-helper"></i></label>
+                        <!-- Teacher personal details tabls -->
+                        <div class="tab-pane fade active show" id="personal-details" role="tabpanel" aria-labelledby="personal-details">
+                          <div class="card">
+                            <div class="card-header" style="background-color:#041750;color:#fff">Personal Details</div>
+                            <div class="card-body">
+                              <form id="" action="{{ route('teachers-personal-data-save') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+
+                                <div class="container-fluid">
+                    <div class="row">
+
+                      <!-- Enroll Status -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="d-block font-weight-bold">Enroll Status</label>
+
+                          <div class="d-flex align-items-center">
+                            <div class="form-check form-check-inline mb-0">
+                              <input class="form-check-input"
+                                    type="radio"
+                                    name="teacher_enroll_status"
+                                    id="teacher_status_permanent"
+                                    value="1"
+                                    checked>
+                              <label class="form-check-label" for="teacher_status_permanent">
+                                PR.
+                              </label>
+                            </div>
+
+                            <div class="form-check form-check-inline mb-0 ml-3">
+                              <input class="form-check-input"
+                                    type="radio"
+                                    name="teacher_enroll_status"
+                                    id="teacher_status_temporary"
+                                    value="2">
+                              <label class="form-check-label" for="teacher_status_temporary">
+                                TM.
+                              </label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm-5">
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="radio" class="form-check-input" name="teacher_enroll_status" id="teacher_enroll_status1" value="2">
-                          Temporary
-                        <i class="input-helper"></i></label>
+
+                      <!-- Teacher Type -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="font-weight-bold">Teacher Type</label>
+                          <select class="form-control" name="is_class_teacher">
+                            <option value="">-- Select --</option>
+                            <option value="1">Class Teacher</option>
+                            <option value="2">Subject Teacher</option>
+                          </select>
+                        </div>
                       </div>
+
+                      <!-- Teaching Grade -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="font-weight-bold">
+                            Teaching Grade <span class="text-danger">*</span>
+                          </label>
+                          <select name="teaching_grade"
+                                  class="form-control"
+                                  required>
+                            <option value="">-- Select Grade --</option>
+                            @foreach($curriculum as $grade)
+                              <option value="{{ $grade->name }}">
+                                {{ $grade->name }}
+                              </option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- Teaching Subject -->
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="font-weight-bold">Teaching Subject</label>
+                          <input type="text"
+                                name="teaching_subject"
+                                class="form-control"
+                                placeholder="Enter subject">
+                        </div>
+                      </div>
+
                     </div>
                   </div>
-                </div>
                 <div class="col-md-12">
                   <hr>
                 </div>
@@ -245,7 +291,7 @@
                 </div>
                 <div class="col-md-3">
                   <label>License Grade <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <select name="teachers_teacher_licensestep" class="form-control" required>
+                  <select name="teachers_teacher_licensestep" class="form-control">
                     <option value="">--Select--</option>
                     @foreach($level as $key => $l)
                     <option value="{{ $l->id }}">{{ $l->name }}</option>
@@ -254,18 +300,18 @@
                 </div>
                 <div class="col-md-3">
                   <label>License Subject <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="text" name="teachers_teacher_license_sub" class="form-control" placeholder="" required>
+                  <input type="text" name="teachers_teacher_license_sub" class="form-control" placeholder="">
                 </div>
 
                 <div class="col-md-3">
                   <label>License Issue Date <i class="fa fa-asterisk" style="color: red;"></i></label>
                   <input type="text" name="teachers_teacher_licenseno_jari_date" class="form-control nepali_date"
-                    placeholder="" required>
+                    placeholder="">
                 </div>
                 <div class="col-md-3">
                   <label>License Copy <i class="fa fa-asterisk" style="color: red;"></i></label>
                   <input type="file" name="teachers_teacher_license_upload" class="form-control"
-                    placeholder="" required>
+                    placeholder="">
                 </div>
                 <div class="col-md-12 mt-3">
                   <hr>
@@ -276,15 +322,15 @@
                 </div>
                 <div class="col-md-4">
                   <label>PAN No.<i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="text" name="teachers_panno" class="form-control" placeholder="" required>
+                  <input type="text" name="teachers_panno" class="form-control" placeholder="">
                 </div>
                 <div class="col-md-4">
                   <label>License No.<i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="text" name="teachers_teacher_licenseno" class="form-control" placeholder="" required>
+                  <input type="text" name="teachers_teacher_licenseno" class="form-control" placeholder="">
                 </div>
                 <div class="col-md-4">
                   <label>PAN Copy <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="file" name="teachers_pan_upload" class="form-control" placeholder="" required>
+                  <input type="file" name="teachers_pan_upload" class="form-control" placeholder="">
                 </div>
 
                 <div class="col-md-12">

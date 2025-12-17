@@ -11,6 +11,7 @@ use App\Models\Religion;
 use App\Models\GradeSetting;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PalikaProfile;
+use App\Models\AcademicYear;
 
 use App\Exports\TeacherExport;
 use App\Exports\ExportTeachersDetailsBySearch;
@@ -28,25 +29,32 @@ class StudentParentDetailsController extends Controller
     //     $students = StudentParentDetails::all();
     //     return view('studentdetails.list', compact('students'));
     // }
+    // add search from student_enrollment_class as well
     public function index(Request $request)
     {
-        $students = StudentParentDetails::when(
-            $request->search,
-            function ($query) use ($request) {
-                $query->where(
-                    'student_full_name',
-                    'LIKE',
-                    '%' . $request->search . '%'
-                );
-            }
-        )
-        ->orderBy('id', 'desc')
-        ->paginate(10)
-        ->withQueryString();
-
-        return view('studentdetails.list', compact('students'));
+        $grades = GradeSetting::get();
+        $students = StudentParentDetails::query();
+        
+        // Search by student name
+        if ($request->filled('search')) {
+            $students->where(
+                'student_full_name',
+                'LIKE',
+                '%' . $request->search . '%'
+            );
+        }
+        if ($request->filled('student_enrollment_class')) {
+            $students->where(
+                'student_enrollment_class',
+                $request->student_enrollment_class
+            );
+        }
+        $students = $students
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        return view('studentdetails.list', compact('students', 'grades'));
     }
-
 
     public function create()
     {
@@ -59,6 +67,11 @@ class StudentParentDetailsController extends Controller
 
     public function store(Request $request)
     {
+        $palika = PalikaProfile::first();
+        $s_code = $palika->school_code;
+
+
+
         $validated = $request->validate([
             'student_full_name'          => 'required|string|max:255',
             'student_enrollment_class'   => 'required|string',
@@ -87,7 +100,15 @@ class StudentParentDetailsController extends Controller
         }
 
         $student = StudentParentDetails::create($validated);
-        // dd('kajshk');
+
+        $student_code = $s_code . '-S-' . str_pad($student->id, 4, '0', STR_PAD_LEFT);
+        // dd($student_code);
+        $ac_year = AcademicYear::where('flag', 1)->value('academic_year');
+        $student->update([
+            'unique_id' => $student_code,
+            'academic_year' => $ac_year
+        ]);
+        
         return redirect()
             ->route('students.education', $student->id)
             ->with('success', 'Personal details saved. Continue with education.');
@@ -198,15 +219,15 @@ class StudentParentDetailsController extends Controller
     {
         $query = StudentParentDetails::query();
         $palikaProfile = PalikaProfile::first();
-        // dd($palikaProfile);
-
+        $code = $palikaProfile->school_code;
         if ($request->filled('search')) {
             $query->where('student_full_name', 'LIKE', '%' . $request->search . '%');
         }
-
+        if ($request->filled('student_enrollment_class')) {
+            $query->where('student_enrollment_class', 'LIKE', '%' . $request->student_enrollment_class . '%');
+        }
         $students = $query->orderBy('id', 'desc')->get();
-
-        return view('studentdetails.print', compact('students','palikaProfile'));
+        return view('studentdetails.print', compact('students','palikaProfile','code'));
     }
 // excel
     public function export(Request $request)
