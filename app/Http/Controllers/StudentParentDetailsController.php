@@ -12,10 +12,13 @@ use App\Models\GradeSetting;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PalikaProfile;
 use App\Models\AcademicYear;
+use App\Models\StudentMigration;
+use App\Models\SettingCurriculum;
 
 use App\Exports\TeacherExport;
 use App\Exports\ExportTeachersDetailsBySearch;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 use Maatwebsite\Excel\Concerns\ToModel;
 
@@ -24,12 +27,7 @@ use App\Exports\StudentsExport;
 
 class StudentParentDetailsController extends Controller
 {
-    // public function index()
-    // {
-    //     $students = StudentParentDetails::all();
-    //     return view('studentdetails.list', compact('students'));
-    // }
-    // add search from student_enrollment_class as well
+
     public function index(Request $request)
     {
         $grades = GradeSetting::get();
@@ -50,6 +48,7 @@ class StudentParentDetailsController extends Controller
             );
         }
         $students = $students
+            ->where('flag',1)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
@@ -61,7 +60,6 @@ class StudentParentDetailsController extends Controller
         $caste      = Caste::all();
         $religion   = Religion::all();
         $grade      = GradeSetting::all();
-
         return view('studentdetails.add', compact('religion','caste','grade'));
     }
 
@@ -69,8 +67,6 @@ class StudentParentDetailsController extends Controller
     {
         $palika = PalikaProfile::first();
         $s_code = $palika->school_code;
-
-
 
         $validated = $request->validate([
             'student_full_name'          => 'required|string|max:255',
@@ -83,7 +79,7 @@ class StudentParentDetailsController extends Controller
             's_municipality'             => 'nullable|string',
             's_ward'                     => 'nullable|string',
             's_tol'                      => 'nullable|string',
-            'student_email'              => 'nullable|email',
+            'student_email'              => 'nullable|string',
             'student_address'            => 'nullable|string',
             's_religion'                 => 'nullable|string',
             'student_fathers_name'       => 'nullable|string',
@@ -92,23 +88,21 @@ class StudentParentDetailsController extends Controller
             'student_dob'                => 'nullable|date',
             'student_contact'            => 'nullable|string',
             's_bccopy'                   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'flag'                       => '1',
         ]);
-
+        $validated['flag'] = 1;
+        // dd($validated);
         // -------- File Upload --------
         if ($request->hasFile('s_bccopy')) {
             $validated['s_bccopy'] = $request->file('s_bccopy')->store('bccopies', 'public');
         }
-
         $student = StudentParentDetails::create($validated);
-
         $student_code = $s_code . '-S-' . str_pad($student->id, 4, '0', STR_PAD_LEFT);
-        // dd($student_code);
         $ac_year = AcademicYear::where('flag', 1)->value('academic_year');
         $student->update([
             'unique_id' => $student_code,
             'academic_year' => $ac_year
         ]);
-        
         return redirect()
             ->route('students.education', $student->id)
             ->with('success', 'Personal details saved. Continue with education.');
@@ -226,7 +220,7 @@ class StudentParentDetailsController extends Controller
         if ($request->filled('student_enrollment_class')) {
             $query->where('student_enrollment_class', 'LIKE', '%' . $request->student_enrollment_class . '%');
         }
-        $students = $query->orderBy('id', 'desc')->get();
+        $students = $query->where('flag',1)->orderBy('id', 'desc')->get();
         return view('studentdetails.print', compact('students','palikaProfile','code'));
     }
 // excel
@@ -238,23 +232,127 @@ class StudentParentDetailsController extends Controller
         );
     }
 
-//     public function search(Request $request)
-// {
-//     $students = StudentParentDetails::query()
-//         ->when($request->search, function ($q) use ($request) {
-//             $q->where('student_full_name', 'LIKE', '%' . $request->search . '%');
-//         })
-//         ->orderBy('id', 'desc')
-//         ->get();
+    // students record transfer
+    public function recordTransfer(Request $request)
+    {
+        $grades = GradeSetting::get();
+        $students = StudentParentDetails::query();
+        
+        // Search by student name
+        if ($request->filled('search')) {
+            $students->where(
+                'student_full_name',
+                'LIKE',
+                '%' . $request->search . '%'
+            );
+        }
+        if ($request->filled('student_enrollment_class')) {
+            $students->where(
+                'student_enrollment_class',
+                $request->student_enrollment_class
+            );
+        }
+        $students = $students
+            ->where('flag',1)
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        return view('studentdetails.transfer.recordtransfer', compact('students', 'grades'));
+    }
 
-//     $view = view('studentdetails.partials.list-table', compact('students'))->render();
+    public function migrationSave(Request $request)
+    {
+        // dd('kjddj');
+        // dd($request->all());
+        $validated = $request->validate([
+            'student_id'     => 'required|integer',
+            'student_name'   => 'required|string|max:255',
+            'academic_year'  => 'required|string|max:20',
+            'grade'          => 'required|string|max:20',
+        ]);
+        // dd($validated);
 
-//     return response()->json([
-//         'view' => $view
-//     ]);
-// }
+        DB::transaction(function () use ($validated) {
+            StudentMigration::create([
+                'student_id'    => $validated['student_id'],
+                'student_name'  => $validated['student_name'],
+                'academic_year' => $validated['academic_year'],
+                'grade'         => $validated['grade'],
+            ]);
+            StudentParentDetails::where('id', $validated['student_id'])
+                ->update([
+                    'student_enrollment_class' => $validated['grade'],
+                    'academic_year'            => $validated['academic_year'],
+                ]);
+        });
+
+        return redirect()->back()
+            ->with('success', 'Student transferred successfully.');
+    }
+
+    public function getAllMigration(Request $request)
+    {
+        $grades = GradeSetting::get();
+        $students = StudentMigration::with('student');
+        if ($request->filled('search')) {
+            $students->where('student_name', 'LIKE', '%' . $request->search . '%');
+        }
+        if ($request->filled('student_enrollment_class')) {
+            $students->where(
+                'grade',
+                $request->student_enrollment_class
+            );
+        }
+        $students = $students
+            ->where('flag',1)
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        return view('transferreport.list', compact('students', 'grades'));
+    }
+
+    public function printMigration(Request $request)
+    {
+        $grades = GradeSetting::get();
+        $students = StudentMigration::with('student');
+        if ($request->filled('search')) {
+            $students->where('student_name', 'LIKE', '%' . $request->search . '%');
+        }
+        if ($request->filled('student_enrollment_class')) {
+            $students->where('grade', $request->student_enrollment_class);
+        }
+        $students = $students
+            ->where('flag',1)
+            ->orderBy('id', 'desc')
+            ->get(); // ❗ get() NOT paginate for print
+        return view('transferreport.print', compact('students'));
+    }
+
+    // disable the admission for student
+    public function disableAdmission($id)
+    {
+        $student = StudentParentDetails::findOrFail($id);
+        // dd($student);
+        $student->update([
+            'flag' => 0
+        ]);
+        return redirect()->back()->with('success', 'Admission disabled successfully.');
+    }
+
+    public function goToResultAdd($id)
+    {
+        $student = StudentParentDetails::where('flag', 1)->findOrFail($id);
+
+        $curriculum = SettingCurriculum::where(
+            'grade',
+            $student->student_enrollment_class
+        )->get();
+
+        return view('result.add',compact('student','curriculum'));
+
+        // dd($curriculum);
+    }
 
 
-   
 }
 

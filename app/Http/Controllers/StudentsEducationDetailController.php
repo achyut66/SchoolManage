@@ -45,7 +45,7 @@ class StudentsEducationDetailController extends Controller
         StudentsEducationDetail::create($validated);
 
         return redirect()
-            ->route('students.', $studentId)
+            ->route('students.parents', $studentId)
             ->with('success', 'Education details saved successfully!');
     }
 

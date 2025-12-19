@@ -131,7 +131,7 @@
                 </div>
                 <div class="col-md-3 mb-4">
                   <label>Email Address. <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="text" name="student_email" class="form-control" placeholder="" required>
+                  <input type="text" name="student_email" class="form-control" placeholder="">
                 </div>
                 <div class="col-md-3 mb-4">
                   <label>Place Of Birth <i class="fa fa-asterisk" style="color: red;"></i></label>
@@ -148,7 +148,7 @@
                
                 <div class="col-md-3 mb-4">
                   <label>BirthCertificate Copy <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <input type="file" name="s_bccopy" class="form-control" placeholder="" required>
+                  <input type="file" name="s_bccopy" class="form-control" placeholder="" >
                 </div>
 
                 <div class="col-md-12 mt-3">

@@ -52,7 +52,8 @@ class TeachersPersonalDetail extends Model
         'teaching_grade',
         'teaching_subject',
         'unique_id',
-        'academic_year'
+        'academic_year',
+        'flag'
 
     ];
 

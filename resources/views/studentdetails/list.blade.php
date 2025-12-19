@@ -144,11 +144,25 @@
                 <td>{{ $student->student_fathers_name }}</td>
                 <td>{{ $student->s_birthplace }}</td>
                 <td>{{ $student->student_email }}</td>
-                <td>
+                <td class="text-nowrap">
                   <a class="btn btn-sm btn-secondary btn-rounded"
-                     href="{{ url('student-parent-detail-show', $student->id) }}">
+                    href="{{ url('student-parent-detail-show', $student->id) }}">
                     <i class="fa fa-eye"></i>
                   </a>
+                  <a class="btn btn-sm btn-primary btn-rounded"
+                    href="{{ url('student-data/student-result-dash', $student->id) }}">
+                    <i class="fa fa-file"></i>
+                  </a>
+
+                  <form action="{{ route('disable-student-admission', $student->id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to dismiss the student admission?');"
+                        style="display:inline-block;">
+                      @csrf
+                      <button type="submit" class="btn btn-sm btn-danger btn-rounded">
+                          <i class="fa fa-close"></i>
+                      </button>
+                  </form>
                 </td>
               </tr>
             @empty
@@ -164,12 +178,10 @@
         <div class="d-flex justify-content-center mt-3">
             {{ $students->links('vendor.pagination.prev-next') }}
         </div>
-
-
       </div>
-
     </div>
   </div>
 </div>
 
 @endsection
+

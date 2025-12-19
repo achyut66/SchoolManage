@@ -25,56 +25,46 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class TeachersPersonalDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $schools = SchoolDetails::all();
-        $data = TeachersPersonalDetail::paginate(10)->withQueryString();
+        $data = TeachersPersonalDetail::where('flag',1)->paginate(10)->withQueryString();
         $year = AcademicYear::where('flag',1)->value('academic_year');
         // dd($year);
         return view('teacherspd.list', compact('data','schools'));
     }
 
     public function teacher_as_type(Request $request)
-{
-    $query = TeachersPersonalDetail::query();
+    {
+        $query = TeachersPersonalDetail::query();
 
-    // 🔍 Search by Teacher Name (English)
-    if ($request->filled('teachers_name_english')) {
-        $query->where('teachers_name_eng', 'LIKE', '%' . $request->teachers_name_english . '%');
-    }
-
-    // 🔍 Search by Teacher Type (Class / Subject)
-    if ($request->filled('type')) {
-        $type = strtolower($request->type);
-
-        if ($type === 'class teacher') {
-            $query->where('is_class_teacher', 1);
-        } elseif ($type === 'subject teacher') {
-            $query->where('is_class_teacher', 2);
+        // 🔍 Search by Teacher Name (English)
+        if ($request->filled('teachers_name_english')) {
+            $query->where('teachers_name_eng', 'LIKE', '%' . $request->teachers_name_english . '%');
         }
+
+        // 🔍 Search by Teacher Type (Class / Subject)
+        if ($request->filled('type')) {
+            $type = strtolower($request->type);
+
+            if ($type === 'class teacher') {
+                $query->where('is_class_teacher', 1);
+            } elseif ($type === 'subject teacher') {
+                $query->where('is_class_teacher', 2);
+            }
+        }
+
+        // 🔍 Search by Teaching Grade
+        if ($request->filled('teaching_grade')) {
+            $query->where('teaching_grade', $request->teaching_grade);
+        }
+
+        $data = $query->where('flag',1)->paginate(10)->withQueryString();
+        $grades = GradeSetting::all();
+        return view('teacherspd.type.list', compact('data','grades'));
     }
 
-    // 🔍 Search by Teaching Grade
-    if ($request->filled('teaching_grade')) {
-        $query->where('teaching_grade', $request->teaching_grade);
-    }
-
-    $data = $query->paginate(10)->withQueryString();
-    $grades = GradeSetting::all();
-    return view('teacherspd.type.list', compact('data','grades'));
-}
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $nameschool = SchoolDetails::all();
@@ -85,40 +75,8 @@ class TeachersPersonalDetailController extends Controller
         // dd($curriculum);
         return view('teacherspd.add', compact('nameschool','religion','caste','level','curriculum'));
     }
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(TeacherPersonalDetals $request)
-    // {
 
-    //     $profile = PalikaProfile::first();
-    //     $t_code  = $profile->school_code;
-    //     $validated = $request->validated();
-    //     if($request->file('teachers_cit_upload')) {
-    //         $type = "cit";
-    //         $citFile = fileUploads($request->file('teachers_cit_upload'),$type);
-    //         $validated['teachers_cit_upload'] = $citFile;
-    //     }
-    //     if($request->file('teachers_teacher_license_upload')){
-    //         $type = 'license';
-    //         $licuploads = fileUploads($request->file('teachers_teacher_license_upload'),$type);
-    //         $validated['teachers_teacher_license_upload'] = $licuploads;
-    //     }
-    //     if($request->file('teachers_pan_upload')){
-    //         $type = 'pan';
-    //         $panupload = fileUploads($request->file('teachers_pan_upload'),$type);
-    //         $validated['teachers_pan_upload'] = $panupload;
-    //     }
-    //     $teacher_code = $t_code.'-T-0'.$validated->id;
-    //     dd($teacher_code);
-    //     $id = TeachersPersonalDetail::create($validated)->id;
-    //     return redirect()->route('teachers-education-create', ['id' => $id]);
-    // }
-        public function store(TeacherPersonalDetals $request)
+    public function store(TeacherPersonalDetals $request)
     {
         $profile = PalikaProfile::first();
         $t_code  = $profile->school_code;
@@ -146,6 +104,7 @@ class TeachersPersonalDetailController extends Controller
                 'pan'
             );
         }
+        $validated['flag'] = 1;
         $ac_year = AcademicYear::where('flag', 1)->value('academic_year');
         $teacher = TeachersPersonalDetail::create($validated);
         $teacher_code = $t_code . '-T-' . str_pad($teacher->id, 4, '0', STR_PAD_LEFT);
@@ -156,13 +115,6 @@ class TeachersPersonalDetailController extends Controller
         return redirect()->route('teachers-education-create', ['id' => $teacher->id]);
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TeachersPersonalDetail  $teachersPersonalDetail
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $teacherDetail      = TeachersPersonalDetail::with('educationDetails','workDetails')->find($id);
@@ -172,12 +124,6 @@ class TeachersPersonalDetailController extends Controller
         return view('teacherspd.profile', compact('teacherDetail','educationDetail','workDetail','licenseLevel'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TeachersPersonalDetail  $teachersPersonalDetail
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $row_data = TeachersPersonalDetail::find($id);
@@ -188,73 +134,53 @@ class TeachersPersonalDetailController extends Controller
         $curriculum = GradeSetting::get();
         return view('teacherspd.edit', compact('row_data','schools','religion','caste','level','curriculum'));
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TeachersPersonalDetail  $teachersPersonalDetail
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(TeacherPersonalDetals $request, $id)
-{
-    $validated = $request->validated();
-    if ($request->hasFile('teachers_cit_upload')) {
-        $validated['teachers_cit_upload'] = fileUploads(
-            $request->file('teachers_cit_upload'),
-            'cit'
-        );
-    }
-    if ($request->hasFile('teachers_teacher_license_upload')) {
-        $validated['teachers_teacher_license_upload'] = fileUploads(
-            $request->file('teachers_teacher_license_upload'),
-            'license'
-        );
-    }
-    if ($request->hasFile('teachers_pan_upload')) {
-        $validated['teachers_pan_upload'] = fileUploads(
-            $request->file('teachers_pan_upload'),
-            'pan'
-        );
-    }
-    $teacher = TeachersPersonalDetail::findOrFail($id);
-    if (empty($teacher->teacher_code)) {
-        $schoolCode = PalikaProfile::first()?->school_code;
+    {
+        $validated = $request->validated();
+        if ($request->hasFile('teachers_cit_upload')) {
+            $validated['teachers_cit_upload'] = fileUploads(
+                $request->file('teachers_cit_upload'),
+                'cit'
+            );
+        }
+        if ($request->hasFile('teachers_teacher_license_upload')) {
+            $validated['teachers_teacher_license_upload'] = fileUploads(
+                $request->file('teachers_teacher_license_upload'),
+                'license'
+            );
+        }
+        if ($request->hasFile('teachers_pan_upload')) {
+            $validated['teachers_pan_upload'] = fileUploads(
+                $request->file('teachers_pan_upload'),
+                'pan'
+            );
+        }
+        $teacher = TeachersPersonalDetail::findOrFail($id);
+        if (empty($teacher->teacher_code)) {
+            $schoolCode = PalikaProfile::first()?->school_code;
 
-        $validated['teacher_code'] =
-            $schoolCode . '-T-' . str_pad($teacher->id, 4, '0', STR_PAD_LEFT);
+            $validated['teacher_code'] =
+                $schoolCode . '-T-' . str_pad($teacher->id, 4, '0', STR_PAD_LEFT);
+        }
+        if (empty($teacher->academic_year)) {
+            $academicYear = AcademicYear::where('flag', 1)->value('academic_year');
+
+            $validated['academic_year'] = $academicYear;
+        }
+        $teacher->update($validated);
+        return redirect('/teachers-personal-list')
+            ->with('success', 'Successfully Updated!!!');
     }
-    if (empty($teacher->academic_year)) {
-        $academicYear = AcademicYear::where('flag', 1)->value('academic_year');
 
-        $validated['academic_year'] = $academicYear;
-    }
-    $teacher->update($validated);
-    return redirect('/teachers-personal-list')
-        ->with('success', 'Successfully Updated!!!');
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TeachersPersonalDetail  $teachersPersonalDetail
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(TeachersPersonalDetail $teachersPersonalDetail,$id)
     {
         TeachersPersonalDetail::where('id', $id)->delete();
         return redirect('/teachers-personal-list')->with('success', 'Remove Success !!!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TeachersPersonalDetail  $schoolID
-     * @param  \App\Models\TeachersPersonalDetail  $teachersName
-     * @param  \App\Models\TeachersPersonalDetail  $teachersLicenceNo
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request) {
+    public function search(Request $request) 
+    {
        
             $name       = $request->name;
             $statusID   = $request->statusID;
@@ -267,7 +193,7 @@ class TeachersPersonalDetailController extends Controller
                                 return $query->where('teachers_name_nep', 'LIKE', '%' .$name. '%');
                             })->when(!empty($licenceNo) , function ($query) use($licenceNo){
                             return $query->where('teachers_teacher_licenseno', $licenceNo);
-                            })->get();
+                            })->where('flag',1)->get();
             $view = view('teacherspd.ajaxlist',compact('data','statusID','name','licenceNo'))->render();
             return Response::json(['status' => 200, 'view' => $view]);
         // } else {
@@ -275,8 +201,8 @@ class TeachersPersonalDetailController extends Controller
         // }
     }
 
-    //convert bs to ad
-    public function convertBSTOAD(Request $request) {
+    public function convertBSTOAD(Request $request) 
+    {
         if($request->ajax()) {
             $bs = $request->dob;
             $ad = convertBS($bs);
@@ -285,11 +211,12 @@ class TeachersPersonalDetailController extends Controller
            return '';
         }
     }
-    // print page for teachers personal details
-    public function printDetails(){
+
+    public function printDetails()
+    {
     
         $row = PalikaProfile::first();
-        $newdata = TeachersPersonalDetail::all();
+        $newdata = TeachersPersonalDetail::where('flag',1)->get();
         return view('printPage.teacherspdprint', compact('newdata','row'));    
     }
 
@@ -306,12 +233,12 @@ class TeachersPersonalDetailController extends Controller
         if ($request->filled('teaching_grade')) {
             $query->where('teaching_grade', $request->teaching_grade);
         }
-        $newdata = $query->get();
+        $newdata = $query->where('flag',1)->get();
         return view('teacherspd.type.print', compact('row', 'newdata'));
     }
 
-
-    public function printajaxDetails($statusID, $name, $licenceNo) {
+    public function printajaxDetails($statusID, $name, $licenceNo) 
+    {
         $statusID = explode('-', $statusID);
         $name = explode('-', $name);
         $licenceNo = explode('-', $licenceNo);
@@ -336,7 +263,8 @@ class TeachersPersonalDetailController extends Controller
         return Excel::download(new TeacherExport, 'Teachers List.xlsx');
     }
     
-    public function exportBySearch($statusID, $name, $licenceNo) {
+    public function exportBySearch($statusID, $name, $licenceNo) 
+    {
         $statusID = explode('-', $statusID);
         $name = explode('-', $name);
         $licenceNo = explode('-', $licenceNo);
@@ -347,11 +275,14 @@ class TeachersPersonalDetailController extends Controller
         return Excel::download(new ExportTeachersDetailsBySearch($status,$sname,$lno), 'Teachers Details.xlsx');
     }
 
-    public function importDetails() {
+    public function importDetails() 
+    {
         $view = view('teacherspd.importexcel')->render();
         return Response::json(['status' => 200, 'view' => $view]);
     }
-    public function saveImportDetails(Request $request) {
+
+    public function saveImportDetails(Request $request) 
+    {
         if($request->hasFile('file')) {
             $data   = [];
             $educationDetail = [];
@@ -457,5 +388,15 @@ class TeachersPersonalDetailController extends Controller
         } else {
             return redirect('/teachers-personal-list')->with('fail', 'please select file to import');
         }
+    }
+
+    public function disableTeacherInformation($id)
+    {
+        // dd($id);
+        $student = TeachersPersonalDetail::findOrFail($id);
+        $student->update([
+            'flag' => 0
+        ]);
+        return redirect()->back()->with('success', 'Teachers Information disabled successfully.');
     }
 }

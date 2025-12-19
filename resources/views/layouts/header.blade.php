@@ -23,7 +23,7 @@
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#teacher_record_settings" aria-expanded="false"
            aria-controls="pages">
-           <i class="fa fa-cogs"></i> &nbsp; Teacher's Record
+           <i class="fa fa-file"></i> &nbsp; Teacher's Record
            &nbsp;<i class="fa fa-angle-down"></i>
          </a>
          <div class="collapse" id="teacher_record_settings">
@@ -45,13 +45,40 @@
          </a>
        </li> -->
        <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('student-parent-list') }}">
-           <i class="fa fa-users"></i> &nbsp; Student's Record
+       <a class="nav-link font-weight-bold" data-toggle="collapse" href="#student_record_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-file"></i> &nbsp; Student's Record
+           &nbsp;<i class="fa fa-angle-down"></i>
          </a>
+         <div class="collapse" id="student_record_settings">
+           <ul class="nav flex-column sub-menu">
+             <li class="nav-item"> <a class="nav-link" href="{{ route('student-parent-list') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's List</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('students-record-transfer') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Transfer</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('student-result-list') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Result</a></li>
+           </ul>
+         </div>
+       </li>
+       <li class="nav-item">
+       <a class="nav-link font-weight-bold" data-toggle="collapse" href="#transfer_record_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-file"></i> &nbsp; Transfer Record
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="transfer_record_settings">
+           <ul class="nav flex-column sub-menu">
+             <li class="nav-item"> <a class="nav-link" href="{{ route('get-student-data-migration') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Transfer</a></li>
+                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('students-record-transfer') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Transfer</a></li> -->
+           </ul>
+         </div>
        </li>
        <li class="nav-item">
          <a class="nav-link font-weight-bold" href="{{ route('parents-information') }}">
-           <i class="fa fa-users"></i> &nbsp; Parent's Record
+           <i class="fa fa-file"></i> &nbsp; Parent's Record
          </a>
        </li>
        <div class="main-menu-name">

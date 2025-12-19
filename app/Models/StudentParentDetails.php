@@ -30,6 +30,7 @@ class StudentParentDetails extends Model
         'student_contact',
         's_bccopy',
         'unique_id',
-        'academic_year'
+        'academic_year',
+        'flag'
     ];
 }

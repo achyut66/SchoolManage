@@ -1,181 +1,255 @@
 @extends('layouts.master')
+
 @section('content')
 
 @if ($message = Session::get('access'))
-  <div class="row">
+<div class="row">
     <div class="col-12">
-      <div class="alert alert-fill-danger" role="alert">
-        <i class="fa fa-warning"></i>{{ $message }}
-      </div>
+        <div class="alert alert-fill-danger">
+            <i class="fa fa-warning"></i> {{ $message }}
+        </div>
     </div>
-  </div>
+</div>
 @endif
+
+{{-- HEADER --}}
 <div class="row">
-  <div class="col-md-6 col-lg-6 col-xl-12 grid-margin stretch-card">
-    <button class="button school-btn" style="width: 1200px; margin-left:-20px;">Welcome To School Management System ({{ $palikaProfile->schoolname }})</button>
-  </div>
+    <div class="col-12 grid-margin stretch-card">
+        <button class="button school-btn w-100">
+            Welcome To School Management System ({{ $palikaProfile->schoolname }})
+        </button>
+    </div>
 </div>
+
 <hr>
+
+{{-- STATS --}}
 <div class="row">
-  <div class="col-md-6 col-lg-6 col-xl-3 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="icon-wrap">
-            <i class="fa fa-university"></i>
-          </div>
-          <div class="flex-right-height">
-            <h2 class="countnum ml-4">{{  $tot_students  }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('student-parent-list') }}">Total Students</a></p>
-          </div>
+    @php
+        $stats = [
+            ['icon'=>'fa-university','count'=>$tot_students,'label'=>'Total Students'],
+            ['icon'=>'fa-user','count'=>$tot_steachers,'label'=>'Permanent Teachers'],
+            ['icon'=>'fa-user','count'=>$tot_ateachers,'label'=>'Temporary Teachers'],
+            ['icon'=>'fa-users','count'=>$tot_teachers,'label'=>'Total Teachers'],
+        ];
+    @endphp
+
+    @foreach($stats as $s)
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <i class="fa {{ $s['icon'] }}" style="height:30px;"></i>
+                <div class="text-center">
+                    <h2>{{ $s['count'] }}</h2>
+                    <p class="font-weight-bold mb-0">{{ $s['label'] }}</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="col-md-6 col-lg-6 col-xl-3 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="icon-wrap">
-            <i class="fa fa-user"></i>
-          </div>
-          <div class="flex-right-height">
-            <h2 class="countnum">{{ $tot_steachers }}</h2>
-            <p class="font-weight-bold mb-1"><a href="#" style="margin-left:-15px">Permanent Teachers</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-lg-6 col-xl-3 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="icon-wrap">
-            <i class="fa fa-user"></i>
-          </div>
-          <div class="flex-right-height">
-            <h2 class="countnum">{{  $tot_ateachers  }}</h2>
-            <p class="font-weight-bold mb-1 ml-2"><a href="#" class="ml-1">Temporary Teachers</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-lg-6 col-xl-3 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="icon-wrap">
-            <i class="fa fa-users"></i>
-          </div>
-          
-          <div class="flex-right-height">
-            <h2 class="countnum">{{  $tot_teachers  }}</h2>
-            <p class="font-weight-bold mb-1"><a href="{{ route('teachers-personal-list') }}">Total Teachers</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    @endforeach
 </div>
+
 <hr>
-<div class="row">
-  <div class="col-md-6 col-lg-6 col-xl-6 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-header cardhead">Permanent Teachers Profile</div>
-      <div class="card-body">
-        <div class="table-responsive permanent-table">
-          @if($sthai_teacher->isNotEmpty())
-          <table class="table table-hover table-wrapper">
-            <thead style="background-color: #607dc4; width:fit-content; color:azure;">
-              <tr>
-                <th class="pt-1 p-2 text-center">S.N</th>
-                <th class="pt-1 p-2 text-center">Profile</th>
-                <th class="pt-1 p-2 text-center">Full Name</th>
-                <th class="pt-1 p-2 text-center">Contact Number</th>
-                <th>View Profile</th>
-              </tr>
-            </thead>
-            @php $i=1;@endphp
-            <tbody>
-             
-              @foreach($sthai_teacher as $key => $st)
-              <tr>
-                <td>{{ $i++; }}</td>
-                <td><i class="fa fa-users" aria-hidden="true"></i></td>
-                <td class="py-1 pl-0">
-                  <div class="d-flex align-items-center">
-                    <div class="ml-3">
-                      <p class="mb-2">{{ $st->teachers_name_nep }}</p>
-                      <p class="mb-0 text-muted text-small">{{ $st->teachers_name_eng}}</p>
+
+                {{-- PIE CHART --}}
+                <div class="row">
+                    <div class="col-md-6 grid-margin stretch-card">
+
+                        <div class="card">
+                            <div class="card-header text-white" style="background-color:#041750;">
+                                Students by Grade
+                            </div>
+                            <div class="card-body d-flex justify-content-center align-items-center" style="width:400px;margin-left:50px;">
+                                <canvas id="studentPie"></canvas>
+                            </div>
+                            <!--  -->
+                            <div class="card-body">
+                                <canvas id="studentBar"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header text-white" style="background-color:#041750;">
+                                Teachers by Grade
+                            </div>
+                            <div class="card-body" style="width:400px;margin-left:50px;">
+                                <canvas id="teacherPie"></canvas>
+                            </div>
+                            <!--  -->
+                            <div class="card-body">
+                                <canvas id="teacherBar"></canvas>
+                            </div>
+                        </div>
+
                     </div>
-                  </div>
-                </td>
-                <td>
-                  {{ $st->teachers_mobno }}
-                </td>
-                <td>
-                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">View Profile</label>
-                </td>
-              </tr>
-            </tbody>
-            @endforeach
-          </table>
-          @else
-          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>No permanent teacher details available.</div>
-          @endif
+                </div>
+
+                {{-- TEACHERS TABLES --}}
+                <div class="row">
+                    @foreach([
+                        ['title'=>'Permanent Teachers Profile','data'=>$sthai_teacher],
+                        ['title'=>"Temporary Teacher's Profile",'data'=>$asthai_teacher]
+                    ] as $table)
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header cardhead">{{ $table['title'] }}</div>
+                            <div class="card-body table-responsive">
+                                @if($table['data']->isNotEmpty())
+                                <div class="table-scroll">
+                    <table class="table table-hover">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($table['data'] as $i => $t)
+                            <tr>
+                                <td>{{ $i + 1 }}</td>
+                                <td>
+                                    {{ $t->teachers_name_nep }} <br>
+                                    <small>{{ $t->teachers_name_eng }}</small>
+                                </td>
+                                <td>{{ $t->teachers_mobno }}</td>
+                                <td>
+                                    <a href="{{ route('teachers-profile-detail',$t->id) }}"
+                                      class="badge badge-success">View</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                @else
+                <div class="alert alert-warning">No data available</div>
+                @endif
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="col-md-6 col-lg-6 col-xl-6 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-header cardhead">Temporary Teacher's Profile</div>
-      <div class="card-body">
-        <div class="table-responsive permanent-table">
-          @if($asthai_teacher->isNotEmpty())
-          <table class="table table-hover table-wrapper">
-            <thead style="background-color: #607dc4; width:fit-content; color:azure;">
-              <tr>
-                <th class="pt-1 p-2 text-center">S.N</th>
-                <th class="pt-1 p-2 text-center">Profile</th>
-                <th class="pt-1 p-2 text-center">Full Name</th>
-                <th class="pt-1 p-2 text-center">Contact Number</th>
-                <th>View Profile</th>
-              </tr>
-            </thead>
-            @php $i=1;@endphp
-            <tbody>
-             
-              @foreach($asthai_teacher as $key => $st)
-              <tr>
-                <td>{{ $i++; }}</td>
-                <td><i class="fa fa-users" aria-hidden="true"></i></td>
-                <td class="py-1 pl-0">
-                  <div class="d-flex align-items-center">
-                    <div class="ml-3">
-                      <p class="mb-2">{{ $st->teachers_name_nep }}</p>
-                      <p class="mb-0 text-muted text-small">{{ $st->teachers_name_eng}}</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  {{ $st->teachers_mobno }}
-                </td>
-                <td>
-                <label class="badge badge-success"><a href="{{ route('teachers-profile-detail',$st->id) }}" style="color: #fff;">View Profile</label>
-                </td>
-              </tr>
-            </tbody>
-            @endforeach
-          </table>
-          @else 
-          <div class="alert alert-fill-danger" role="alert"><i class="fa fa-warning"></i>No temporary teacher details available</div>
-          @endif
-        </div>
-      </div>
-    </div>
-  </div>
+    @endforeach
 </div>
+
+@endsection
+
+
+@section('javascript')
+{{-- Chart.js --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+const labels = @json($studentsByGrade->pluck('grade'));
+const values = @json($studentsByGrade->pluck('total'));
+
+const labels1 = @json($teachersByGrade->pluck('grade'));
+const values1 = @json($teachersByGrade->pluck('total'));
+
+new Chart(document.getElementById('studentPie'), {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: values
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: '#fff',
+                font: { weight: 'bold', size: 13 },
+                formatter: (value, ctx) => {
+                    const data = ctx.chart.data.datasets[0].data;
+                    const total = data.reduce((a,b)=>a+b,0);
+                    const percent = ((value / total) * 100).toFixed(1);
+                    return `${value} (${percent}%)`;
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+// for bar diagram
+new Chart(document.getElementById('studentBar'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: values
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: '#fff',
+                font: { weight: 'bold', size: 13 },
+                formatter: (value, ctx) => {
+                    const data = ctx.chart.data.datasets[0].data;
+                    const total = data.reduce((a,b)=>a+b,0);
+                    const percent = ((value / total) * 100).toFixed(1);
+                    return `${value} (${percent}%)`;
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+// ends
+new Chart(document.getElementById('teacherPie'), {
+    type: 'pie',
+    data: {
+        labels: labels1,
+        datasets: [{
+            data: values1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: '#fff',
+                font: { weight: 'bold', size: 13 },
+                formatter: (value, ctx) => {
+                    const data = ctx.chart.data.datasets[0].data;
+                    const total = data.reduce((a,b)=>a+b,0);
+                    const percent = ((value / total) * 100).toFixed(1);
+                    return `${value} (${percent}%)`;
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+// teachers bar
+new Chart(document.getElementById('teacherBar'), {
+    type: 'bar',
+    data: {
+        labels: labels1,
+        datasets: [{
+            data: values1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            datalabels: {
+                color: '#fff',
+                font: { weight: 'bold', size: 13 },
+                formatter: (value, ctx) => {
+                    const data = ctx.chart.data.datasets[0].data;
+                    const total = data.reduce((a,b)=>a+b,0);
+                    const percent = ((value / total) * 100).toFixed(1);
+                    return `${value} (${percent}%)`;
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+</script>
 @endsection

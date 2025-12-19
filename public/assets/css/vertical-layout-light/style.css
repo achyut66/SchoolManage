@@ -37969,6 +37969,19 @@ div.tagsinput span.tag a {
     -ms-box-shadow: none;
 }
 
+/* table */
+.table-scroll {
+    max-height: 350px;      /* adjust height as needed */
+    overflow-y: auto;
+}
+
+.table-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+
 .sidebar .nav {
     flex-wrap: nowrap;
     flex-direction: column;

@@ -97,6 +97,15 @@
                   <a class="btn btn-sm btn-secondary btn-rounded" href="{{ URL('teachers-profile-detail',$title->id)}}">
                     <i class="fa fa-eye"></i>
                   </a>
+                  <form action="{{ URL('disable-teacher-information',$title->id)}}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to remove teachers record ?');"
+                        style="display:inline-block;">
+                      @csrf
+                      <button type="submit" class="btn btn-sm btn-danger btn-rounded">
+                          <i class="fa fa-close"></i>
+                      </button>
+                  </form>
                 </td>
               </tr>
               @endforeach

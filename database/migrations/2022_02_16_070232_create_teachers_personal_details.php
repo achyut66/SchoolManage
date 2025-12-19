@@ -48,7 +48,7 @@ class CreateTeachersPersonalDetails extends Migration
             $table->string('teachers_teacher_licenseno_jari_date',255)->nullable();
             $table->string('teachers_teacher_license_upload',255)->nullable();
             $table->bigInteger('school_id')->unsigned();
-            $table->foreign('school_id')->references('id')->on('school_details');
+            $table->string('school_id')->nullable();
             $table->timestamps();
         });
     }

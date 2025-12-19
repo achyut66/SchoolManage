@@ -21,6 +21,7 @@ use App\Http\Controllers\StudentParentDetailsController;
 use App\Http\Controllers\StudentsEducationDetailController;
 use App\Http\Controllers\StudentsGuardianDetailsController;
 use App\Http\Controllers\CurriculmSettingController;
+use App\Http\Controllers\StudentResultController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -211,6 +212,8 @@ Print Pages
    Route::get('students/{id}/education', [StudentParentDetailsController::class, 'educationForm'])->name('students.education');
    Route::get('students/{id}/parents', [StudentParentDetailsController::class, 'parentForm'])->name('students.parents');
 
+   Route::get('student-details/students-record-transfer', [StudentParentDetailsController::class, 'recordTransfer'])->name('students-record-transfer');
+
     /*--------------------------------------------------------------*/
 
      // students details educational
@@ -236,5 +239,24 @@ Print Pages
     // report
    Route::get('teachers-as-type', [TeachersPersonalDetailController::class,'teacher_as_type'])->name('teachers-as-type');
    Route::get('teachers/type/print',[TeachersPersonalDetailController::class, 'teachers_type_print'])->name('teachers.type.print');
+
+  //  migration
+
+  Route::post('student-data-migration', [StudentParentDetailsController::class, 'migrationSave'])->name('student-data-migration');
+  Route::get('transfor-report/get-student-data-migration', [StudentParentDetailsController::class, 'getAllMigration'])->name('get-student-data-migration');
+  Route::get('/migration/print', [StudentParentDetailsController::class, 'printMigration'])->name('students.migration.print');
+
+  // disable the student admission
   
+  Route::post('disable-admission/{id}',[StudentParentDetailsController::class, 'disableAdmission'])->name('disable-student-admission');
+  Route::post('disable-teacher-information/{id}',[TeachersPersonalDetailController::class, 'disableTeacherInformation'])->name('disable-teacher-information');
+
+  // student result
+
+  Route::get('student-data/student-result-dash/{id}', [StudentParentDetailsController::class, 'goToResultAdd'])->name('student-result-add');
+  
+  Route::post('student-result-save', [StudentResultController::class, 'store'])->name('student-result-save');
+  Route::get('student-result-list', [StudentResultController::class, 'index'])->name('student-result-list');
+  Route::get('student-result-edit/{id}', [StudentResultController::class, 'edit'])->name('student-result-edit');
+  Route::post('student-result-update/{id}', [StudentResultController::class, 'update'])->name('student-result-update');
 });
