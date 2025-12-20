@@ -51,7 +51,8 @@
                 <tr>
                   <th width="60">S.N</th>
                   <th>Subject</th>
-                  <th width="150">Obtained Marks</th>
+                  <th width="150">Theoritical Marks</th>
+                  <th width="150">Practical Marks</th>
                 </tr>
               </thead>
 
@@ -71,6 +72,14 @@
                              value="{{ $row->obtained_marks }}"
                              min="0"
                              required>
+                    </td>
+                    <td>
+                      <input type="number"
+                             name="practical_marks[]"
+                             class="form-control"
+                             value="{{ $row->practical_marks }}"
+                             min="0"
+                             >
                     </td>
                   </tr>
                 @endforeach

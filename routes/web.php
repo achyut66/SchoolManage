@@ -259,4 +259,6 @@ Print Pages
   Route::get('student-result-list', [StudentResultController::class, 'index'])->name('student-result-list');
   Route::get('student-result-edit/{id}', [StudentResultController::class, 'edit'])->name('student-result-edit');
   Route::post('student-result-update/{id}', [StudentResultController::class, 'update'])->name('student-result-update');
+  Route::get('student-result-show/{id}', [StudentResultController::class, 'show'])->name('student-result-show');
+  Route::get('/result/{student_id}/pdf', [StudentResultController::class, 'downloadPdf'])->name('result.pdf');
 });

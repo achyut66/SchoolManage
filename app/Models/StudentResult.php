@@ -19,5 +19,6 @@ class StudentResult extends Model
         'grade',
         'subjects',
         'obtained_marks',
+        'practical_marks',
     ];
 }

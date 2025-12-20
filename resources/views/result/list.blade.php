@@ -80,7 +80,7 @@
                   <td class="text-nowrap">
 
                     {{-- VIEW --}}
-                    <a href=""
+                    <a href="{{ route('student-result-show',$result->student_id) }}"
                        class="btn btn-sm btn-info"
                        title="View Result">
                       <i class="fa fa-eye"></i>

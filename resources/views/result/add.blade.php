@@ -38,7 +38,8 @@
                         <thead class="bg-light">
                             <tr>
                                 <th width="50%" class="text-center" style="font-weight:bold;font-size:14px;">Subject</th>
-                                <th width="50%" class="text-center" style="font-weight:bold;font-size:14px;">Marks</th>
+                                <th width="25%" class="text-center" style="font-weight:bold;font-size:14px;">Theoritical Marks</th>
+                                <th width="25%" class="text-center" style="font-weight:bold;font-size:14px;">Practical Marks</th>
                             </tr>
                         </thead>
 
@@ -58,6 +59,14 @@
                                                min="0"
                                                max="100"
                                                required>
+                                    </td>
+                                    <td>
+                                        <input type="number"
+                                               name="practical_marks[]"
+                                               class="form-control"
+                                               min="0"
+                                               max="100"
+                                               >
                                     </td>
                                 </tr>
                             @endforeach

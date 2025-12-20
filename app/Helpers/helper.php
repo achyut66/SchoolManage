@@ -50,3 +50,36 @@ if(!function_exists('pp')) {
     exit;
   }
 }
+
+// gpa function
+
+if (!function_exists('calculateGpaFromPercentage')) {
+  function calculateGpaFromPercentage($percentage)
+  {
+      if ($percentage >= 90 && $percentage <= 100) {
+          return ['grade' => 'A+', 'gpa' => 4.00];
+      } elseif ($percentage >= 80 && $percentage < 90) {
+          return ['grade' => 'A', 'gpa' => 4.00];
+      } elseif ($percentage >= 75 && $percentage < 80) {
+          return ['grade' => 'A-', 'gpa' => 3.67];
+      } elseif ($percentage >= 70 && $percentage < 75) {
+          return ['grade' => 'B+', 'gpa' => 3.33];
+      } elseif ($percentage >= 65 && $percentage < 70) {
+          return ['grade' => 'B', 'gpa' => 3.00];
+      } elseif ($percentage >= 60 && $percentage < 65) {
+          return ['grade' => 'B-', 'gpa' => 2.67];
+      } elseif ($percentage >= 55 && $percentage < 60) {
+          return ['grade' => 'C+', 'gpa' => 2.33];
+      } elseif ($percentage >= 50 && $percentage < 55) {
+          return ['grade' => 'C', 'gpa' => 2.00];
+      } elseif ($percentage >= 47 && $percentage < 50) {
+          return ['grade' => 'C-', 'gpa' => 1.67];
+      } elseif ($percentage >= 44 && $percentage < 47) {
+          return ['grade' => 'D+', 'gpa' => 1.33];
+      } elseif ($percentage >= 40 && $percentage < 44) {
+          return ['grade' => 'D', 'gpa' => 1.00];
+      } else {
+          return ['grade' => 'Fail', 'gpa' => 0.00];
+      }
+  }
+}

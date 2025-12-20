@@ -1,6 +1,4 @@
-@extends('layouts.master')
 
-@section('content')
 
 <style>
 body {
@@ -92,7 +90,7 @@ body {
 
     {{-- HEADER --}}
     <div class="header">
-        <img src="{{ asset('storage/'.$school_profile->logo) }}" class="gov-logo">
+        <img src="{{ public_path('storage/'.$school_profile->logo) }}" class="gov-logo">
         <h4 style="text-transform: uppercase;">{{ !empty($school_profile) && !empty($school_profile->schoolname) ? $school_profile->schoolname : '' }}</h4>
         <h4 style="text-transform: uppercase;">{{ " $palikaProfile->slogan " }}</h4>
         <h4 style="text-transform: uppercase;">{{ !empty($palikaProfile) && !empty($palikaProfile->address) ? $palikaProfile->address : '' }}
@@ -104,13 +102,6 @@ body {
                 @endif
         </h4>
         <h3 style="text-decoration: underline;">MARK - SHEET</h3>
-        <a href="{{ route('result.pdf', $student->student_id) }}"
-        class="btn btn-success"
-        target="_blank"
-        style="margin-top:-130px;margin-right:-700px;">
-        <i class="fa fa-file-pdf-o"></i> Download PDF
-        </a>
-
     </div>
 
     {{-- STUDENT DETAILS --}}
@@ -212,4 +203,3 @@ body {
 
 </div>
 
-@endsection
