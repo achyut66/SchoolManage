@@ -50,7 +50,7 @@
         <div class="row align-items-end">
 
           <!-- Search by Name -->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="small mb-1">Student Name</label>
             <input type="text"
                   name="search"
@@ -60,7 +60,7 @@
           </div>
 
           <!-- Search by Grade -->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="small mb-1">Grade</label>
             <select name="student_enrollment_class"
                     class="form-control">
@@ -70,6 +70,21 @@
                 <option value="{{ $grade->name }}"
                   {{ request('student_enrollment_class') == $grade->name ? 'selected' : '' }}>
                   {{ $grade->name }}
+                </option>
+              @endforeach
+            </select>
+          </div>
+
+          <!-- Search by Section -->
+          <div class="col-md-2">
+            <label class="small mb-1">Section</label>
+            <select name="student_enrollment_section" class="form-control">
+              <option value="">-- All Sections --</option>
+
+              @foreach($sections as $section)
+                <option value="{{ $section }}"
+                  {{ request('student_enrollment_section') == $section ? 'selected' : '' }}>
+                  {{ $section }}
                 </option>
               @endforeach
             </select>
@@ -120,6 +135,7 @@
               <th>Academic Year</th>
               <th>Full Name</th>
               <th>Grade</th>
+              <th>Section</th>
               <th>Address</th>
               <th>Father's Name</th>
               <th>Birth Place</th>
@@ -136,6 +152,7 @@
                 <td>{{ $student->academic_year }}</td>
                 <td>{{ $student->student_full_name }}</td>
                 <td>{{ $student->student_enrollment_class }}</td>
+                <td>{{ $student->student_enrollment_section }}</td>
                 <td>
                   {{ $student->s_province }} -
                   {{ $student->s_district }},
@@ -146,20 +163,33 @@
                 <td>{{ $student->student_email }}</td>
                 <td class="text-nowrap">
                   <a class="btn btn-sm btn-secondary btn-rounded"
+                  title="View Student Details"
                     href="{{ url('student-parent-detail-show', $student->id) }}">
                     <i class="fa fa-eye"></i>
                   </a>
-                  <a class="btn btn-sm btn-primary btn-rounded"
+                  <!-- <a class="btn btn-sm btn-primary btn-rounded"
                     href="{{ url('student-data/student-result-dash', $student->id) }}">
                     <i class="fa fa-file"></i>
+                  </a> -->
+                  <a class="btn btn-sm btn-success btn-rounded
+                    {{ in_array($student->id, $resultStudentIds) ? 'disabled' : '' }}"
+                    href="{{ in_array($student->id, $resultStudentIds)
+                              ? 'javascript:void(0)'
+                              : url('student-data/student-result-dash', $student->id) }}"
+                    title="{{ in_array($student->id, $resultStudentIds)
+                              ? 'Result already exists'
+                              : 'Add Result' }}"
+                  >
+                      <i class="fa fa-graduation-cap"></i>
                   </a>
+
 
                   <form action="{{ route('disable-student-admission', $student->id) }}"
                         method="POST"
                         onsubmit="return confirm('Are you sure you want to dismiss the student admission?');"
                         style="display:inline-block;">
                       @csrf
-                      <button type="submit" class="btn btn-sm btn-danger btn-rounded">
+                      <button type="submit" class="btn btn-sm btn-danger btn-rounded" title="Remove Student Details">
                           <i class="fa fa-close"></i>
                       </button>
                   </form>

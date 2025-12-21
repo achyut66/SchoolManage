@@ -84,6 +84,9 @@ body {
 }
 .dotted.wide { min-width: 200px; }
 .dotted.small { min-width: 50px; }
+.marksheet {
+    background-color:#7ED957;
+}
 </style>
 
 <div class="marksheet">
@@ -103,6 +106,7 @@ body {
         </h4>
         <h3 style="text-decoration: underline;">MARK - SHEET</h3>
     </div>
+    <hr style="width:900px;"></hr>
 
     {{-- STUDENT DETAILS --}}
     <p class="info-paragraph">
@@ -117,13 +121,12 @@ body {
         OF
         <span class="dotted wide">
             {{ $school_profile->schoolname }},
-            {{ $school_profile->palika }},
-            {{ $school_profile->district }}
         </span>
         IN THE ANNUAL EXAMINATION OF
         <span class="dotted small" style="font-size:16px;">{{ $student->academic_year }}</span>
         GRADE
-        <span class="dotted small" style="font-size:16px;">{{ $student->grade }} .</span>
+        <span class="dotted small" style="font-size:16px;">{{ $student->grade }}</span>
+        ARE GIVEN BELOW.
     </p>
 
     {{-- MARKS TABLE --}}
@@ -173,6 +176,13 @@ body {
             <td>{{ $totalMarks }}</td>
             <td>PERCENTAGE</td>
             <td>{{ number_format($percentage, 2) }}%</td>
+            <td colspan="2">
+            @if($position)
+                <span class="badge">
+                    {{ $position }}
+                </span>
+            @endif
+            </td>
         </tr>
         <tr>
             <td>GPA</td>

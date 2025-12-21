@@ -12,6 +12,7 @@ class StudentParentDetails extends Model
     protected $fillable = [
         'student_full_name',
         'student_enrollment_class',
+        'student_enrollment_section',
         's_caste',
         's_gender',
         's_birthplace',

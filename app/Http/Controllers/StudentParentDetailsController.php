@@ -14,11 +14,13 @@ use App\Models\PalikaProfile;
 use App\Models\AcademicYear;
 use App\Models\StudentMigration;
 use App\Models\SettingCurriculum;
+use App\Models\StudentResult;
 
 use App\Exports\TeacherExport;
 use App\Exports\ExportTeachersDetailsBySearch;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use App\Models\SettingSection;
 
 use Maatwebsite\Excel\Concerns\ToModel;
 
@@ -32,7 +34,7 @@ class StudentParentDetailsController extends Controller
     {
         $grades = GradeSetting::get();
         $students = StudentParentDetails::query();
-        
+        $resultStudentIds = StudentResult::pluck('student_id')->toArray();
         // Search by student name
         if ($request->filled('search')) {
             $students->where(
@@ -47,21 +49,38 @@ class StudentParentDetailsController extends Controller
                 $request->student_enrollment_class
             );
         }
+
+        if ($request->filled('student_enrollment_section')) {
+            $students->where(
+                'student_enrollment_section',
+                $request->student_enrollment_section
+            );
+        }
+
+        $sections = ['A','B','C','D','E','F'];
         $students = $students
             ->where('flag',1)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
-        return view('studentdetails.list', compact('students', 'grades'));
+        return view('studentdetails.list', compact('students', 'grades','resultStudentIds','sections'));
     }
 
     public function create()
     {
         $caste      = Caste::all();
         $religion   = Religion::all();
-        $grade      = GradeSetting::all();
+        $grade    = GradeSetting::orderBy('id')->get();
+        // dd($section);
         return view('studentdetails.add', compact('religion','caste','grade'));
     }
+
+    public function getSections($grade)
+    {
+        $sections = SettingSection::where('grade', $grade)->pluck('sections');
+        return response()->json($sections);
+    }
+
 
     public function store(Request $request)
     {
@@ -71,6 +90,7 @@ class StudentParentDetailsController extends Controller
         $validated = $request->validate([
             'student_full_name'          => 'required|string|max:255',
             'student_enrollment_class'   => 'required|string',
+            'student_enrollment_section' => 'required|string',
             's_caste'                    => 'required',
             's_gender'                   => 'required',
             's_birthplace'               => 'nullable|string',
@@ -145,7 +165,7 @@ class StudentParentDetailsController extends Controller
         // dd($student);
         $caste     = Caste::all();
         $religion  = Religion::all();
-        $grade     = GradeSetting::all();
+        $grade    = GradeSetting::orderBy('id')->get();
         return view('studentdetails.edit', compact('student','caste','religion','grade'));
     }
 
@@ -155,6 +175,7 @@ class StudentParentDetailsController extends Controller
         $validated = $request->validate([
             'student_full_name'          => 'required|string|max:255',
             'student_enrollment_class'   => 'required|string',
+            'student_enrollment_section' => 'required|string',
             's_caste'                    => 'required',
             's_gender'                   => 'required',
             's_birthplace'               => 'nullable|string',
@@ -220,6 +241,14 @@ class StudentParentDetailsController extends Controller
         if ($request->filled('student_enrollment_class')) {
             $query->where('student_enrollment_class', 'LIKE', '%' . $request->student_enrollment_class . '%');
         }
+        if ($request->filled('student_enrollment_section')) {
+            $query->where(
+                'student_enrollment_section',
+                $request->student_enrollment_section
+            );
+        }
+
+        // $sections = ['A','B','C','D','E','F'];
         $students = $query->where('flag',1)->orderBy('id', 'desc')->get();
         return view('studentdetails.print', compact('students','palikaProfile','code'));
     }
@@ -269,6 +298,7 @@ class StudentParentDetailsController extends Controller
             'student_name'   => 'required|string|max:255',
             'academic_year'  => 'required|string|max:20',
             'grade'          => 'required|string|max:20',
+            'student_enrollment_section'        => 'required|string|max:20',
         ]);
         // dd($validated);
 
@@ -278,11 +308,13 @@ class StudentParentDetailsController extends Controller
                 'student_name'  => $validated['student_name'],
                 'academic_year' => $validated['academic_year'],
                 'grade'         => $validated['grade'],
+                'section'       => $validated['student_enrollment_section'],
             ]);
             StudentParentDetails::where('id', $validated['student_id'])
                 ->update([
                     'student_enrollment_class' => $validated['grade'],
                     'academic_year'            => $validated['academic_year'],
+                    'student_enrollment_section'            => $validated['student_enrollment_section'],
                 ]);
         });
 
@@ -304,7 +336,6 @@ class StudentParentDetailsController extends Controller
             );
         }
         $students = $students
-            ->where('flag',1)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
@@ -322,7 +353,6 @@ class StudentParentDetailsController extends Controller
             $students->where('grade', $request->student_enrollment_class);
         }
         $students = $students
-            ->where('flag',1)
             ->orderBy('id', 'desc')
             ->get(); // ❗ get() NOT paginate for print
         return view('transferreport.print', compact('students'));
@@ -339,20 +369,20 @@ class StudentParentDetailsController extends Controller
         return redirect()->back()->with('success', 'Admission disabled successfully.');
     }
 
+    // result
     public function goToResultAdd($id)
     {
         $student = StudentParentDetails::where('flag', 1)->findOrFail($id);
-
+        $result = StudentResult::where('student_id',$id)->first();
         $curriculum = SettingCurriculum::where(
             'grade',
             $student->student_enrollment_class
         )->get();
 
-        return view('result.add',compact('student','curriculum'));
+        return view('result.add',compact('student','curriculum','result'));
 
         // dd($curriculum);
     }
-
 
 }
 

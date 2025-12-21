@@ -70,7 +70,7 @@
             {{-- Grade --}}
             <div class="col-md-6 mb-4">
               <label>Grade (Studying Class) *</label>
-              <select name="student_enrollment_class" class="form-control" required>
+              <select name="student_enrollment_class" id="grade" class="form-control" required>
                 @foreach($grade as $g)
                   <option value="{{ $g->name }}"
                     {{ $student->student_enrollment_class == $g->name ? 'selected' : '' }}>
@@ -79,9 +79,29 @@
                 @endforeach
               </select>
             </div>
+            <div class="col-md-6 mb-4">
+            <label>Section *</label>
 
+            <select name="student_enrollment_section"
+                    id="section"
+                    class="form-control"
+                    required>
+                <option value="">-- Select Section --</option>
+
+                @foreach(
+                    $grade
+                        ->where('name', $student->student_enrollment_class)
+                        ->first()
+                        ?->sections ?? [] as $section
+                )
+                    <option value="{{ $section->sections }}"
+                        {{ $student->student_enrollment_section == $section->sections ? 'selected' : '' }}>
+                        {{ $section->sections }}
+                    </option>
+                @endforeach
+            </select>
+          </div>
             <div class="col-md-12"><hr></div>
-
             {{-- Personal Details --}}
             <div class="col-md-12 mt-3">
               <div class="alert alert-fill-dark">
@@ -248,6 +268,34 @@ $('#dob').nepaliDatePicker({
     });
   }
 });
+
+// section ajax
+
+$('#grade').on('change', function () {
+        let grade = $(this).val();
+        let sectionSelect = $('#section');
+
+        sectionSelect.html('<option value="">Loading...</option>');
+
+        if (grade) {
+            $.ajax({
+                url: "{{ url('/get-sections') }}/" + grade,
+                type: "GET",
+                success: function (data) {
+                    sectionSelect.empty();
+                    sectionSelect.append('<option value="">-- Select Section --</option>');
+
+                    $.each(data, function (key, value) {
+                        sectionSelect.append(
+                            '<option value="' + value + '">' + value + '</option>'
+                        );
+                    });
+                }
+            });
+        } else {
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+        }
+    });
 </script>
 
 @endsection

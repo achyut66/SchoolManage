@@ -103,8 +103,13 @@
                 </tr>
               @endforelse
             </tbody>
-
           </table>
+          @if($results->hasPages())
+            <div class="d-flex justify-content-center mt-3">
+              {{ $results->links('vendor.pagination.prev-next') }}
+            </div>
+          @endif
+
         </div>
       </div>
 

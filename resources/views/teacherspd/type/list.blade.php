@@ -26,7 +26,7 @@
   <div class="row align-items-end">
 
     <!-- Teacher Name -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <label class="small font-weight-bold">Teacher Name</label>
       <input type="text"
              name="teachers_name_english"
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Teacher Type -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <label class="small font-weight-bold">Teacher Type</label>
       <select name="type" class="form-control">
         <option value="">-- All --</option>
@@ -52,9 +52,9 @@
     </div>
 
     <!-- Teaching Grade -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <label class="small font-weight-bold">Teaching Grade</label>
-      <select name="teaching_grade" class="form-control">
+      <select name="teaching_grade" class="form-control" id="grade">
         <option value="">-- All Grades --</option>
         @foreach($grades as $grade)
           <option value="{{ $grade->name }}"
@@ -62,6 +62,15 @@
             {{ $grade->name }}
           </option>
         @endforeach
+      </select>
+    </div>
+    <!-- section -->
+    <div class="col-md-2">
+      <label class="small font-weight-bold">Section</label>
+      <select name="section"
+        id="section"
+          class="form-control">
+        <option value="">-- Select Section --</option>
       </select>
     </div>
 
@@ -75,12 +84,6 @@
         class="btn btn-primary btn-sm">
         <i class="fa fa-print"></i> Print
      </a>
-
-
-      <!-- <a href="{{ route('students.export', request()->query()) }}"
-         class="btn btn-warning btn-sm mt-1">
-        <i class="fa fa-file-excel-o"></i> Excel
-      </a> -->
     </div>
 
   </div>
@@ -107,10 +110,11 @@
               <th>Teacher Code</th>
               <th>Full Name</th>
               <th>teaching Grade</th>
+              <th>section</th>
               <th>Type</th>
               <th>Address</th>
               <th>Contact</th>
-              <th>Email</th>
+              <th>Email </th>
               <th>Action</th>
             </tr>
           </thead>
@@ -122,6 +126,7 @@
                 <td>{{ $student->unique_id }}</td>
                 <td>{{ $student->teachers_name_eng }}</td>
                 <td>{{ $student->teaching_grade }}</td>
+                <td>{{ $student->section }}</td>
                 <td>
                 {{ $student->is_class_teacher == 1 
                     ? 'Class Teacher' 
@@ -160,4 +165,35 @@
   </div>
 </div>
 
+<script>
+$(document).ready(function() {
+
+  // section ajax
+  $('#grade').on('change', function () {
+        let grade = $(this).val();
+        let sectionSelect = $('#section');
+
+        sectionSelect.html('<option value="">Loading...</option>');
+
+        if (grade) {
+            $.ajax({
+                url: "{{ url('/get-sections') }}/" + grade,
+                type: "GET",
+                success: function (data) {
+                    sectionSelect.empty();
+                    sectionSelect.append('<option value="">-- Select Section --</option>');
+
+                    $.each(data, function (key, value) {
+                        sectionSelect.append(
+                            '<option value="' + value + '">' + value + '</option>'
+                        );
+                    });
+                }
+            });
+        } else {
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+        }
+    });
+});
+</script>
 @endsection

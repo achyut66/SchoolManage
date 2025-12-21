@@ -59,6 +59,13 @@ class TeachersPersonalDetailController extends Controller
         if ($request->filled('teaching_grade')) {
             $query->where('teaching_grade', $request->teaching_grade);
         }
+        // search by section
+        if ($request->filled('section')) {
+            $query->where(
+                'section',
+                $request->section
+            );
+        }
 
         $data = $query->where('flag',1)->paginate(10)->withQueryString();
         $grades = GradeSetting::all();
@@ -83,7 +90,6 @@ class TeachersPersonalDetailController extends Controller
 
         $validated = $request->validated();
 
-        // Uploads
         if ($request->file('teachers_cit_upload')) {
             $validated['teachers_cit_upload'] = fileUploads(
                 $request->file('teachers_cit_upload'),
@@ -232,6 +238,13 @@ class TeachersPersonalDetailController extends Controller
         }
         if ($request->filled('teaching_grade')) {
             $query->where('teaching_grade', $request->teaching_grade);
+        }
+        // search by section
+        if ($request->filled('section')) {
+            $query->where(
+                'section',
+                $request->section
+            );
         }
         $newdata = $query->where('flag',1)->get();
         return view('teacherspd.type.print', compact('row', 'newdata'));

@@ -23,12 +23,15 @@ class StudentResultController extends Controller
                 \DB::raw('SUM(obtained_marks) as total_marks')
             )
             ->groupBy('student_id', 'student_name', 'academic_year', 'grade');
-
         // SEARCH BY STUDENT NAME
         if ($request->filled('student_name')) {
             $query->where('student_name', 'LIKE', '%' . $request->student_name . '%');
         }
-        $results = $query->orderBy('student_name')->get();
+        $results = $query
+        ->orderBy('student_name')
+        ->paginate(10)
+        ->withQueryString();
+
         return view('result.list', compact('results'));
     }
 
@@ -90,7 +93,28 @@ class StudentResultController extends Controller
             $division = 'THIRD DIVISION';
         } else {
             $division = 'FAIL';
-        }        
+        }    
+        
+        $rankedStudents = StudentResult::select(
+                'student_id',
+                \DB::raw('SUM(obtained_marks + practical_marks) as total')
+            )
+            ->groupBy('student_id')
+            ->orderByDesc('total')
+            ->get();
+
+        $position = null;
+        $rank = 1;
+
+        foreach ($rankedStudents as $row) {
+            if ($row->student_id == $student_id) {
+                if ($rank == 1) $position = 'FIRST';
+                elseif ($rank == 2) $position = 'SECOND';
+                elseif ($rank == 3) $position = 'THIRD';
+                break;
+            }
+            $rank++;
+        }
 
         return view('result.view', [
             'student'        => $student,
@@ -102,6 +126,7 @@ class StudentResultController extends Controller
             'gpa_class'      => $gradeData['grade'],
             'school_profile' => $school_profile,
             'dob'            => $dob,
+            'position'       => $position,
         ]);
     }
 
@@ -129,6 +154,27 @@ class StudentResultController extends Controller
         $gpa_class = $gradeData['grade'];
         // dd($gradeData);
 
+        $rankedStudents = StudentResult::select(
+            'student_id',
+            \DB::raw('SUM(obtained_marks + practical_marks) as total')
+            )
+            ->groupBy('student_id')
+            ->orderByDesc('total')
+            ->get();
+
+        $position = null;
+        $rank = 1;
+
+        foreach ($rankedStudents as $row) {
+            if ($row->student_id == $student_id) {
+                if ($rank == 1) $position = 'FIRST';
+                elseif ($rank == 2) $position = 'SECOND';
+                elseif ($rank == 3) $position = 'THIRD';
+                break;
+            }
+            $rank++;
+        }
+
         if ($percentage >= 60) {
             $division = 'FIRST DIVISION';
         } elseif ($percentage >= 45) {
@@ -148,7 +194,8 @@ class StudentResultController extends Controller
             'gpa',
             'gpa_class',
             'school_profile',
-            'dob'           
+            'dob'   ,
+            'position'        
         ))->setPaper('A4', 'landscape');
         // dd("im here");
         return $pdf->download('marksheet-'.$student->student_name.'.pdf');

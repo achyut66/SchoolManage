@@ -53,6 +53,7 @@
             <th>Academic Year</th>
             <th>Student Name</th>
             <th>Grade</th>
+            <th>Section</th>
             <th>Address</th>
             <th>Email</th>
         </tr>
@@ -66,6 +67,7 @@
                 <td>{{ $student->academic_year }}</td>
                 <td>{{ $student->student_name }}</td>
                 <td>{{ $student->grade }}</td>
+                <td>{{ $student->section }}</td>
                 <td>
                     {{ $student->student->s_province ?? '' }},
                     {{ $student->student->s_district ?? '' }},

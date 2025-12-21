@@ -72,6 +72,7 @@
               <th>Academic Year</th>
               <th>Full Name</th>
               <th>Grade</th>
+              <th>Section</th>
               <th>Address</th>
               <th>Father</th>
               <th>Email</th>
@@ -87,6 +88,7 @@
                 <td>{{ $student->academic_year }}</td>
                 <td>{{ $student->student_full_name }}</td>
                 <td>{{ $student->student_enrollment_class }}</td>
+                <td>{{ $student->student_enrollment_section }}</td>
                 <td>
                   {{ $student->s_province }},
                   {{ $student->s_district }},
@@ -155,13 +157,26 @@
           </div>
           <div class="form-group">
             <label>Transfer To Grade</label>
-            <select name="grade" class="form-control" required>
+            <select name="grade" id="grade" class="form-control" required>
               <option value="">-- Select Grade --</option>
               @foreach($grades as $grade)
                 <option value="{{ $grade->name }}">{{ $grade->name }}</option>
               @endforeach
             </select>
           </div>
+
+          {{-- Section --}}
+            <div class="form-group">
+               <label>
+                  Section
+                     <i class="fa fa-asterisk text-danger"></i>
+               </label>
+               <select name="student_enrollment_section"
+                  id="section"
+                  class="form-control" required>
+                    <option value="">-- Select Section --</option>
+               </select>
+            </div>
 
           <div class="form-group">
             <label>Academic Year</label>
@@ -198,6 +213,32 @@ $(document).ready(function () {
         var studentName = button.data('student-name');
         $('#student_id').val(studentId);
         $('#student_name').val(studentName);
+    });
+
+    $('#grade').on('change', function () {
+        let grade = $(this).val();
+        let sectionSelect = $('#section');
+
+        sectionSelect.html('<option value="">Loading...</option>');
+
+        if (grade) {
+            $.ajax({
+                url: "{{ url('/get-sections') }}/" + grade,
+                type: "GET",
+                success: function (data) {
+                    sectionSelect.empty();
+                    sectionSelect.append('<option value="">-- Select Section --</option>');
+
+                    $.each(data, function (key, value) {
+                        sectionSelect.append(
+                            '<option value="' + value + '">' + value + '</option>'
+                        );
+                    });
+                }
+            });
+        } else {
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+        }
     });
 });
 </script>

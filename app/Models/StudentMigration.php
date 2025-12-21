@@ -14,7 +14,8 @@ class StudentMigration extends Model
         'student_name',
         'student_id',
         'academic_year',
-        'grade'
+        'grade',
+        'section'
     ];
 
     public function student()

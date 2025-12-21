@@ -66,19 +66,43 @@
               @csrf
               <div class="row">
                
-                <div class="col-md-12">
-                <div class="col-md-6 mb-4">
-                  <label>Grade (Studying Class) <i class="fa fa-asterisk" style="color: red;"></i></label>
-                  <select name="student_enrollment_class" class="form-control" required>
-                    <option value="">--Select--</option>
-                    @php $i = 1 @endphp
-                    @foreach ($grade as $key => $grade)
-                      <option value="{{ $grade->name }}" style="font-weight:bold;">{{$i++}}. &nbsp;&nbsp; {{ $grade->name }}</div></option>
-                    @endforeach
-                  </select>
+              <div class="row">
+                    {{-- Grade --}}
+                    <div class="col-md-6 mb-4">
+                        <label>
+                            Grade
+                            <i class="fa fa-asterisk text-danger"></i>
+                        </label>
+
+                        <select name="student_enrollment_class"
+                                id="grade"
+                                class="form-control"
+                                required>
+                            <option value="">-- Select --</option>
+                            @foreach ($grade as $key => $g)
+                                <option value="{{ $g->name }}">
+                                    {{ $key + 1 }}. {{ $g->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Section --}}
+                    <div class="col-md-6 mb-4">
+                        <label>
+                            Section
+                            <i class="fa fa-asterisk text-danger"></i>
+                        </label>
+
+                        <select name="student_enrollment_section"
+                                id="section"
+                                class="form-control"
+                                required>
+                            <option value="">-- Select Section --</option>
+                        </select>
+                    </div>
                 </div>
-                </div>
-                
+
                 <div class="col-md-12">
                   <hr>
                 </div>
@@ -243,6 +267,34 @@ $(document).ready(function() {
       });
     }
   });
+
+  // section ajax
+
+  $('#grade').on('change', function () {
+        let grade = $(this).val();
+        let sectionSelect = $('#section');
+
+        sectionSelect.html('<option value="">Loading...</option>');
+
+        if (grade) {
+            $.ajax({
+                url: "{{ url('/get-sections') }}/" + grade,
+                type: "GET",
+                success: function (data) {
+                    sectionSelect.empty();
+                    sectionSelect.append('<option value="">-- Select Section --</option>');
+
+                    $.each(data, function (key, value) {
+                        sectionSelect.append(
+                            '<option value="' + value + '">' + value + '</option>'
+                        );
+                    });
+                }
+            });
+        } else {
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+        }
+    });
 
   $('.nepali_date').nepaliDatePicker({
     ndpYear: true,

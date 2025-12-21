@@ -19,8 +19,8 @@
                         <td style="font-weight:bold;font-size:18px;">{{ $student->student_full_name }}</td>
                     </tr>
                     <tr style="background-color:yellow;">
-                        <th style="font-weight:bold;font-size:18px;">Grade</th>
-                        <td style="font-weight:bold;font-size:18px;">{{ $student->student_enrollment_class }}</td>
+                        <th style="font-weight:bold;font-size:18px;">Grade/Section</th>
+                        <td style="font-weight:bold;font-size:18px;">{{ $student->student_enrollment_class }} ({{ $student->student_enrollment_section }})</td>
                     </tr>
                     <tr style="background-color:yellow;">
                         <th style="font-weight:bold;font-size:18px;">Academic Year</th>

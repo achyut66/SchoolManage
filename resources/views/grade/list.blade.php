@@ -25,7 +25,7 @@
             <tr>
               <th>S.N.</th>
               <th>Grade</th>
-              <th>#</th>
+              <!-- <th>#</th> -->
             </tr>
           </thead>
           <tbody>
@@ -35,15 +35,19 @@
             <tr>
               <td>{{ $i++ }}</td>
               <td>{{ $title->name }}</td>
-              <td>
-              <a href="#frmedit" class="btn btn-sm btn-info" data-toggle="modal"
-   data-url="{{ route('edit-grade', $title->id) }}"
-   data-id="{{ $title->id }}">
-    <i class="fa fa-pencil"></i>
-</a>
+              <!-- <td>
+              <form action="{{ route('grade-destroy', $title->id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this grade?');">
+                @csrf
+                @method('DELETE')
 
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </form>
 
-              </td>
+              </td> -->
             </tr>
             @endforeach
             @endif

@@ -7,12 +7,12 @@ body {
     background: #f5f5f5;
 }
 .marksheet {
-    width: 900px;
+    width: 1100px;
     margin: auto;
     background: #fff;
     border: 2px solid #000;
     padding: 15px;
-    font-size: 12px;
+    font-size: 14px;
     color: #000;
 }
 .header {
@@ -86,8 +86,9 @@ body {
 }
 .dotted.wide { min-width: 200px; }
 .dotted.small { min-width: 50px; }
-</style>
 
+</style>
+<a class="btn btn-secondary" href="{{route('student-result-list')}}" style="margin-left: 25px;margin-bottom:3px;">Back To List</a>
 <div class="marksheet">
 
     {{-- HEADER --}}
@@ -113,6 +114,8 @@ body {
 
     </div>
 
+    <hr style="width:800px;"></hr>
+
     {{-- STUDENT DETAILS --}}
     <p class="info-paragraph">
         THE MARKS SECURED BY
@@ -126,13 +129,12 @@ body {
         OF
         <span class="dotted wide">
             {{ $school_profile->schoolname }},
-            {{ $school_profile->palika }},
-            {{ $school_profile->district }}
         </span>
         IN THE ANNUAL EXAMINATION OF
         <span class="dotted small" style="font-size:16px;">{{ $student->academic_year }}</span>
         GRADE
-        <span class="dotted small" style="font-size:16px;">{{ $student->grade }} .</span>
+        <span class="dotted small" style="font-size:16px;">{{ $student->grade }} </span>
+        ARE GIVEN BELOW.
     </p>
 
     {{-- MARKS TABLE --}}
@@ -182,6 +184,14 @@ body {
             <td>{{ $totalMarks }}</td>
             <td>PERCENTAGE</td>
             <td>{{ number_format($percentage, 2) }}%</td>
+            <td colspan="2">
+            @if($position)
+                POSITION: &nbsp;
+                <span class="badge">
+                    {{ $position }}
+                </span>
+            @endif
+            </td>
         </tr>
         <tr>
             <td>GPA</td>

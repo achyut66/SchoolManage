@@ -51,6 +51,7 @@ class TeachersPersonalDetail extends Model
         'is_class_teacher',
         'teaching_grade',
         'teaching_subject',
+        'section',
         'unique_id',
         'academic_year',
         'flag'

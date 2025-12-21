@@ -11,4 +11,10 @@ class GradeSetting extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function sections()
+    {
+        return $this->hasMany(SettingSection::class, 'id');
+    }
+
 }

@@ -92,7 +92,7 @@
                       </div>
 
                       <!-- Teacher Type -->
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <label class="font-weight-bold">Teacher Type</label>
                           <select class="form-control" name="is_class_teacher">
@@ -104,13 +104,14 @@
                       </div>
 
                       <!-- Teaching Grade -->
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <label class="font-weight-bold">
                             Teaching Grade <span class="text-danger">*</span>
                           </label>
                           <select name="teaching_grade"
                                   class="form-control"
+                                  id="grade"
                                   required>
                             <option value="">-- Select Grade --</option>
                             @foreach($curriculum as $grade)
@@ -122,8 +123,26 @@
                         </div>
                       </div>
 
+                       <!-- section -->
+                      
+                        <div class="col-md-2">
+                          <div class="form-group">
+                          <label class="font-weight-bold">
+                              Section
+                              <i class="fa fa-asterisk text-danger"></i>
+                          </label>
+
+                          <select name="section"
+                                  id="section"
+                                  class="form-control"
+                                  required>
+                              <option value="">-- Select Section --</option>
+                          </select>
+                          </div>
+                      </div>
+
                       <!-- Teaching Subject -->
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <label class="font-weight-bold">Teaching Subject</label>
                           <input type="text"
@@ -372,6 +391,34 @@ $(document).ready(function() {
       });
     }
   });
+
+  // section ajax
+
+  $('#grade').on('change', function () {
+        let grade = $(this).val();
+        let sectionSelect = $('#section');
+
+        sectionSelect.html('<option value="">Loading...</option>');
+
+        if (grade) {
+            $.ajax({
+                url: "{{ url('/get-sections') }}/" + grade,
+                type: "GET",
+                success: function (data) {
+                    sectionSelect.empty();
+                    sectionSelect.append('<option value="">-- Select Section --</option>');
+
+                    $.each(data, function (key, value) {
+                        sectionSelect.append(
+                            '<option value="' + value + '">' + value + '</option>'
+                        );
+                    });
+                }
+            });
+        } else {
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+        }
+    });
 
   $('.nepali_date').nepaliDatePicker({
     ndpYear: true,

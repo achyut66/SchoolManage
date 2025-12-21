@@ -160,7 +160,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('save-grade', [GradeSettingController::class,'store'])->name('save-grade');
   Route::get('edit-grade', [GradeSettingController::class,'edit'])->name('edit-grade');
   Route::post('update-grade/{id}', [GradeSettingController::class,'update'])->name('update-grade');
-  Route::get('delete-grade/{id}', [GradeSettingController::class,'destroy'])->name('delete-grade');
+  // Route::get('delete-grade/{id}', [GradeSettingController::class,'destroy'])->name('delete-grade');
+  Route::delete('/grade-destroy/{gradeSetting}', [GradeSettingController::class, 'destroy'])->name('grade-destroy');
+  Route::get('/get-sections/{grade}', [StudentParentDetailsController::class, 'getSections'])->name('get.sections');
+
+
 
   /*--------------------------------------------------------------
    Curriculum settings

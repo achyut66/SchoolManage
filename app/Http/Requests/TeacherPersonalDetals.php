@@ -59,6 +59,7 @@ class TeacherPersonalDetals extends FormRequest
             'is_class_teacher'                      => 'nullable',
             'teaching_grade'                        => 'nullable',
             'teaching_subject'                      => 'nullable',
+            'section'                               => 'nullable',
             'teachers_cit_upload'                   => 'nullable|mimes:jpg,png,jpeg,pdf|max:2048',
             'teachers_teacher_license_upload'       => 'nullable|mimes:jpg,png,jpeg,pdf|max:2048',
             'teachers_pan_upload'                   => 'nullable|mimes:jpg,png,jpeg,pdf|max:2048',

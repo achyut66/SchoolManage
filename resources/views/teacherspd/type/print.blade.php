@@ -109,6 +109,7 @@
                 <th>Teacher Code</th>
                 <th>Full Name</th>
                 <th>teaching Grade</th>
+                <th>section</th>
                 <th>Type</th>
                 <th>Address</th>
                 <th>Contact</th>
@@ -123,6 +124,7 @@
                     <td>{{ $teacher->unique_id }}</td>
                     <td>{{ $teacher->teachers_name_eng }}</td>
                     <td>{{ $teacher->teaching_grade }}</td>
+                    <td>{{ $teacher->section }}</td>
                     <td>
                     {{ $teacher->is_class_teacher == 1 
                         ? 'Class Teacher' 

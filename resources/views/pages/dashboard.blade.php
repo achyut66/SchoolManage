@@ -83,6 +83,137 @@
 
                     </div>
                 </div>
+                
+                <!-- students table -->
+                 <div class="row">
+                 <div class="col-md-6">
+  <div class="card">
+    <div class="card-header text-center text-white" style="background-color:#041750;">
+      Students Count (Grade / Section)
+    </div>
+
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="">
+          <tr>
+            <th class="text-center" style="font-weight: bold;">Grade</th>
+            <th class="text-center" style="font-weight: bold;">Section</th>
+            <th class="text-center" style="font-weight: bold;">Students</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @php $studentGrandTotal = 0; @endphp
+
+          @foreach($gradeSectionCounts as $grade => $sections)
+
+            @php
+              $gradeTotal = $sections->sum('total_students');
+              $studentGrandTotal += $gradeTotal;
+              $rowspan = count($sections) + 1; // +1 for total row
+            @endphp
+
+            @foreach($sections as $index => $row)
+              <tr>
+                {{-- Grade name only once --}}
+                @if($index == 0)
+                  <td rowspan="{{ $rowspan }}">
+                    <strong>{{ $grade }}</strong>
+                  </td>
+                @endif
+
+                <td>Section {{ $row->section }}</td>
+                <td class="text-center">
+                  {{ $row->total_students }}
+                </td>
+              </tr>
+            @endforeach
+
+            {{-- Grade total row --}}
+            <tr class="bg-light font-weight-bold">
+              <td class="text-right">Total</td>
+              <td class="text-center">{{ $gradeTotal }}</td>
+            </tr>
+
+          @endforeach
+        </tbody>
+
+        <tfoot class=" font-weight-bold">
+          <tr>
+            <td colspan="2" class="text-right">Grand Total</td>
+            <td class="text-center">{{ $studentGrandTotal }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ends here student table -->
+ <!-- teachers table start here  -->
+ <div class="col-md-6">
+  <div class="card">
+    <div class="card-header text-center text-white" style="background-color:#041750;">
+      Teachers Count (Grade / Section)
+    </div>
+
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="" style="font-weight: bold;">
+          <tr>
+            <th class="text-center" style="font-weight: bold;">Grade</th>
+            <th class="text-center" style="font-weight: bold;">Section</th>
+            <th class="text-center" style="font-weight: bold;">Teachers</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @php $teacherGrandTotal = 0; @endphp
+
+          @foreach($gradeSectionCountsTeacher as $grade => $sections)
+
+            @php
+              $gradeTotal = $sections->sum('total_teachers');
+              $teacherGrandTotal += $gradeTotal;
+              $rowspan = count($sections) + 1;
+            @endphp
+
+            @foreach($sections as $index => $row)
+              <tr>
+                @if($index == 0)
+                  <td rowspan="{{ $rowspan }}">
+                    <strong>{{ $grade }}</strong>
+                  </td>
+                @endif
+
+                <td>Section {{ $row->section }}</td>
+                <td class="text-center">
+                  {{ $row->total_teachers }}
+                </td>
+              </tr>
+            @endforeach
+
+            {{-- Grade total --}}
+            <tr class="bg-light font-weight-bold">
+              <td class="text-right">Total</td>
+              <td class="text-center">{{ $gradeTotal }}</td>
+            </tr>
+
+          @endforeach
+        </tbody>
+
+        <tfoot class=" font-weight-bold">
+          <tr>
+            <td colspan="2" class="text-right">Grand Total</td>
+            <td class="text-center">{{ $teacherGrandTotal }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+<!-- teachers table ends here -->
 
                 {{-- TEACHERS TABLES --}}
                 <div class="row">
