@@ -22,6 +22,8 @@ use App\Http\Controllers\StudentsEducationDetailController;
 use App\Http\Controllers\StudentsGuardianDetailsController;
 use App\Http\Controllers\CurriculmSettingController;
 use App\Http\Controllers\StudentResultController;
+use App\Http\Controllers\SettingStudentFeeController;
+use App\Http\Controllers\StudentFeePaymentController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -172,10 +174,15 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('curriculum', [CurriculmSettingController::class,'index'])->name('curriculum');
   Route::get('add-curriculum', [CurriculmSettingController::class,'create'])->name('add-curriculum');
   Route::post('save-curriculum', [CurriculmSettingController::class,'store'])->name('save-curriculum');
-  // Route::get('edit-curriculum/{grade}',[CurriculmSettingController::class, 'edit'])->name('edit-curriculum');
-  // Route::put('update-curriculum/{grade}',[CurriculmSettingController::class, 'update'])->name('update-curriculum');
-  // Route::get('delete-curriculum/{grade}', [CurriculmSettingController::class,'destroy'])->name('delete-curriculum');
   Route::delete('delete-curriculum/{grade}',[CurriculmSettingController::class, 'destroy'])->name('delete-curriculum');
+
+  /*--------------------------------------------------------------
+   Student Fee settings
+  ----------------------------------------------------------------*/
+  Route::get('studentfee', [SettingStudentFeeController::class,'index'])->name('studentfee');
+  Route::get('add-studentfee', [SettingStudentFeeController::class,'create'])->name('add-studentfee');
+  Route::post('save-studentfee', [SettingStudentFeeController::class,'store'])->name('save-studentfee');
+  Route::delete('delete-studentfee/{gradeId}',[SettingStudentFeeController::class, 'destroy'])->name('delete-studentfee');
 
 
   /*--------------------------------------------------------------
@@ -194,9 +201,7 @@ Print Pages
   Route::get('import-teacher-details', [TeachersPersonalDetailController::class,'importDetails'])->name('import-teacher-details');
   Route::post('save-import-details', [TeachersPersonalDetailController::class,'saveImportDetails'])->name('save-import-details');
   Route::get('teacherpd-prints', [TeachersPersonalDetailController::class,'printDetails'])->name('teacherpd-prints');
-
   Route::get('teacherpd-ajax-prints/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'printajaxDetails'])->name('teacherpd-ajax-prints');
-
   Route::get('teacherpd-export/{statusID}/{name}/{licenceNo}', [TeachersPersonalDetailController::class,'exportBySearch'])->name('teacherpd-export');
 
    // students details personal
@@ -217,6 +222,8 @@ Print Pages
    Route::get('students/{id}/parents', [StudentParentDetailsController::class, 'parentForm'])->name('students.parents');
 
    Route::get('student-details/students-record-transfer', [StudentParentDetailsController::class, 'recordTransfer'])->name('students-record-transfer');
+   Route::get('student-details/students-fee-collection', [StudentParentDetailsController::class, 'studentFeeCollection'])->name('students-fee-collection');
+
 
     /*--------------------------------------------------------------*/
 
@@ -265,4 +272,8 @@ Print Pages
   Route::post('student-result-update/{id}', [StudentResultController::class, 'update'])->name('student-result-update');
   Route::get('student-result-show/{id}', [StudentResultController::class, 'show'])->name('student-result-show');
   Route::get('/result/{student_id}/pdf', [StudentResultController::class, 'downloadPdf'])->name('result.pdf');
+
+  // student fee payment
+  Route::get('/student-details/fee-payment/{id}', [StudentFeePaymentController::class, 'index'])->name('student-fee-payment');
+
 });

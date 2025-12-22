@@ -384,5 +384,42 @@ class StudentParentDetailsController extends Controller
         // dd($curriculum);
     }
 
+    // student fee collector
+    public function studentFeeCollection(Request $request)
+    {
+        $grades = GradeSetting::get();
+        $students = StudentParentDetails::query();
+        $resultStudentIds = StudentResult::pluck('student_id')->toArray();
+        // Search by student name
+        if ($request->filled('search')) {
+            $students->where(
+                'student_full_name',
+                'LIKE',
+                '%' . $request->search . '%'
+            );
+        }
+        if ($request->filled('student_enrollment_class')) {
+            $students->where(
+                'student_enrollment_class',
+                $request->student_enrollment_class
+            );
+        }
+
+        if ($request->filled('student_enrollment_section')) {
+            $students->where(
+                'student_enrollment_section',
+                $request->student_enrollment_section
+            );
+        }
+
+        $sections = ['A','B','C','D','E','F'];
+        $students = $students
+            ->where('flag',1)
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        return view('student-account.list', compact('students', 'grades','resultStudentIds','sections'));
+    }
+
 }
 

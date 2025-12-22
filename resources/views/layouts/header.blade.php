@@ -81,6 +81,33 @@
            <i class="fa fa-file"></i> &nbsp; Parent's Record
          </a>
        </li>
+
+       <!-- account section -->
+       <div class="main-menu-name">
+          Financial Accounting
+       </div>
+       <hr style="height: 1px; border-color: yellow;width:200px;">
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_record_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-file"></i> &nbsp; Account & Fees
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="account_record_settings">
+           <ul class="nav flex-column sub-menu">
+             <li class="nav-item"> <a class="nav-link" href="{{ route('students-fee-collection') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Students Account</a></li>
+                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('teachers-as-type') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Filter Teacher's Data</a></li> -->
+                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Grade</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Subject</a></li> -->
+           </ul>
+         </div>
+       </li>
+       <!-- account section ends here -->
+
        <div class="main-menu-name">
           All Settings
        </div>
@@ -117,6 +144,25 @@
            </ul>
          </div>
        </li>
+
+       <!-- account setting -->
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-cogs"></i> &nbsp; Account Settings
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="account_settings">
+           <ul class="nav flex-column sub-menu">
+             <li class="nav-item"> <a class="nav-link" href="{{ route('studentfee') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Fee</a></li>
+                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's Salary</a></li> -->
+           </ul>
+         </div>
+       </li>
+       <!-- ends here -->
+
        <div class="main-menu-name">
           User's Management
        </div>
