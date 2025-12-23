@@ -88,8 +88,9 @@
             <th>Section</th>
             <th>Address</th>
             <th>Father's Name</th>
-            <th>Birth Place</th>
+            <!-- <th>Birth Place</th> -->
             <th>Email</th>
+            <th>Fee</th>
         </tr>
     </thead>
     <tbody>
@@ -107,8 +108,13 @@
                     {{ $student->s_municipality }}
                 </td>
                 <td>{{ $student->student_fathers_name }}</td>
-                <td>{{ $student->s_birthplace }}</td>
+                <!-- <td>{{ $student->s_birthplace }}</td> -->
                 <td>{{ $student->student_email }}</td>
+                <td>
+                  <span class="{{ $student->fee_cleared ? 'text-success' : 'text-danger' }}">
+                    {{ $student->fee_cleared ? 'Cleared' : 'Not Cleared' }}
+                  </span>
+                </td>
             </tr>
         @empty
             <tr>

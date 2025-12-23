@@ -26,24 +26,8 @@
         </div>
       @endif
 
-      {{-- Card Title --}}
-      <div class="card-title mb-2">
-        <a class="btn btn-sm btn-dark"
-           href="{{ route('student-parent-detail') }}">
-          <i class="fa fa-plus-circle"></i> Add new student
-        </a>
-
-        <!-- <a class="btn btn-sm btn-success"
-           href="#frmadd"
-           data-toggle="modal">
-          <i class="fa fa-file-excel-o"></i> Import
-        </a> -->
-      </div>
-
-      <hr>
-
       {{-- Search Form --}}
-      <form action="{{ route('student-parent-list') }}"
+      <form action="{{ route('paid-student-details') }}"
       method="GET"
       class="search-form">
 
@@ -97,20 +81,6 @@
               <i class="fa fa-search"></i> Search
             </button>
           </div>
-
-          <!-- Print & Export -->
-          <div class="col-md-4 text-right">
-            <a href="{{ route('students.print', request()->query()) }}"
-              class="btn btn-primary btn-sm">
-              <i class="fa fa-print"></i> Print
-            </a>
-
-            <a href="{{ route('students.export', request()->query()) }}"
-              class="btn btn-warning btn-sm">
-              <i class="fa fa-file-excel-o"></i> Excel
-            </a>
-          </div>
-
         </div>
       </form>
 
@@ -119,7 +89,7 @@
         <div class="alert alert-info mt-3">
           Showing results for:
           <strong>{{ request('search') }}</strong>
-          ({{ count($students) }} found)
+          ({{ count($studentPayments) }} found)
         </div>
       @endif
 
@@ -136,71 +106,29 @@
               <th>Full Name</th>
               <th>Grade</th>
               <th>Section</th>
-              <th>Address</th>
-              <th>Father's Name</th>
-              <!-- <th>Birth Place</th> -->
-              <th>Email</th>
+              <th>Last Paid Date</th>
               <th>Action</th>
-              <th>##</th>
             </tr>
           </thead>
 
           <tbody>
-            @forelse($students as $student)
+            @forelse($studentPayments as $student)
               <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $student->unique_id }}</td>
+                <td>{{ $student->school_id }}</td>
                 <td>{{ $student->academic_year }}</td>
-                <td>{{ $student->student_full_name }}</td>
-                <td>{{ $student->student_enrollment_class }}</td>
-                <td>{{ $student->student_enrollment_section }}</td>
-                <td>
-                  {{ $student->s_province }} -
-                  {{ $student->s_district }},
-                  {{ $student->s_municipality }}
-                </td>
-                <td>{{ $student->student_fathers_name }}</td>
-                <!-- <td>{{ $student->s_birthplace }}</td> -->
-                <td>{{ $student->student_email }}</td>
+                <td>{{ $student->student->student_full_name }}</td>
+                <td>{{ $student->grade }}</td>
+                <td>{{ $student->student->student_enrollment_section }}</td>
+                <td>{{ $student->payment_to_date}}</td>
+                
                 <td class="text-nowrap">
-                  <a class="btn btn-sm btn-secondary btn-rounded"
+                  <a class="btn btn-sm btn-warning btn-rounded"
                   title="View Student Details"
-                    href="{{ url('student-parent-detail-show', $student->id) }}">
+                    href="{{ route('paid-student-details-ledger', $student->student_id) }}">
                     <i class="fa fa-eye"></i>
                   </a>
-                  <!-- <a class="btn btn-sm btn-primary btn-rounded"
-                    href="{{ url('student-data/student-result-dash', $student->id) }}">
-                    <i class="fa fa-file"></i>
-                  </a> -->
-                  <a class="btn btn-sm btn-success btn-rounded
-                    {{ in_array($student->id, $resultStudentIds) ? 'disabled' : '' }}"
-                    href="{{ in_array($student->id, $resultStudentIds)
-                              ? 'javascript:void(0)'
-                              : url('student-data/student-result-dash', $student->id) }}"
-                    title="{{ in_array($student->id, $resultStudentIds)
-                              ? 'Result already exists'
-                              : 'Add Result' }}"
-                  >
-                      <i class="fa fa-graduation-cap"></i>
-                  </a>
-
-
-                  <form action="{{ route('disable-student-admission', $student->id) }}"
-                        method="POST"
-                        onsubmit="return confirm('Are you sure you want to dismiss the student admission?');"
-                        style="display:inline-block;">
-                      @csrf
-                      <button type="submit" class="btn btn-sm btn-danger btn-rounded" title="Remove Student Details">
-                          <i class="fa fa-close"></i>
-                      </button>
-                  </form>
                 </td>
-                <td>
-                  <span class="{{ $student->fee_cleared ? 'text-success' : 'text-danger' }}">
-                    {{ $student->fee_cleared ? 'Cleared' : 'Not Cleared' }}
-                  </span>
-                </td>
-
               </tr>
             @empty
               <tr>
@@ -213,7 +141,7 @@
         </table>
         <hr style="border-top:2px solid brown">
         <div class="d-flex justify-content-center mt-3">
-            {{ $students->links('vendor.pagination.prev-next') }}
+            {{ $studentPayments->links('vendor.pagination.prev-next') }}
         </div>
       </div>
     </div>

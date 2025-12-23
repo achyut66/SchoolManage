@@ -26,10 +26,33 @@
 
         {{-- ================= FEE BREAKDOWN ================= --}}
         @php
-          $totalFee = $fee_setting->sum('fee_amount');
-          $paidAmount = $payments->sum('total_paid_amount');
-          $dueAmount = $totalFee - $paidAmount;
-        @endphp
+    $totalFee = 0;
+    $calculatedFees = [];
+
+    foreach ($fee_setting as $fee) {
+        $feeName = trim(strtolower($fee->fee_name));
+
+        if ($feeName === 'admission fee') {
+            $amount = $fee->fee_amount;
+        } elseif ($feeName === 'exam fee') {
+            $amount = $fee->fee_amount * 4;
+        } elseif ($feeName === 'miscellenius') {
+            $amount = $fee->fee_amount;
+        } else {
+            $amount = $fee->fee_amount * 12;
+        }
+
+        $totalFee += $amount;
+
+        $calculatedFees[] = [
+            'name'   => $fee->fee_name,
+            'amount' => $amount,
+        ];
+    }
+
+    $paidAmount = $totalPaid; // ✅ only this student's total
+    $dueAmount  = max($totalFee - $paidAmount, 0);
+@endphp
 
         <table class="table table-bordered">
           <thead class="thead-light">
@@ -39,12 +62,13 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($fee_setting as $fee)
+            @foreach($calculatedFees as $fee)
               <tr>
-                <td>{{ $fee->fee_name }}</td>
-                <td class="text-right">{{ number_format($fee->fee_amount, 2) }}</td>
+                <td>{{ $fee['name'] }}</td>
+                <td class="text-right">{{ number_format($fee['amount'], 2) }}</td>
               </tr>
             @endforeach
+
             <tr class="bg-light">
               <th>Total Fee</th>
               <th class="text-right">{{ number_format($totalFee, 2) }}</th>
@@ -53,15 +77,16 @@
         </table>
 
         {{-- ================= PAYMENT FORM ================= --}}
-        <form action="" method="POST">
+        <form action="{{route('student-fee-payment-save')}}" method="POST">
           @csrf
 
           {{-- hidden --}}
           <input type="hidden" name="student_id" value="{{ $student_details->id }}">
           <input type="hidden" name="academic_year" value="{{ $student_details->academic_year }}">
           <input type="hidden" name="grade" value="{{ $student_details->student_enrollment_class }}">
+          <input type="hidden" name="school_id" value="{{ $student_details->unique_id }}">
 
-          <div class="row">
+          <div class="row" style="margin-top:10px;">
             <div class="col-md-4">
               <label>Total Paid Till Date</label>
               <input type="text"
@@ -90,12 +115,17 @@
                      readonly>
             </div>
           </div>
+          @php
+            $date = optional($payments)->payment_to_date
+                    ?? $student_details->created_at->format('Y-m-d');
+          @endphp
 
           <div class="row mt-3">
             <div class="col-md-4">
               <label>Payment From</label>
               <input type="date"
                      name="payment_from_date"
+                     value="{{ $date }}"
                      class="form-control"
                      required>
             </div>
@@ -112,7 +142,9 @@
               <label>Admission Date</label>
               <input type="date"
                      name="admission_date"
-                     class="form-control">
+                     value="{{ $student_details->created_at->format('Y-m-d') }}"
+                     class="form-control"
+                     readonly>
             </div>
           </div>
 
@@ -134,13 +166,25 @@
 {{-- ================= SCRIPT ================= --}}
 @push('scripts')
 <script>
-  document.getElementById('payAmount').addEventListener('input', function () {
-    let totalFee = {{ $totalFee }};
-    let paidTillNow = {{ $paidAmount }};
-    let currentPay = parseFloat(this.value) || 0;
+  document.addEventListener('DOMContentLoaded', function () {
+    const payInput = document.getElementById('payAmount');
+    const dueInput = document.getElementById('dueAmount');
 
-    let due = totalFee - (paidTillNow + currentPay);
-    document.getElementById('dueAmount').value = due >= 0 ? due.toFixed(2) : 0;
+    if (!payInput || !dueInput) return;
+
+    const totalFee = Number({{ $totalFee }});
+    const paidTillNow = Number({{ $paidAmount }});
+
+    payInput.addEventListener('input', function () {
+      const currentPay = parseFloat(this.value) || 0;
+      let due = totalFee - (paidTillNow + currentPay);
+
+      if (due < 0) due = 0;
+
+      dueInput.value = due.toFixed(2);
+    });
+
   });
 </script>
 @endpush
+

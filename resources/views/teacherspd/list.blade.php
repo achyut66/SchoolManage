@@ -91,21 +91,35 @@
                 <td>{{ $title->teachers_mobno}}</td>
                 <td><p class="btn btn-{{  $title->teacher_enroll_status == 1 ? 'success' : 'danger' }} btn-rounded btn-fw btn-sm">{{  $title->teacher_enroll_status == 1 ? 'Permanent' : 'Temporary' }}</p></td>
                 <td>
+
                   <a class="btn btn-sm btn-info btn-rounded" href="{{ URL('teachers-personal-detail-edit',$title->id)}}">
                     <i class="fa fa-pencil"></i>
                   </a>
+
                   <a class="btn btn-sm btn-secondary btn-rounded" href="{{ URL('teachers-profile-detail',$title->id)}}">
                     <i class="fa fa-eye"></i>
                   </a>
+
+                  <a class="btn btn-sm btn-warning btn-rounded open-leave-modal"
+                    style="margin-top:5px;"
+                    title="Is On leave"
+                    href="javascript:void(0);"
+                    data-id="{{ $title->id }}"
+                    data-name="{{ $title->teachers_name_eng }}">
+                    <i class="fa fa-file"></i>
+                  </a>
+
+
                   <form action="{{ URL('disable-teacher-information',$title->id)}}"
                         method="POST"
                         onsubmit="return confirm('Are you sure you want to remove teachers record ?');"
                         style="display:inline-block;">
                       @csrf
-                      <button type="submit" class="btn btn-sm btn-danger btn-rounded">
+                      <button type="submit" class="btn btn-sm btn-danger btn-rounded" style="margin-top:5px;">
                           <i class="fa fa-close"></i>
                       </button>
                   </form>
+
                 </td>
               </tr>
               @endforeach
@@ -121,6 +135,53 @@
       </div>
     </div>
   </div>
+  <!-- modal -->
+   <!-- Teacher Leave Modal -->
+<div class="modal fade" id="teacherLeaveModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Teacher Leave</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <form action="{{ route('teacher-leave-save') }}" method="POST">
+        @csrf
+        
+        <input type="text" name="teachers_id" id="teachers_id">
+
+        <div class="modal-body">
+          <p><strong>Teacher:</strong> <span id="teacher_name"></span></p>
+
+          <div class="form-group">
+            <label>Leave From</label>
+            <input type="date" name="leave_from" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Leave To</label>
+            <input type="date" name="leave_to" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Reason</label>
+            <textarea name="reason" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- ends here -->
 @yield('script')
 <script src="{{ asset('assets/js/search.js') }}"></script>
 <script>
@@ -129,6 +190,16 @@
       $("#print").hide();
     });
   });
+  // modal
+  $(document).on('click', '.open-leave-modal', function () {
+    let teacherId = $(this).data('id');
+    let teacherName = $(this).data('name');
+
+    $('#teachers_id').val(teacherId);
+    $('#teacher_name').text(teacherName);
+
+    $('#teacherLeaveModal').modal('show');
+});
 </script>
 <!-- content-wrapper ends -->
 @endsection

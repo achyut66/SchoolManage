@@ -84,6 +84,7 @@
   </div>
   @yield('javascript')
   @yield('scripts')
+  @stack('scripts')
 </body>
 <script src="{{ asset('assets/js/modal.js') }}"></script>
 <script src="{{ asset('assets/js/dropdown.js') }}"></script>

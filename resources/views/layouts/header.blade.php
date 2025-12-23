@@ -90,19 +90,20 @@
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_record_settings" aria-expanded="false"
            aria-controls="pages">
-           <i class="fa fa-file"></i> &nbsp; Account & Fees
+           <i class="fa fa-file"></i> &nbsp; Account Fees/Salary
            &nbsp;<i class="fa fa-angle-down"></i>
          </a>
          <div class="collapse" id="account_record_settings">
            <ul class="nav flex-column sub-menu">
              <li class="nav-item"> <a class="nav-link" href="{{ route('students-fee-collection') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Students Account</a></li>
-                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('teachers-as-type') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Filter Teacher's Data</a></li> -->
-                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Grade</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('paid-student-details') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Ledger</a></li>
+                   <hr style="border:2px solid black; width:100px;">
                    <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Subject</a></li> -->
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's Account</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's Ledger</a></li>
            </ul>
          </div>
        </li>
@@ -156,8 +157,8 @@
            <ul class="nav flex-column sub-menu">
              <li class="nav-item"> <a class="nav-link" href="{{ route('studentfee') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Student's Fee</a></li>
-                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's Salary</a></li> -->
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's Salary</a></li>
            </ul>
          </div>
        </li>

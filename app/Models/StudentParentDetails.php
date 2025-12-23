@@ -32,6 +32,7 @@ class StudentParentDetails extends Model
         's_bccopy',
         'unique_id',
         'academic_year',
-        'flag'
+        'flag',
+        'fee_cleared'
     ];
 }

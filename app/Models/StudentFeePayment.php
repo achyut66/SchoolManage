@@ -20,4 +20,10 @@ class StudentFeePayment extends Model
         'total_paid_amount',
         'due_amount',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(StudentParentDetails::class, 'student_id');
+    }
+
 }

@@ -109,6 +109,7 @@ class StudentParentDetailsController extends Controller
             'student_contact'            => 'nullable|string',
             's_bccopy'                   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'flag'                       => '1',
+            'fee_cleared'                => '0',
         ]);
         $validated['flag'] = 1;
         // dd($validated);
@@ -415,7 +416,8 @@ class StudentParentDetailsController extends Controller
         $sections = ['A','B','C','D','E','F'];
         $students = $students
             ->where('flag',1)
-            ->orderBy('id', 'desc')
+            ->where('fee_cleared',0)
+            ->orderBy('id', 'desc') 
             ->paginate(10)
             ->withQueryString();
         return view('student-account.list', compact('students', 'grades','resultStudentIds','sections'));

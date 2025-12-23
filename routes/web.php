@@ -24,6 +24,7 @@ use App\Http\Controllers\CurriculmSettingController;
 use App\Http\Controllers\StudentResultController;
 use App\Http\Controllers\SettingStudentFeeController;
 use App\Http\Controllers\StudentFeePaymentController;
+use App\Http\COntrollers\TeacherLeaveController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -223,10 +224,9 @@ Print Pages
 
    Route::get('student-details/students-record-transfer', [StudentParentDetailsController::class, 'recordTransfer'])->name('students-record-transfer');
    Route::get('student-details/students-fee-collection', [StudentParentDetailsController::class, 'studentFeeCollection'])->name('students-fee-collection');
-
+   Route::get('student-details/students-fee-paid-list', [StudentParentDetailsController::class, 'goToPaidList'])->name('students-fee-paid-list');
 
     /*--------------------------------------------------------------*/
-
      // students details educational
    /*----------------------------------------------------------------*/
    Route::get('students/{id}/education',[StudentsEducationDetailController::class, 'create'])->name('students.education');
@@ -261,9 +261,8 @@ Print Pages
   
   Route::post('disable-admission/{id}',[StudentParentDetailsController::class, 'disableAdmission'])->name('disable-student-admission');
   Route::post('disable-teacher-information/{id}',[TeachersPersonalDetailController::class, 'disableTeacherInformation'])->name('disable-teacher-information');
-
+  
   // student result
-
   Route::get('student-data/student-result-dash/{id}', [StudentParentDetailsController::class, 'goToResultAdd'])->name('student-result-add');
   
   Route::post('student-result-save', [StudentResultController::class, 'store'])->name('student-result-save');
@@ -275,5 +274,13 @@ Print Pages
 
   // student fee payment
   Route::get('/student-details/fee-payment/{id}', [StudentFeePaymentController::class, 'index'])->name('student-fee-payment');
+  Route::post('/student-details/fee-payment', [StudentFeePaymentController::class, 'store'])->name('student-fee-payment-save');
+  Route::get('/student-details/paid-students-details', [StudentFeePaymentController::class, 'goToPaidList'])->name('paid-student-details');
+  Route::get('/student-details/paid-students-details/ledger/{id}', [StudentFeePaymentController::class, 'gotoLedger'])->name('paid-student-details-ledger');
+  Route::get('/student-details/paid-students-details/ledgerPrint/{id}', [StudentFeePaymentController::class, 'gotoLedgerPrint'])->name('paid-student-details-ledgerPrint');
+
+  // teacher in leave
+  Route::post('/teacher-leave/store', [TeacherLeaveController::class, 'store'])
+  ->name('teacher-leave-save');
 
 });
