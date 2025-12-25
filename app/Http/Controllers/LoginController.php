@@ -33,6 +33,7 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
         //check user is active or not
+        // dd('here');
         $request->validate([
             'email'     => 'required',
             'password'  => 'required',
@@ -50,7 +51,7 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($request->only($login_type, 'password'))) {
-            return redirect()->intended('dashboard');
+            return redirect()->route('dashboard');
         }
         return redirect("login")->withSuccess('Login details are not valid');
     }

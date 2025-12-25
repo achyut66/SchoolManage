@@ -7,8 +7,10 @@ use App\Models\SchoolDetails;
 use App\Models\TeachersPersonalDetail;
 use App\Models\StudentParentDetails;
 use App\Models\GradeSetting;
+use App\Models\TeacherLeave;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -17,26 +19,37 @@ class DashboardController extends Controller
         $count         = SchoolDetails::count();
         $tot_school    = SchoolDetails::all();
 
-        $tot_steachers = TeachersPersonalDetail::where('teacher_enroll_status', 1)->count();
-        $tot_ateachers = TeachersPersonalDetail::where('teacher_enroll_status', 2)->count();
-        $tot_teachers  = TeachersPersonalDetail::count();
+        // teachers on leave
+        $today = Carbon::today()->toDateString();
+        // dd($today);
+        $on_leave = TeacherLeave::with('teacher')
+        ->whereDate('leave_from', '<=', $today)
+        ->whereDate('leave_to', '>=', $today)
+        ->get();
+        // dd($on_leave);
 
-        $sthai_teacher  = TeachersPersonalDetail::where('teacher_enroll_status', 1)->get();
-        $asthai_teacher = TeachersPersonalDetail::where('teacher_enroll_status', 2)->get();
+        $tot_steachers = TeachersPersonalDetail::where('teacher_enroll_status', 1)->where('flag', 1)->count();
+        $tot_ateachers = TeachersPersonalDetail::where('teacher_enroll_status', 2)->where('flag', 1)->count();
+        $tot_teachers  = TeachersPersonalDetail::where('flag', 1)->count();
 
-        $tot_students = StudentParentDetails::count();
+        $sthai_teacher  = TeachersPersonalDetail::where('teacher_enroll_status', 1)->where('flag', 1)->get();
+        $asthai_teacher = TeachersPersonalDetail::where('teacher_enroll_status', 2)->where('flag', 1)->get();
+
+        $tot_students = StudentParentDetails::where('flag', 1)->count();
         $grade        = GradeSetting::all();
 
         $studentsByGrade = StudentParentDetails::selectRaw(
             'student_enrollment_class as grade, COUNT(*) as total'
         )
         ->groupBy('student_enrollment_class')
+        ->where('flag', 1)
         ->get();
 
         $teachersByGrade = TeachersPersonalDetail::selectRaw(
             'teaching_grade as grade, COUNT(*) as total'
         )
         ->groupBy('teaching_grade')
+        ->where('flag', 1)
         ->get();
 
         // grade and section with student
@@ -83,7 +96,8 @@ class DashboardController extends Controller
             'studentsByGrade',
             'teachersByGrade',
             'gradeSectionCounts',
-            'gradeSectionCountsTeacher'
+            'gradeSectionCountsTeacher',
+            'on_leave'
         ));
     }
 }

@@ -54,7 +54,8 @@ class TeachersPersonalDetail extends Model
         'section',
         'unique_id',
         'academic_year',
-        'flag'
+        'flag',
+        'salary_cleared'
 
     ];
 

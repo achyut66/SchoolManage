@@ -24,7 +24,11 @@ use App\Http\Controllers\CurriculmSettingController;
 use App\Http\Controllers\StudentResultController;
 use App\Http\Controllers\SettingStudentFeeController;
 use App\Http\Controllers\StudentFeePaymentController;
-use App\Http\COntrollers\TeacherLeaveController;
+use App\Http\Controllers\TeacherLeaveController;
+use App\Http\Controllers\TeachersSalaryPaymentController;
+use App\Http\Controllers\SettingTeachersSalary;
+use App\Http\Controllers\OtherStaffDetailsController;
+use App\Http\Controllers\OtherStaffPaymentController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -108,6 +112,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('teachers-details-export/', [TeachersPersonalDetailController::class,'export'])->name('teachers-details-export');//export
   Route::post('teacher-search', [TeachersPersonalDetailController::class,'search'])->name('teacher-search');
   Route::get('convert-date', [TeachersPersonalDetailController::class,'convertBSTOAD'])->name('convert-date');
+  Route::get('teachers-account', [TeachersPersonalDetailController::class,'teachersSalaryCollection'])->name('teachers-account');
 
    /*--------------------------------------------------------------
   // teachers education info collection
@@ -184,6 +189,15 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('add-studentfee', [SettingStudentFeeController::class,'create'])->name('add-studentfee');
   Route::post('save-studentfee', [SettingStudentFeeController::class,'store'])->name('save-studentfee');
   Route::delete('delete-studentfee/{gradeId}',[SettingStudentFeeController::class, 'destroy'])->name('delete-studentfee');
+
+  /*--------------------------------------------------------------
+   Teacher Salary settings
+  ----------------------------------------------------------------*/
+  
+  Route::get('teacherssalary', [SettingTeachersSalary::class,'index'])->name('teacherssalary');
+  Route::get('add-teacherssalary', [SettingTeachersSalary::class,'create'])->name('add-teacherssalary');
+  Route::post('save-teacherssalary', [SettingTeachersSalary::class,'store'])->name('save-teacherssalary');
+  Route::delete('delete-teacherssalary/{gradeId}',[SettingTeachersSalary::class, 'destroy'])->name('delete-teacherssalary');
 
 
   /*--------------------------------------------------------------
@@ -279,8 +293,31 @@ Print Pages
   Route::get('/student-details/paid-students-details/ledger/{id}', [StudentFeePaymentController::class, 'gotoLedger'])->name('paid-student-details-ledger');
   Route::get('/student-details/paid-students-details/ledgerPrint/{id}', [StudentFeePaymentController::class, 'gotoLedgerPrint'])->name('paid-student-details-ledgerPrint');
 
+  // teachers salary payment
+  Route::get('/teacher-details/salary-payment/{id}', [TeachersSalaryPaymentController::class, 'index'])->name('teachers-salary-payment');
+  Route::post('/teacher-details/salary-payment', [TeachersSalaryPaymentController::class, 'store'])->name('teachers-salary-payment-save');
+  Route::get('/teacher-details/paid-teachers-details', [TeachersSalaryPaymentController::class, 'goToPaidList'])->name('paid-teacher-details');
+  Route::get('/teacher-details/paid-teachers-details/ledger/{id}', [TeachersSalaryPaymentController::class, 'gotoLedger'])->name('paid-teachers-details-ledger');
+  Route::get('/teacher-details/paid-teachers-details/ledgerPrint/{id}', [TeachersSalaryPaymentController::class, 'gotoLedgerPrint'])->name('paid-teachers-details-ledgerPrint');
+  Route::get('/teacher-details/salarypaid-teachers-details',[TeachersSalaryPaymentController::class, 'goToPaidList'])->name('salarypaid-teachers-details');
+  Route::get('/teacher-details/salary-ledger/{id}',[TeachersSalaryPaymentController::class, 'gotoLedger'])->name('paid-teacher-details-ledger');
+  Route::get('/teacher-details/salary-ledgerPrint/{id}',[TeachersSalaryPaymentController::class, 'gotoLedgerPrint'])->name('paid-teacher-details-ledgerPrint');
+
   // teacher in leave
   Route::post('/teacher-leave/store', [TeacherLeaveController::class, 'store'])
   ->name('teacher-leave-save');
 
+  // other staff details
+  Route::get('/otherstaff/staff-details',[OtherStaffDetailsController::class,'index'])->name('other-staff-details');
+  Route::post('/otherstaff/staff-details-save',[OtherStaffDetailsController::class,'store'])->name('other-staff-details-save');
+  // Route::post('/otherstaff/staff-details-update/{id}',[OtherStaffDetailsController::class,'update'])->name('other-staff-details-update');
+  Route::post('/otherstaff/update', [OtherStaffDetailsController::class, 'update'])
+  ->name('other-staff-details-update');
+  Route::get('/otherstaff/make-payment/{id}',[OtherStaffDetailsController::class,'gotoPayment'])->name('other-staff-make-payment');
+
+  // other staff payment 
+
+  Route::post('other-staff/payment/', [OtherStaffPaymentController::class, 'store'])->name('other-staff-payment');
+  Route::get('other-staff/ledger/{id}', [OtherStaffPaymentController::class, 'gotoLedger'])->name('other-staff-ledger');
+  Route::get('other-staff/ledgerPrint/{id}', [OtherStaffPaymentController::class, 'gotoLedgerPrint'])->name('other-staff-ledgerPrint');
 });

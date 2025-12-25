@@ -14,7 +14,8 @@ class TeacherLeaveController extends Controller
             'teachers_id' => 'required|string',
             'leave_from' => 'required|string',
             'leave_to'   => 'required|string',
-            'reason'   => 'required|string'
+            'reason'   => 'required|string',
+            'academic_year'   => 'required|string'
         ]);
         
         TeacherLeave::create($validator->validated());

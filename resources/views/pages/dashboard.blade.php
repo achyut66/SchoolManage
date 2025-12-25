@@ -48,8 +48,55 @@
     </div>
     @endforeach
 </div>
-
+@auth
+@if(auth()->user()->role_id == 1)
 <hr>
+
+<!-- if teacher on leave -->
+<div class="card mb-4">
+    <div class="card-header text-white" style="background-color:#041750;">
+        <i class="fa fa-calendar-times"></i> Teachers on Leave Today
+    </div>
+
+    <div class="card-body p-0">
+        @if($on_leave->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Teacher Name</th>
+                            <th>Grade</th>
+                            <th>Contact</th>
+                            <th>Leave From</th>
+                            <th>Leave To</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($on_leave as $index => $leave)
+                            <tr style="background-color:#800000;color:white;">
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $leave->teacher->teachers_name_eng ?? '-' }}</td>
+                                <td>{{ $leave->teacher->teaching_grade ?? '-' }}</td>
+                                <td>{{ $leave->teacher->teachers_mobno ?? '-' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($leave->leave_from)->format('d M Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($leave->leave_to)->format('d M Y') }}</td>
+                                <td>{{ $leave->reason }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="p-3 text-center text-muted">
+                <i class="fa fa-check-circle text-success"></i>
+                No teachers are on leave today.
+            </div>
+        @endif
+    </div>
+</div>
+
 
                 {{-- PIE CHART --}}
                 <div class="row">
@@ -263,6 +310,8 @@
     </div>
     @endforeach
 </div>
+@endif
+@endauth
 
 @endsection
 

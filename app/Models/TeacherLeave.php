@@ -14,5 +14,11 @@ class TeacherLeave extends Model
         'leave_from',
         'leave_to',
         'reason',
+        'academic_year',
     ];
+
+    public function teacher()
+    {
+        return $this->belongsTo(TeachersPersonalDetail::class, 'teachers_id', 'id');
+    }
 }

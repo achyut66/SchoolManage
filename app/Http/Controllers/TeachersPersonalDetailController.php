@@ -111,6 +111,7 @@ class TeachersPersonalDetailController extends Controller
             );
         }
         $validated['flag'] = 1;
+        $validated['salary_cleared'] = 0;
         $ac_year = AcademicYear::where('flag', 1)->value('academic_year');
         $teacher = TeachersPersonalDetail::create($validated);
         $teacher_code = $t_code . '-T-' . str_pad($teacher->id, 4, '0', STR_PAD_LEFT);
@@ -411,5 +412,43 @@ class TeachersPersonalDetailController extends Controller
             'flag' => 0
         ]);
         return redirect()->back()->with('success', 'Teachers Information disabled successfully.');
+    }
+
+    public function teachersSalaryCollection(Request $request)
+    {
+        // dd('heer');
+        $query = TeachersPersonalDetail::query();
+
+        // 🔍 Search by Teacher Name (English)
+        if ($request->filled('teachers_name_english')) {
+            $query->where('teachers_name_eng', 'LIKE', '%' . $request->teachers_name_english . '%');
+        }
+
+        // 🔍 Search by Teacher Type (Class / Subject)
+        if ($request->filled('type')) {
+            $type = strtolower($request->type);
+
+            if ($type === 'class teacher') {
+                $query->where('is_class_teacher', 1);
+            } elseif ($type === 'subject teacher') {
+                $query->where('is_class_teacher', 2);
+            }
+        }
+
+        // 🔍 Search by Teaching Grade
+        if ($request->filled('teaching_grade')) {
+            $query->where('teaching_grade', $request->teaching_grade);
+        }
+        // search by section
+        if ($request->filled('section')) {
+            $query->where(
+                'section',
+                $request->section
+            );
+        }
+
+        $data = $query->where('flag',1)->where('salary_cleared', 0)->paginate(10)->withQueryString();
+        $grades = GradeSetting::all();
+        return view('teacher-account.list', compact('data','grades'));
     }
 }

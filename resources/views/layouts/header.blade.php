@@ -1,7 +1,8 @@
    <!-- partial:partials/_sidebar.html -->
+
    <nav class="sidebar sidebar-offcanvas" id="sidebar">
      <ul class="nav">
-
+     <!-- <div style="color:white"></div> -->
        <li class="nav-item">
          <div class="profile">
          @if(!empty($palikaProfile) && !empty($palikaProfile->logo))
@@ -11,11 +12,15 @@
               @endif
          </div>
        </li>
+
        <li class="nav-item">
          <a class="nav-link font-weight-bold active" href="{{route('dashboard')}}">
            <i class="fa fa-dashboard"></i>&nbsp; Dashboard
          </a>
        </li>
+       @auth
+       @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
+<!-- all records -->
        <div class="main-menu-name">
           All Records
        </div>
@@ -32,18 +37,10 @@
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's List</a></li>
                    <li class="nav-item"> <a class="nav-link" href="{{ route('teachers-as-type') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Filter Teacher's Data</a></li>
-                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Grade</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Teacher's As Subject</a></li> -->
            </ul>
          </div>
        </li>
-       <!-- <li class="nav-item">
-         <a class="nav-link font-weight-bold" href="{{ route('teachers-personal-list') }}">
-           <i class="fa fa-address-book"></i> &nbsp; Teacher's Record
-         </a>
-       </li> -->
+    
        <li class="nav-item">
        <a class="nav-link font-weight-bold" data-toggle="collapse" href="#student_record_settings" aria-expanded="false"
            aria-controls="pages">
@@ -81,8 +78,12 @@
            <i class="fa fa-file"></i> &nbsp; Parent's Record
          </a>
        </li>
+@endif
+@endauth
 
-       <!-- account section -->
+@auth
+@if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
+<!-- account section -->
        <div class="main-menu-name">
           Financial Accounting
        </div>
@@ -90,7 +91,7 @@
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_record_settings" aria-expanded="false"
            aria-controls="pages">
-           <i class="fa fa-file"></i> &nbsp; Account Fees/Salary
+           <i class="fa fa-file"></i> &nbsp; Fees / Salaries
            &nbsp;<i class="fa fa-angle-down"></i>
          </a>
          <div class="collapse" id="account_record_settings">
@@ -100,15 +101,24 @@
                    <li class="nav-item"> <a class="nav-link" href="{{ route('paid-student-details') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Student's Ledger</a></li>
                    <hr style="border:2px solid black; width:100px;">
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('teachers-account') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's Account</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('salarypaid-teachers-details') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's Ledger</a></li>
+                   <hr style="border:2px solid black; width:100px;">
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('other-staff-details') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Other Staffs Account</a></li>
+                   
+
            </ul>
          </div>
        </li>
-       <!-- account section ends here -->
-
+@endif
+@endauth
+<!-- account section ends here -->
+ <!-- all settings -->
+ @auth
+ @if(auth()->user()->role_id == 1)
        <div class="main-menu-name">
           All Settings
        </div>
@@ -145,7 +155,6 @@
            </ul>
          </div>
        </li>
-
        <!-- account setting -->
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_settings" aria-expanded="false"
@@ -157,13 +166,17 @@
            <ul class="nav flex-column sub-menu">
              <li class="nav-item"> <a class="nav-link" href="{{ route('studentfee') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Student's Fee</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('curriculum') }}"><i
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('teacherssalary') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's Salary</a></li>
            </ul>
          </div>
        </li>
        <!-- ends here -->
-
+       @endif
+       @endauth
+<!-- user management -->
+@auth
+@if(auth()->user()->role_id == 1)
        <div class="main-menu-name">
           User's Management
        </div>
@@ -193,10 +206,13 @@
            </ul>
          </div>
        </li>
+       
        <div class="main-menu-name">
           Profile Setting
        </div>
        <hr style="height: 1px; border-color: yellow;width:200px;">
+       @endif
+       @endauth
        @can('system-setup')
        <li class="nav-item">
          <a class="nav-link font-weight-bold" href="{{ route('system-config') }}">

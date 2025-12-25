@@ -105,6 +105,7 @@
                     title="Is On leave"
                     href="javascript:void(0);"
                     data-id="{{ $title->id }}"
+                    data-acyear="{{ $title->academic_year }}"
                     data-name="{{ $title->teachers_name_eng }}">
                     <i class="fa fa-file"></i>
                   </a>
@@ -151,7 +152,8 @@
       <form action="{{ route('teacher-leave-save') }}" method="POST">
         @csrf
         
-        <input type="text" name="teachers_id" id="teachers_id">
+        <input type="hidden" name="teachers_id" id="teachers_id">
+        <input type="hidden" name="academic_year" id="academic_year">
 
         <div class="modal-body">
           <p><strong>Teacher:</strong> <span id="teacher_name"></span></p>
@@ -194,9 +196,11 @@
   $(document).on('click', '.open-leave-modal', function () {
     let teacherId = $(this).data('id');
     let teacherName = $(this).data('name');
+    let academicYear = $(this).data('acyear');
 
     $('#teachers_id').val(teacherId);
     $('#teacher_name').text(teacherName);
+    $('#academic_year').val(academicYear);
 
     $('#teacherLeaveModal').modal('show');
 });
