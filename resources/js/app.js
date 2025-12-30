@@ -8,6 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+
+flatpickr(".flatpickr", {
+    dateFormat: "Y-m-d"
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

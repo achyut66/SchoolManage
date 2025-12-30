@@ -15,11 +15,13 @@
   <link href="{{asset('assets/nepali-date-picker/css/nepali.datepicker.v3.7.min.css') }}" rel="stylesheet"
     type="text/css" />
   <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 
 
 </head>
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@stack('scripts')
 <body class="sidebar-fixed">
   
   <!-- <div id="loader" class="lds-dual-ring overlay"></div> -->

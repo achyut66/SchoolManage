@@ -29,6 +29,9 @@ use App\Http\Controllers\TeachersSalaryPaymentController;
 use App\Http\Controllers\SettingTeachersSalary;
 use App\Http\Controllers\OtherStaffDetailsController;
 use App\Http\Controllers\OtherStaffPaymentController;
+use App\Http\Controllers\ExamSettingController;
+use App\Http\Controllers\ExamScheduleController;
+use App\Http\Controllers\ExamTypeResultController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -231,6 +234,8 @@ Print Pages
    Route::post('/student-parent-search',[StudentParentDetailsController::class, 'search'])->name('student-parent-search');
    Route::get('/students-print', [StudentParentDetailsController::class, 'print'])->name('students.print');
    Route::get('/students-export', [StudentParentDetailsController::class, 'export'])->name('students.export');
+   Route::get('/students/students-result-dashboard', [StudentParentDetailsController::class, 'studentsExam'])->name('students-result-dashboard');
+
 
    Route::get('students/{id}/personal',[StudentParentDetailsController::class, 'personalForm'])->name('students.personal');
    Route::get('students/{id}/education', [StudentParentDetailsController::class, 'educationForm'])->name('students.education');
@@ -277,7 +282,7 @@ Print Pages
   Route::post('disable-teacher-information/{id}',[TeachersPersonalDetailController::class, 'disableTeacherInformation'])->name('disable-teacher-information');
   
   // student result
-  Route::get('student-data/student-result-dash/{id}', [StudentParentDetailsController::class, 'goToResultAdd'])->name('student-result-add');
+  Route::get('student-data/student-result-dash/{id}/{typeId}', [StudentParentDetailsController::class, 'goToResultAdd'])->name('student-result-add');
   
   Route::post('student-result-save', [StudentResultController::class, 'store'])->name('student-result-save');
   Route::get('student-result-list', [StudentResultController::class, 'index'])->name('student-result-list');
@@ -310,14 +315,33 @@ Print Pages
   // other staff details
   Route::get('/otherstaff/staff-details',[OtherStaffDetailsController::class,'index'])->name('other-staff-details');
   Route::post('/otherstaff/staff-details-save',[OtherStaffDetailsController::class,'store'])->name('other-staff-details-save');
-  // Route::post('/otherstaff/staff-details-update/{id}',[OtherStaffDetailsController::class,'update'])->name('other-staff-details-update');
   Route::post('/otherstaff/update', [OtherStaffDetailsController::class, 'update'])
   ->name('other-staff-details-update');
   Route::get('/otherstaff/make-payment/{id}',[OtherStaffDetailsController::class,'gotoPayment'])->name('other-staff-make-payment');
 
   // other staff payment 
-
   Route::post('other-staff/payment/', [OtherStaffPaymentController::class, 'store'])->name('other-staff-payment');
   Route::get('other-staff/ledger/{id}', [OtherStaffPaymentController::class, 'gotoLedger'])->name('other-staff-ledger');
   Route::get('other-staff/ledgerPrint/{id}', [OtherStaffPaymentController::class, 'gotoLedgerPrint'])->name('other-staff-ledgerPrint');
+
+  // exam settings
+  Route::get('exam/exam-setting', [ExamSettingController::class, 'index'])->name('exam-setting');
+  Route::get('exam/add-exam-setting', [ExamSettingController::class, 'create'])->name('add-exam-setting');
+  Route::post('exam/save-exam-setting', [ExamSettingController::class, 'store'])->name('save-exam-setting');
+  Route::get('exam/edit-exam-setting', [ExamSettingController::class, 'edit'])->name('edit-exam-setting');
+  Route::post('exam/update-exam-setting/{id}', [ExamSettingController::class, 'update'])->name('update-exam-setting');
+  Route::delete('exam/delete-exam-setting/{id}', [ExamSettingController::class, 'destroy'])->name('delete-exam-setting');
+
+  // exam schedule setting
+
+  Route::get('exam/schedule-setting', [ExamScheduleController::class, 'index'])->name('schedule-setting');
+  Route::get('exam/add-schedule-setting', [ExamScheduleController::class, 'create'])->name('add-schedule-setting');
+  Route::post('exam/save-schedule-setting', [ExamScheduleController::class, 'store'])->name('save-schedule-setting');
+  Route::get('exam/edit-schedule-setting', [ExamScheduleController::class, 'edit'])->name('edit-schedule-setting');
+  Route::post('exam/update-schedule-setting/{id}', [ExamScheduleController::class, 'update'])->name('update-schedule-setting');
+  Route::delete('exam/delete-schedule-setting/{id}', [ExamScheduleController::class, 'destroy'])->name('delete-schedule-setting');
+
+  // exam type result
+  Route::post('exam/save-exam-type-result', [ExamTypeResultController::class, 'store'])->name('save-exam-type-result');
 });
+

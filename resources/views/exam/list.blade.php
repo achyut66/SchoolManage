@@ -26,24 +26,14 @@
         </div>
       @endif
 
-      {{-- Card Title --}}
-      <div class="card-title mb-2">
-        <a class="btn btn-sm btn-dark"
-           href="{{ route('student-parent-detail') }}">
-          <i class="fa fa-plus-circle"></i> Add new student
-        </a>
-
-        <!-- <a class="btn btn-sm btn-success"
-           href="#frmadd"
-           data-toggle="modal">
-          <i class="fa fa-file-excel-o"></i> Import
-        </a> -->
-      </div>
-
-      <hr>
+      @if (session('error'))
+          <script>
+              alert("{{ session('error') }}");
+          </script>
+      @endif
 
       {{-- Search Form --}}
-      <form action="{{ route('student-parent-list') }}"
+      <form action="{{ route('students-result-dashboard') }}"
       method="GET"
       class="search-form">
 
@@ -98,19 +88,6 @@
             </button>
           </div>
 
-          <!-- Print & Export -->
-          <div class="col-md-4 text-right">
-            <a href="{{ route('students.print', request()->query()) }}"
-              class="btn btn-primary btn-sm">
-              <i class="fa fa-print"></i> Print
-            </a>
-
-            <a href="{{ route('students.export', request()->query()) }}"
-              class="btn btn-warning btn-sm">
-              <i class="fa fa-file-excel-o"></i> Excel
-            </a>
-          </div>
-
         </div>
       </form>
 
@@ -136,12 +113,7 @@
               <th>Full Name</th>
               <th>Grade</th>
               <th>Section</th>
-              <th>Address</th>
-              <th>Father's Name</th>
-              <!-- <th>Birth Place</th> -->
-              <th>Email</th>
               <th>Action</th>
-              <th>##</th>
             </tr>
           </thead>
 
@@ -154,35 +126,17 @@
                 <td>{{ $student->student_full_name }}</td>
                 <td>{{ $student->student_enrollment_class }}</td>
                 <td>{{ $student->student_enrollment_section }}</td>
-                <td>
-                  {{ $student->s_province }} -
-                  {{ $student->s_district }},
-                  {{ $student->s_municipality }}
-                </td>
-                <td>{{ $student->student_fathers_name }}</td>
-                <!-- <td>{{ $student->s_birthplace }}</td> -->
-                <td>{{ $student->student_email }}</td>
                 <td class="text-nowrap">
-                  <a class="btn btn-sm btn-secondary btn-rounded"
-                  title="View Student Details"
-                    href="{{ url('student-parent-detail-show', $student->id) }}">
-                    <i class="fa fa-eye"></i>
+                  
+                  <a class="btn btn-sm btn-success btn-rounded openResultModal"
+                    href="javascript:void(0)"
+                    data-url="{{ url('student-data/student-result-dash', $student->id) }}"
+                    data-id="{{$student->id}}"
+                    data-academic-year="{{$student->academic_year}}"
+                  >
+                      <i class="fa fa-graduation-cap"></i>
                   </a>
 
-                  <form action="{{ route('disable-student-admission', $student->id) }}"
-                        method="POST"
-                        onsubmit="return confirm('Are you sure you want to dismiss the student admission?');"
-                        style="display:inline-block;">
-                      @csrf
-                      <button type="submit" class="btn btn-sm btn-danger btn-rounded" title="Remove Student Details">
-                          <i class="fa fa-close"></i>
-                      </button>
-                  </form>
-                </td>
-                <td>
-                  <span class="{{ $student->fee_cleared ? 'text-success' : 'text-danger' }}">
-                    {{ $student->fee_cleared ? 'Cleared' : 'Not Cleared' }}
-                  </span>
                 </td>
 
               </tr>
@@ -203,6 +157,63 @@
     </div>
   </div>
 </div>
+<!-- modal open before input marks -->
+<form id="examResultForm" method="POST" action="{{ route('save-exam-type-result') }}">
+    @csrf
+
+    <div class="modal fade" id="resultConfirmModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Exam Type</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="student_id" id="student_id">
+                    <input type="hidden" name="academic_year" id="academic_year">
+
+                    <select class="form-control" name="exam_type_id" required>
+                        <option value="">--select--</option>
+                        @foreach ($exam as $ex)
+                            <option value="{{ $ex->exam_id }}">
+                                {{ $ex->exam->exam_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <!-- IMPORTANT: button type="submit" -->
+                    <button type="submit" class="btn btn-success">
+                        Yes, Continue
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+$(document).on('click', '.openResultModal:not(.disabled)', function () {
+    // let url = $(this).data('url');
+    let id = $(this).data('id');
+    let academic_year = $(this).data('academic-year');
+    // console.log(id);
+    $('#student_id').val(id);
+    $('#academic_year').val(academic_year);
+    // $('#examResultForm').attr('href', url);
+    $('#resultConfirmModal').modal('show');
+});
+</script>
+
 
 @endsection
 

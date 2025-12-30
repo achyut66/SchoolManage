@@ -15,12 +15,15 @@ use App\Models\AcademicYear;
 use App\Models\StudentMigration;
 use App\Models\SettingCurriculum;
 use App\Models\StudentResult;
+use App\Models\SettingExam;
 
 use App\Exports\TeacherExport;
 use App\Exports\ExportTeachersDetailsBySearch;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use App\Models\SettingSection;
+use App\Models\ExamScheduleSetting;
+use App\Models\ExamTypeResult;
 
 use Maatwebsite\Excel\Concerns\ToModel;
 
@@ -370,20 +373,29 @@ class StudentParentDetailsController extends Controller
         return redirect()->back()->with('success', 'Admission disabled successfully.');
     }
 
-    // result
-    public function goToResultAdd($id)
+//    result add
+    public function goToResultAdd($id, $typeId)
     {
         $student = StudentParentDetails::where('flag', 1)->findOrFail($id);
-        $result = StudentResult::where('student_id',$id)->first();
+
+        $result = StudentResult::where('student_id', $id)->first();
+
+        $type_name = SettingExam::findOrFail($typeId);
+        $name = $type_name->exam_name;
+
         $curriculum = SettingCurriculum::where(
             'grade',
             $student->student_enrollment_class
         )->get();
 
-        return view('result.add',compact('student','curriculum','result'));
-
-        // dd($curriculum);
+        return view('result.add', compact(
+            'student',
+            'curriculum',
+            'result',
+            'name'
+        ));
     }
+
 
     // student fee collector
     public function studentFeeCollection(Request $request)
@@ -421,6 +433,47 @@ class StudentParentDetailsController extends Controller
             ->paginate(10)
             ->withQueryString();
         return view('student-account.list', compact('students', 'grades','resultStudentIds','sections'));
+    }
+
+    // students exam record
+
+    public function studentsExam(Request $request)
+    {
+        {
+            $grades = GradeSetting::get();
+            $students = StudentParentDetails::query();
+            $exam =     ExamScheduleSetting::with('exam')->get();
+            // dd($exam);
+            $resultStudentIds = StudentResult::pluck('student_id')->toArray();
+            if ($request->filled('search')) {
+                $students->where(
+                    'student_full_name',
+                    'LIKE',
+                    '%' . $request->search . '%'
+                );
+            }
+            if ($request->filled('student_enrollment_class')) {
+                $students->where(
+                    'student_enrollment_class',
+                    $request->student_enrollment_class
+                );
+            }
+    
+            if ($request->filled('student_enrollment_section')) {
+                $students->where(
+                    'student_enrollment_section',
+                    $request->student_enrollment_section
+                );
+            }
+    
+            $sections = ['A','B','C','D','E','F'];
+            $students = $students
+                ->where('flag',1)
+                ->orderBy('id', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+            return view('exam.list', compact('students', 'grades','resultStudentIds','sections','exam'));
+        } 
     }
 
 }

@@ -53,8 +53,8 @@
                    class="fa fa-hand-o-right"></i>&nbsp; Student's List</a></li>
                    <li class="nav-item"> <a class="nav-link" href="{{ route('students-record-transfer') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Student's Transfer</a></li>
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('student-result-list') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Student's Result</a></li>
+                   <!-- <li class="nav-item"> <a class="nav-link" href="{{ route('student-result-list') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Student's Result</a></li> -->
            </ul>
          </div>
        </li>
@@ -81,6 +81,48 @@
 @endif
 @endauth
 
+<div class="main-menu-name">
+          Exam Management
+       </div>
+       <hr style="height: 1px; border-color: yellow;width:200px;">
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#exam_management" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-clipboard"></i> &nbsp; Exam Record
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="exam_management">
+           <ul class="nav flex-column sub-menu">
+
+            <li class="nav-item"> <a class="nav-link" href="{{ route('students-result-dashboard') }}"><i
+                   class="fa fa-edit"></i>&nbsp; Marks Entry </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('student-result-list') }}"><i
+                   class="fa fa-graduation-cap"></i>&nbsp; Results </a></li>
+            <!-- <li class="nav-item"> <a class="nav-link" href="{{ URL :: to('/roles') }}"><i
+                   class="fa fa-file"></i>&nbsp; Marksheet </a></li> -->
+
+           </ul>
+         </div>
+       </li>
+
+       <!-- exam setting -->
+
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#exam_type" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-cogs"></i> &nbsp; Exam Setting
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="exam_type">
+           <ul class="nav flex-column sub-menu">
+           <li class="nav-item"> <a class="nav-link" href="{{ route('exam-setting') }}"><i
+           class="fa fa-hand-o-right"></i>&nbsp; Exam Type</a></li>
+           <li class="nav-item"> <a class="nav-link" href="{{ route('schedule-setting') }}"><i
+           class="fa fa-hand-o-right"></i>&nbsp; Exam Schedule</a></li>
+           </ul>
+         </div>
+       </li>
+
 @auth
 @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2)
 <!-- account section -->
@@ -91,25 +133,44 @@
        <li class="nav-item">
          <a class="nav-link font-weight-bold" data-toggle="collapse" href="#account_record_settings" aria-expanded="false"
            aria-controls="pages">
-           <i class="fa fa-file"></i> &nbsp; Fees / Salaries
+           <i class="fa fa-dollar"></i> &nbsp; Students A/C Record
            &nbsp;<i class="fa fa-angle-down"></i>
          </a>
          <div class="collapse" id="account_record_settings">
            <ul class="nav flex-column sub-menu">
-             <li class="nav-item"> <a class="nav-link" href="{{ route('students-fee-collection') }}"><i
+                  <li class="nav-item"> <a class="nav-link" href="{{ route('students-fee-collection') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Students Account</a></li>
                    <li class="nav-item"> <a class="nav-link" href="{{ route('paid-student-details') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Student's Ledger</a></li>
-                   <hr style="border:2px solid black; width:100px;">
+           </ul>
+         </div>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#teacher_account_record_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-dollar"></i> &nbsp; Teachers A/C Record
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="teacher_account_record_settings">
+           <ul class="nav flex-column sub-menu">
                    <li class="nav-item"> <a class="nav-link" href="{{ route('teachers-account') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's Account</a></li>
                    <li class="nav-item"> <a class="nav-link" href="{{ route('salarypaid-teachers-details') }}"><i
                    class="fa fa-hand-o-right"></i>&nbsp; Teacher's Ledger</a></li>
-                   <hr style="border:2px solid black; width:100px;">
-                   <li class="nav-item"> <a class="nav-link" href="{{ route('other-staff-details') }}"><i
-                   class="fa fa-hand-o-right"></i>&nbsp; Other Staffs Account</a></li>
-                   
+           </ul>
+         </div>
+       </li>
 
+       <li class="nav-item">
+         <a class="nav-link font-weight-bold" data-toggle="collapse" href="#other_staffs_record_settings" aria-expanded="false"
+           aria-controls="pages">
+           <i class="fa fa-dollar"></i> &nbsp; Staffs A/C Record
+           &nbsp;<i class="fa fa-angle-down"></i>
+         </a>
+         <div class="collapse" id="other_staffs_record_settings">
+           <ul class="nav flex-column sub-menu">
+                   <li class="nav-item"> <a class="nav-link" href="{{ route('other-staff-details') }}"><i
+                   class="fa fa-hand-o-right"></i>&nbsp; Other Staffs Account</a></li>   
            </ul>
          </div>
        </li>

@@ -9,6 +9,9 @@
             <div class="card-header bg-light text-center">
                 <strong>Student Result Entry</strong>
             </div>
+            <div class="card-header bg-red text-center" style="font-size:18px;background-color:red;">
+                <strong>{{$name}}</strong>
+            </div>
 
             <div class="card-body">
 
