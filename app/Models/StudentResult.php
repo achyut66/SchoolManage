@@ -17,6 +17,7 @@ class StudentResult extends Model
         'academic_year',
         'grade',
         'subjects',
+        'flag',
         'obtained_marks',
         'practical_marks',
         'exam_type_id'

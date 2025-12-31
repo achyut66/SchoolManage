@@ -290,6 +290,8 @@ Print Pages
   Route::post('student-result-update/{id}/{typeId}', [StudentResultController::class, 'update'])->name('student-result-update');
   Route::get('student-result-show/{id}/{typeId}', [StudentResultController::class, 'show'])->name('student-result-show');
   Route::get('/result/{student_id}/{typeId}/pdf', [StudentResultController::class, 'downloadPdf'])->name('result.pdf');
+  Route::get('/result/approval-by-principle', [StudentResultController::class, 'approvedBy'])->name('result.approval');
+  Route::post('/result/approval-save', [StudentResultController::class, 'doApprove'])->name('result.approved');
 
   // student fee payment
   Route::get('/student-details/fee-payment/{id}', [StudentFeePaymentController::class, 'index'])->name('student-fee-payment');

@@ -15,32 +15,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class StudentResultController extends Controller
 {
 
-    // public function index(Request $request)
-    // {
-    //     // dd('here');
-    //     $query = StudentResult::select(
-    //             'student_id',
-    //             'student_name',
-    //             'academic_year',
-    //             'grade',
-    //             \DB::raw('SUM(obtained_marks) as total_marks')
-    //         )
-    //         ->groupBy('student_id', 'student_name', 'academic_year', 'grade')->with('result');
-    //     // SEARCH BY STUDENT NAME
-    //     if ($request->filled('student_name')) {
-    //         $query->where('student_name', 'LIKE', '%' . $request->student_name . '%');
-    //     }
-    //     $results = $query
-    //     ->orderBy('student_name')
-    //     ->paginate(10)
-    //     ->withQueryString();
-    //     dd($results);
-
-
-    //     return view('result.list', compact('results'));
-    // }
     public function index(Request $request)
     {
+        // dd('here');
         $grade = GradeSetting::get();
         $scehdule = ExamScheduleSetting::with('exam')->get();
         // dd($scehdule);
@@ -83,8 +60,6 @@ class StudentResultController extends Controller
         return view('result.list', compact('results','grade','scehdule'));
     }
 
-
-
     public function store(Request $request)
     {
         // dd($request->all());
@@ -107,6 +82,7 @@ class StudentResultController extends Controller
                 'grade'           => $student->student_enrollment_class,
                 'subjects'        => $subject,
                 'exam_type_id'    => $request->exam_type_id,
+                'flag'            => 0,
                 'obtained_marks'  => $request->marks[$index],
                 'practical_marks' => $request->practical_marks[$index],
             ]);
@@ -114,9 +90,8 @@ class StudentResultController extends Controller
         return redirect('student-result-list')
         ->with('success', 'Student result saved successfully');
     }
-    /**
-     * View result of a student
-     */
+   
+
     public function show($student_id, $typeId)
     {
         // dd($typeId);
@@ -259,11 +234,6 @@ class StudentResultController extends Controller
         return $pdf->download('marksheet-'.$student->student_name.'.pdf');
     }
 
-
-
-    /**
-     * Edit result
-     */
     public function edit($student_id, $typeId)
     {
         // dd($typeId);
@@ -277,10 +247,6 @@ class StudentResultController extends Controller
         return view('result.edit', compact('student', 'results'));
     }
 
-
-    /**
-     * Update result
-     */
     public function update(Request $request, $student_id, $typeId)
     {
         $request->validate([
@@ -299,13 +265,55 @@ class StudentResultController extends Controller
         return redirect('student-result-list')->with('success', 'Result updated successfully');
     }
 
-    /**
-     * Delete result
-     */
     public function destroy($student_id)
     {
         AddStudentResult::where('student_id', $student_id)->delete();
 
         return redirect()->back()->with('success', 'Result deleted successfully');
     }
+
+    public function approvedBy()
+    {
+        $grade = GradeSetting::get();
+        $scehdule = ExamScheduleSetting::with('exam')->get();
+        $query = StudentResult::select(
+                'student_id',
+                'student_name',
+                'academic_year',
+                'exam_type_id',
+                'grade',
+                \DB::raw('SUM(obtained_marks) as total_marks')
+            )
+            ->groupBy(
+                'student_id',
+                'student_name',
+                'academic_year',
+                'exam_type_id',
+                'grade'
+            )
+            ->where('flag',0)
+            ->with('examType');
+
+        $results = $query
+            ->orderBy('student_name')
+            ->paginate(10);
+        // dd($results);
+
+        return view('approval.list', compact('results','grade','scehdule'));
+    }
+
+    public function doApprove(Request $request)
+    {
+        $app_by = ($request->approved_by);
+        $updated = StudentResult::where('student_id', $request->id)
+            ->where('exam_type_id', $request->typeId)
+            ->update(['flag' => 1,'approved_by' => $app_by]);
+
+        if ($updated) {
+            return back()->with('success', 'Result approved successfully');
+        }
+
+        return back()->with('error', 'No result found');
+    }
+
 }

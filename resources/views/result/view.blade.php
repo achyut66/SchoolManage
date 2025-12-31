@@ -106,7 +106,7 @@ body {
         </h4>
         
         <h3 style="text-decoration: underline;">MARK - SHEET</h3>
-        
+        @if ($student->flag == 1)
         <a href="{{ route('result.pdf', [
                         'student_id' => $student->student_id,
                         'typeId' => $student->exam_type_id
@@ -116,6 +116,7 @@ body {
                       title="Edit Result">
         <i class="fa fa-file-pdf-o"></i> Download PDF
         </a>
+        @endif
 
     </div>
 
@@ -217,10 +218,22 @@ body {
                     _______________________<br>
                     CHECKED BY:<br>
                 </td>
-                <td style="text-align:right;">
-                    _______________________<br>
-                    APPROVED BY:
-                </td>
+                @php
+                    $approvedResult = $results->firstWhere('flag', 1);
+                @endphp
+
+                @if ($approvedResult)
+                    <td style="text-align:right;">
+                        {{ $approvedResult->approved_by }}<br>
+                        APPROVED BY:
+                    </td>
+                @else
+                    <td style="text-align:right;">
+                        _______________________<br>
+                        APPROVED BY:
+                    </td>
+                @endif
+
             </tr>
         </table>
     </div>
