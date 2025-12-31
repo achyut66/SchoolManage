@@ -186,9 +186,10 @@ class StudentResultController extends Controller
         ]);
     }
 
-    public function downloadPdf($student_id)
+    public function downloadPdf($student_id, $typeId)
     {
-        $results = StudentResult::where('student_id', $student_id)->get();
+        $results = StudentResult::where('student_id', $student_id)->where('exam_type_id',$typeId)->with('examType')->get();
+        // $results = StudentResult::where('student_id', $student_id)->get();
         $info = StudentParentDetails::findOrFail($student_id);
         $dob = $info->student_dob;
         if ($results->isEmpty()) {
@@ -196,6 +197,7 @@ class StudentResultController extends Controller
         }
 
         $student = $results->first();
+        // dd($student);
         $school_profile = PalikaProfile::first();
 
         $totalMarks = $results->sum('obtained_marks') + $results->sum('practical_marks');

@@ -106,10 +106,14 @@ body {
         </h4>
         
         <h3 style="text-decoration: underline;">MARK - SHEET</h3>
-        <a href="{{ route('result.pdf', $student->student_id) }}"
-        class="btn btn-success"
-        target="_blank"
-        style="margin-top:-130px;margin-right:-700px;">
+        
+        <a href="{{ route('result.pdf', [
+                        'student_id' => $student->student_id,
+                        'typeId' => $student->exam_type_id
+                    ]) }}"
+                      class="btn btn-success"
+                      style="margin-top:-130px;margin-right:-700px;"
+                      title="Edit Result">
         <i class="fa fa-file-pdf-o"></i> Download PDF
         </a>
 

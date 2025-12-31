@@ -122,7 +122,7 @@ body {
         <span class="dotted wide">
             {{ $school_profile->schoolname }},
         </span>
-        IN THE ANNUAL EXAMINATION OF
+        IN THE <strong>{{ optional($results->first()->examType)->exam_name }}</strong> OF
         <span class="dotted small" style="font-size:16px;">{{ $student->academic_year }}</span>
         GRADE
         <span class="dotted small" style="font-size:16px;">{{ $student->grade }}</span>
