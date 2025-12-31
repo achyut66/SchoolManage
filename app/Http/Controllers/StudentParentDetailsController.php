@@ -382,6 +382,7 @@ class StudentParentDetailsController extends Controller
 
         $type_name = SettingExam::findOrFail($typeId);
         $name = $type_name->exam_name;
+        $type_id = $typeId;
 
         $curriculum = SettingCurriculum::where(
             'grade',
@@ -392,7 +393,8 @@ class StudentParentDetailsController extends Controller
             'student',
             'curriculum',
             'result',
-            'name'
+            'name',
+            'type_id'
         ));
     }
 

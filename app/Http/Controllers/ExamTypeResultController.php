@@ -29,6 +29,7 @@ class ExamTypeResultController extends Controller
             ->exists();
 
         if ($exists) {
+            alert("");
             return redirect()->back()
                 ->with('error', 'Result already exists for this exam type.');
         }

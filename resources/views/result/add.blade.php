@@ -36,6 +36,7 @@
                     @csrf
 
                     <input type="hidden" name="student_id" value="{{ $student->id }}">
+                    <input type="hidden" name="exam_type_id" value="{{ $type_id }}">
 
                     <table class="table table-bordered">
                         <thead class="bg-light">

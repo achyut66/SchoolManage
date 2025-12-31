@@ -24,7 +24,7 @@
         <form method="GET" action="{{ route('student-result-list') }}">
           <div class="row align-items-end">
 
-            <div class="col-md-4">
+            <div class="col-md-2">
               <label class="form-label">Student Name</label>
               <input type="text"
                      name="student_name"
@@ -34,16 +34,44 @@
             </div>
 
             <div class="col-md-2">
-              <button type="submit" class="btn btn-primary w-100">
-                <i class="fa fa-search"></i> Search
-              </button>
+                <label class="form-label">Grade</label>
+                <select name="grade" class="form-control">
+                    <option value="">--select--</option>
+                    @foreach ($grade as $g)
+                        <option value="{{ $g->name }}"
+                            {{ request('grade') == $g->name ? 'selected' : '' }}>
+                            {{ $g->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="col-md-2">
-              <a href="{{ route('student-result-list') }}"
-                 class="btn btn-secondary w-100">
-                Reset
-              </a>
+                <label class="form-label">Exam Type</label>
+                <select name="exam_type_id" class="form-control">
+                    <option value="">--select--</option>
+                    @foreach ($scehdule as $sch)
+                        <option value="{{ $sch->exam_id }}"
+                            {{ request('exam_type_id') == $sch->exam_id ? 'selected' : '' }}>
+                            {{ $sch->exam->exam_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- <div class="col-md-2">
+              <label class="form-label">Academic Year</label>
+              <input type="text"
+                     name="student_name"
+                     class="form-control"
+                     placeholder="Search by student name"
+                     value="{{ request('student_name') }}">
+            </div> -->
+
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="fa fa-search"></i> Search
+              </button>
             </div>
 
           </div>
@@ -59,6 +87,7 @@
                 <th width="40">S.N</th>
                 <th>Student Name</th>
                 <th>Grade</th>
+                <th>Exam Type</th>
                 <th>Academic Year</th>
                 <th>Total Marks</th>
                 <th width="130">Action</th>
@@ -71,6 +100,7 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $result->student_name }}</td>
                   <td>{{ $result->grade }}</td>
+                  <td>{{ $result->examType->exam_name }}</td>
                   <td>{{ $result->academic_year }}</td>
                   <td>
                     <span class="badge badge-success">
@@ -80,16 +110,23 @@
                   <td class="text-nowrap">
 
                     {{-- VIEW --}}
-                    <a href="{{ route('student-result-show',$result->student_id) }}"
-                       class="btn btn-sm btn-info"
-                       title="View Result">
+                    <a href="{{ route('student-result-show', [
+                        'id' => $result->student_id,
+                        'typeId' => $result->exam_type_id
+                    ]) }}"
+                      class="btn btn-sm btn-info"
+                      title="View Result">
                       <i class="fa fa-eye"></i>
                     </a>
 
                     {{-- EDIT --}}
-                    <a href="{{ route('student-result-edit', $result->student_id) }}"
-                       class="btn btn-sm btn-warning"
-                       title="Edit Result">
+
+                    <a href="{{ route('student-result-edit', [
+                        'id' => $result->student_id,
+                        'typeId' => $result->exam_type_id
+                    ]) }}"
+                      class="btn btn-sm btn-warning"
+                      title="Edit Result">
                       <i class="fa fa-edit"></i>
                     </a>
 

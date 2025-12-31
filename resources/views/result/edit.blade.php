@@ -41,8 +41,12 @@
         </div>
 
         {{-- EDIT FORM --}}
-        <form action="{{ route('student-result-update', $student->student_id) }}"
-              method="POST">
+       
+              <form method="POST"
+              action="{{ route('student-result-update', [
+                  'id'     => $student->student_id,
+                  'typeId' => $student->exam_type_id
+              ]) }}">
           @csrf
 
           <div class="table-responsive">

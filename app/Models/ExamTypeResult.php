@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\StudentParentDetails;
+use App\Models\StudentResult;
 
 class ExamTypeResult extends Model
 {
@@ -20,4 +21,14 @@ class ExamTypeResult extends Model
     {
         return $this->belongsTo(StudentParentDetails::class, 'student_id', 'id');
     }
+
+    public function studentResult()
+    {
+        return $this->belongsTo(
+            StudentResult::class,
+            'student_id',
+            'student_id'
+        );
+    }
+
 }

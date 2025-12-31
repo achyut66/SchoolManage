@@ -286,9 +286,9 @@ Print Pages
   
   Route::post('student-result-save', [StudentResultController::class, 'store'])->name('student-result-save');
   Route::get('student-result-list', [StudentResultController::class, 'index'])->name('student-result-list');
-  Route::get('student-result-edit/{id}', [StudentResultController::class, 'edit'])->name('student-result-edit');
-  Route::post('student-result-update/{id}', [StudentResultController::class, 'update'])->name('student-result-update');
-  Route::get('student-result-show/{id}', [StudentResultController::class, 'show'])->name('student-result-show');
+  Route::get('student-result-edit/{id}/{typeId}', [StudentResultController::class, 'edit'])->name('student-result-edit');
+  Route::post('student-result-update/{id}/{typeId}', [StudentResultController::class, 'update'])->name('student-result-update');
+  Route::get('student-result-show/{id}/{typeId}', [StudentResultController::class, 'show'])->name('student-result-show');
   Route::get('/result/{student_id}/pdf', [StudentResultController::class, 'downloadPdf'])->name('result.pdf');
 
   // student fee payment

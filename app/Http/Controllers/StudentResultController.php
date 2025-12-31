@@ -7,33 +7,83 @@ use App\Models\StudentResult;
 use App\Models\StudentParentDetails;
 use Illuminate\Support\Facades\DB;
 use App\Models\PalikaProfile;
+use App\Models\GradeSetting;
+use App\Models\ExamScheduleSetting;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class StudentResultController extends Controller
 {
 
+    // public function index(Request $request)
+    // {
+    //     // dd('here');
+    //     $query = StudentResult::select(
+    //             'student_id',
+    //             'student_name',
+    //             'academic_year',
+    //             'grade',
+    //             \DB::raw('SUM(obtained_marks) as total_marks')
+    //         )
+    //         ->groupBy('student_id', 'student_name', 'academic_year', 'grade')->with('result');
+    //     // SEARCH BY STUDENT NAME
+    //     if ($request->filled('student_name')) {
+    //         $query->where('student_name', 'LIKE', '%' . $request->student_name . '%');
+    //     }
+    //     $results = $query
+    //     ->orderBy('student_name')
+    //     ->paginate(10)
+    //     ->withQueryString();
+    //     dd($results);
+
+
+    //     return view('result.list', compact('results'));
+    // }
     public function index(Request $request)
     {
+        $grade = GradeSetting::get();
+        $scehdule = ExamScheduleSetting::with('exam')->get();
+        // dd($scehdule);
         $query = StudentResult::select(
                 'student_id',
                 'student_name',
                 'academic_year',
+                'exam_type_id',
                 'grade',
                 \DB::raw('SUM(obtained_marks) as total_marks')
             )
-            ->groupBy('student_id', 'student_name', 'academic_year', 'grade');
-        // SEARCH BY STUDENT NAME
+            ->groupBy(
+                'student_id',
+                'student_name',
+                'academic_year',
+                'exam_type_id',
+                'grade'
+            )
+            ->with('examType');
+
         if ($request->filled('student_name')) {
             $query->where('student_name', 'LIKE', '%' . $request->student_name . '%');
         }
-        $results = $query
-        ->orderBy('student_name')
-        ->paginate(10)
-        ->withQueryString();
 
-        return view('result.list', compact('results'));
+         // 🔍 Filter by grade
+        if ($request->filled('grade')) {
+            $query->where('grade', $request->grade);
+        }
+
+        // 🔍 Filter by exam type
+        if ($request->filled('exam_type_id')) {
+            $query->where('exam_type_id', $request->exam_type_id);
+        }
+
+        $results = $query
+            ->orderBy('student_name')
+            ->paginate(10);
+        // dd($results);
+
+        return view('result.list', compact('results','grade','scehdule'));
     }
+
+
 
     public function store(Request $request)
     {
@@ -43,7 +93,9 @@ class StudentResultController extends Controller
             'subjects'        => 'required|array',
             'marks'           => 'required|array',
             'practical_marks' => 'required|array',
+            'exam_type_id'    => 'required',
         ]);
+        // $validated =
         $student = StudentParentDetails::findOrFail($request->student_id);
         // dd($student);
         foreach ($request->subjects as $index => $subject) {
@@ -54,6 +106,7 @@ class StudentResultController extends Controller
                 'academic_year'   => $student->academic_year,
                 'grade'           => $student->student_enrollment_class,
                 'subjects'        => $subject,
+                'exam_type_id'    => $request->exam_type_id,
                 'obtained_marks'  => $request->marks[$index],
                 'practical_marks' => $request->practical_marks[$index],
             ]);
@@ -64,9 +117,12 @@ class StudentResultController extends Controller
     /**
      * View result of a student
      */
-    public function show($student_id)
+    public function show($student_id, $typeId)
     {
-        $results = StudentResult::where('student_id', $student_id)->get();
+        // dd($typeId);
+        $results = StudentResult::where('student_id', $student_id)->where('exam_type_id',$typeId)->with('examType')->get();
+        // $type_name = StudentResult::where('student_id', $student_id)->where('exam_type_id',$typeId)->with('examType')->first();
+        // $name = $type_name->examType->exam_name;
         $info = StudentParentDetails::findOrFail($student_id);
         $dob = $info->student_dob;
         if ($results->isEmpty()) {
@@ -206,16 +262,16 @@ class StudentResultController extends Controller
     /**
      * Edit result
      */
-    public function edit($student_id)
+    public function edit($student_id, $typeId)
     {
-        $results = StudentResult::where('student_id', $student_id)->get();
-
+        // dd($typeId);
+        $results = StudentResult::where('student_id', $student_id)->where('exam_type_id',$typeId)->get();
         if ($results->isEmpty()) {
             abort(404);
         }
 
         $student = $results->first(); // single row for info
-
+        // dd($student);
         return view('result.edit', compact('student', 'results'));
     }
 
@@ -223,7 +279,7 @@ class StudentResultController extends Controller
     /**
      * Update result
      */
-    public function update(Request $request, $student_id)
+    public function update(Request $request, $student_id, $typeId)
     {
         $request->validate([
             'subjects'        => 'required|array',
