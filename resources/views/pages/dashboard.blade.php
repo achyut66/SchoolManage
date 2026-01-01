@@ -12,6 +12,20 @@
 </div>
 @endif
 
+<!-- bell icon -->
+<!-- <div class="dropdown notification-bell" style="margin-top:-60px;margin-left:1000px;">
+    <a href="{{ route('result.approval') }}" class="nav-link" data-bs-toggle="dropdown">
+        <i class="fa fa-bell"></i>
+
+        @if ($pendingResultCount > 0)
+            <span class="badge bg-danger notification-count" style="color:white;">
+                {{ $pendingResultCount }}
+            </span>
+        @endif
+    </a>
+</div> -->
+<!-- ends -->
+
 {{-- HEADER --}}
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
@@ -33,7 +47,8 @@
             ['icon'=>'fa-users','count'=>$tot_teachers,'label'=>'Total Teachers'],
         ];
     @endphp
-
+    <!-- <div class=""> -->
+    
     @foreach($stats as $s)
     <div class="col-md-3 grid-margin stretch-card">
         <div class="card">
@@ -48,12 +63,12 @@
     </div>
     @endforeach
 </div>
-@auth
-@if(auth()->user()->role_id == 1)
+
 <hr>
 
 <!-- if teacher on leave -->
 <div class="card mb-4">
+
     <div class="card-header text-white" style="background-color:#041750;">
         <i class="fa fa-calendar-times"></i> Teachers on Leave Today
     </div>
@@ -96,8 +111,6 @@
         @endif
     </div>
 </div>
-
-
                 {{-- PIE CHART --}}
                 <div class="row">
                     <div class="col-md-6 grid-margin stretch-card">
@@ -310,8 +323,6 @@
     </div>
     @endforeach
 </div>
-@endif
-@endauth
 
 @endsection
 

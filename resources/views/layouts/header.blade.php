@@ -18,13 +18,16 @@
            <i class="fa fa-dashboard"></i>&nbsp; Dashboard
          </a>
        </li>
-
+       @auth
+       @if(auth()->user()->role_id == 4)
        <li class="nav-item">
          <a class="nav-link font-weight-bold active" href="{{route('result.approval')}}">
            <i class="fa fa-file"></i>&nbsp; Approve Results
          </a>
        </li>
-
+       @endif
+       @endauth
+       
        @auth
        @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 3)
 <!-- all records -->

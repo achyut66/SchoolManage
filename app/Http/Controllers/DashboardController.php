@@ -8,6 +8,7 @@ use App\Models\TeachersPersonalDetail;
 use App\Models\StudentParentDetails;
 use App\Models\GradeSetting;
 use App\Models\TeacherLeave;
+use App\Models\StudentResult;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -31,6 +32,12 @@ class DashboardController extends Controller
         $tot_steachers = TeachersPersonalDetail::where('teacher_enroll_status', 1)->where('flag', 1)->count();
         $tot_ateachers = TeachersPersonalDetail::where('teacher_enroll_status', 2)->where('flag', 1)->count();
         $tot_teachers  = TeachersPersonalDetail::where('flag', 1)->count();
+
+        $pendingResultCount = StudentResult::where('flag', 0)
+        ->groupBy('student_id', 'exam_type_id')
+        ->select('student_id', 'exam_type_id')
+        ->count();
+
 
         $sthai_teacher  = TeachersPersonalDetail::where('teacher_enroll_status', 1)->where('flag', 1)->get();
         $asthai_teacher = TeachersPersonalDetail::where('teacher_enroll_status', 2)->where('flag', 1)->get();
@@ -97,7 +104,8 @@ class DashboardController extends Controller
             'teachersByGrade',
             'gradeSectionCounts',
             'gradeSectionCountsTeacher',
-            'on_leave'
+            'on_leave',
+            'pendingResultCount'
         ));
     }
 }
