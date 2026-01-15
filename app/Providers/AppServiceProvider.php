@@ -30,5 +30,8 @@ class AppServiceProvider extends ServiceProvider
             $palikaProfile = PalikaProfile::first();
             $view->with('palikaProfile', $palikaProfile);
         });
+        if (env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
     }
 }

@@ -31,9 +31,11 @@
           <div class="col-lg-6 d-flex align-items-center justify-content-center">
 
             <div class="auth-form-transparent text-left p-3">
+              @if(!empty(getProfile()->logo))
               <div class="text-center">
                 <img src="{{ asset('storage/'.$palikaProfile->logo) }}" alt="logo" style="width:119px; height:100px;">
               </div>
+              @endif
               <br>
               <h4 class="text-center"> {{ !empty(getProfile()->schoolname) ? getProfile()->schoolname:''}}</h4>
               <h6 class="font-weight-light text-center">{{ !empty(getProfile()->slogan) ? getProfile()->slogan:''}},<br><br> {{ !empty(getProfile()->district) ? getProfile()->district:''}},

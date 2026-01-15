@@ -142,9 +142,7 @@
                           </tr>
 
                           <tr>
-                            <td>
-                              <p class="badge badge-outline-success badge-pill"><i class="fa fa-hand-o-right"></i><b> License Grade: {{ $licenseLevel->name }}</b></p>
-                            </td>
+                            
                             <td> 
                               <p class="badge badge-outline-success badge-pill"><i class="fa fa-hand-o-right"></i><b> License Subject: {{ $teacherDetail->teachers_teacher_license_sub }}</b></p>
                             </td>
